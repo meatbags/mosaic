@@ -7,8 +7,8 @@ class Scene {
     this.domTarget = document.querySelector('#canvas-target');
 
     // init threejs
-    this.renderer = new THREE.WebGLRenderer({antialias: false});
-    this.renderer.setClearColor(0x0000ff, 1);
+    this.renderer = new THREE.WebGLRenderer({antialias: true});
+    this.renderer.setClearColor(0x0000ff, 0);
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10000);
 
@@ -22,6 +22,15 @@ class Scene {
     // events
     window.addEventListener('resize', () => { this._resize(); });
     this._resize();
+
+    // set up scene
+    this.camera.position.set(0, 5, 0);
+    //this.camera.lookAt(new THREE.Vector3());
+    //let mesh = new THREE.Mesh(new THREE.BoxBufferGeometry(1, 1, 1), new THREE.MeshStandardMaterial({}));
+    let light = new THREE.PointLight(0xffffff, 1, 100, 2);
+    let grid = new THREE.GridHelper(100, 50, 0xffffff, 0xffffff);
+    light.position.set(7, 10, 5);
+    this.scene.add(grid);
 
     // start scene loop
     this.time = {};
@@ -52,7 +61,8 @@ class Scene {
   }
 
   _update(delta) {
-
+    let speed = -1;
+    this.camera.position.x = (this.camera.position.x + speed * delta) % 2;
   }
 
   _render(delta) {
