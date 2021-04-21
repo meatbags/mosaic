@@ -7,7 +7,7 @@ class Scene {
     this.domTarget = document.querySelector('#canvas-target');
 
     // init threejs
-    this.renderer = new THREE.WebGLRenderer({antialias: true});
+    this.renderer = new THREE.WebGLRenderer({antialias: false, alpha: true});
     this.renderer.setClearColor(0x0000ff, 0);
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10000);
@@ -26,11 +26,19 @@ class Scene {
     // set up scene
     this.camera.position.set(0, 5, 0);
     //this.camera.lookAt(new THREE.Vector3());
-    //let mesh = new THREE.Mesh(new THREE.BoxBufferGeometry(1, 1, 1), new THREE.MeshStandardMaterial({}));
+    let mat = new THREE.MeshStandardMaterial({color: 0xffffff, wireframe: true});
+    let mesh = new THREE.Mesh(new THREE.BoxBufferGeometry(1000, 0.5, 1000, 50, 1, 50), mat);
+    let mesh2 = new THREE.Mesh(new THREE.BoxBufferGeometry(1000, 0.5, 1000, 50, 1, 50), mat);
+    let mesh3 = new THREE.Mesh(new THREE.BoxBufferGeometry(0.5, 1000, 1000, 1, 50, 50), mat);
+    let mesh4 = new THREE.Mesh(new THREE.BoxBufferGeometry(0.5, 1000, 1000, 1, 50, 50), mat);
     let light = new THREE.PointLight(0xffffff, 1, 100, 2);
-    let grid = new THREE.GridHelper(100, 50, 0xffffff, 0xffffff);
+    let ambient = new THREE.AmbientLight(0xffffff, 0.25);
+    mesh2.position.y = 10;
+    mesh3.position.x = -5;
+    mesh4.position.x = 5;
+    //let grid = new THREE.GridHelper(100, 50, 0xffffff, 0xffffff);
     light.position.set(7, 10, 5);
-    this.scene.add(grid);
+    this.scene.add(mesh, mesh2, mesh3, mesh4, light, ambient);
 
     // start scene loop
     this.time = {};
@@ -62,7 +70,7 @@ class Scene {
 
   _update(delta) {
     let speed = -1;
-    this.camera.position.x = (this.camera.position.x + speed * delta) % 2;
+    this.camera.position.z = (this.camera.position.z + speed * delta) % 20;
   }
 
   _render(delta) {

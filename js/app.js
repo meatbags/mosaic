@@ -1,10 +1,12 @@
 /** App */
 
 import Scene from './modules/scene';
+import Navigation from './modules/navigation';
 
 class App {
   constructor() {
     this.modules = {
+      navigation: new Navigation(),
       scene: new Scene(),
     };
 
