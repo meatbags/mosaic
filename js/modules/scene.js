@@ -25,20 +25,27 @@ class Scene {
 
     // set up scene
     this.camera.position.set(0, 5, 0);
-    //this.camera.lookAt(new THREE.Vector3());
-    let mat = new THREE.MeshStandardMaterial({color: 0xffffff, wireframe: true});
-    let mesh = new THREE.Mesh(new THREE.BoxBufferGeometry(1000, 0.5, 1000, 50, 1, 50), mat);
-    let mesh2 = new THREE.Mesh(new THREE.BoxBufferGeometry(1000, 0.5, 1000, 50, 1, 50), mat);
-    let mesh3 = new THREE.Mesh(new THREE.BoxBufferGeometry(0.5, 1000, 1000, 1, 50, 50), mat);
-    let mesh4 = new THREE.Mesh(new THREE.BoxBufferGeometry(0.5, 1000, 1000, 1, 50, 50), mat);
-    let light = new THREE.PointLight(0xffffff, 1, 100, 2);
-    let ambient = new THREE.AmbientLight(0xffffff, 0.25);
-    mesh2.position.y = 10;
-    mesh3.position.x = -5;
-    mesh4.position.x = 5;
+
+    // mesh
+    // let mat = new THREE.MeshStandardMaterial({color: 0xffffff, wireframe: true});
+    let mat = new THREE.PointsMaterial({color: 0xffffff, size: 0.1});
+    let plane = new THREE.Points(new THREE.PlaneBufferGeometry(1000, 1000, 50, 50), mat);
+    let plane2 = new THREE.Points(new THREE.PlaneBufferGeometry(1000, 1000, 50, 50), mat);
+    plane.rotation.x = Math.PI * 0.5;
+    plane2.rotation.x = Math.PI * 0.5;
+    plane2.position.y = 10;
     //let grid = new THREE.GridHelper(100, 50, 0xffffff, 0xffffff);
-    light.position.set(7, 10, 5);
-    this.scene.add(mesh, mesh2, mesh3, mesh4, light, ambient);
+    this.scene.add(plane);
+    this.scene.add(plane2);
+    //this.scene.add(grid);
+
+    // lighting
+    this.lights = {};
+    this.lights.a1 = new THREE.AmbientLight(0xffffff, 0.5);
+
+    Object.keys(this.lights).forEach(key => {
+      this.scene.add(this.lights[key]);
+    });
 
     // start scene loop
     this.time = {};
@@ -69,7 +76,7 @@ class Scene {
   }
 
   _update(delta) {
-    let speed = -1;
+    let speed = -10;
     this.camera.position.z = (this.camera.position.z + speed * delta) % 20;
   }
 

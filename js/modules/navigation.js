@@ -1,9 +1,7 @@
 /** Navigation */
 
 class Navigation {
-  constructor() {
-
-  }
+  constructor() {}
 
   bind(root) {
     this.removeLoadingScreen();
