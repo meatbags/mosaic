@@ -14,7 +14,7 @@ const Config = {
     maxPitch: Math.PI / 8,
     minPitch: -Math.PI / 8,
     blendPosition: 0.25,
-    blendRotation: 0.125,
+    blendRotation: 0.25,
   },
   Navigation: {
     view: {

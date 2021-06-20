@@ -2,6 +2,7 @@
 
 import * as THREE from 'three';
 import Loader from '../loader/loader';
+import RandRange from '../util/rand_range';
 
 class World {
   constructor() {
@@ -36,42 +37,38 @@ class World {
     this.ref.scene.add(plane);
   }
 
-  _init() {
-    // ball
-    let red = new THREE.MeshStandardMaterial({color:0xff0000, metalness: 0.5, roughness: 0.5,});
-    for (let z=0; z<1000; z+=5) {
-      let rad = 0.3;
-      let mesh = new THREE.Mesh(new THREE.SphereBufferGeometry(rad, 32, 32), red);
-      let x = -4;
-      let y = Math.abs(Math.sin(z/10 * Math.PI/8)) * 2 + rad;
+  getRandomTexture(rx, ry) {
+    let n = Math.floor(1 + Math.random() * 20).toString().padStart(2, '0');
+    let src = `img/tile_${n}.jpg`;
+    return this.getRepeatTexture(src, rx, ry);
+  }
+
+  _initText() {
+    let text = 'abcdefghijklmnopqrstuvwxyz';
+    for (let i=0; i<text.length; i++) {
+      let chr = text[i];
+      let mat = new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0, roughness: 0.75});
+      mat.color.setRGB(Math.random(), Math.random(), Math.random());
+      let geo = new THREE.TextGeometry(chr, {
+        font: this.font,
+        size: 2,
+        height: 1,
+    		bevelEnabled: false,
+      });
+      let mesh = new THREE.Mesh(geo, mat);
+      let x = RandRange(-9, 9) / 2;
+      let y = RandRange(0, 9) / 2;
+      let z = 10 + RandRange(0, 100);
+      let rx = 0;//RandRange(0, 3) * Math.PI/2;
+      let ry = Math.PI;//RandRange(0, 3) * Math.PI/2;
+      let rz = 0;//RandRange(0, 3) * Math.PI/2;
       mesh.position.set(x, y, z);
+      mesh.rotation.set(rx, ry, rz);
       this.ref.scene.add(mesh);
     }
+  }
 
-    this.loader.loadFBX('hand_01').then(obj => {
-      let s = 0.075;
-      obj.scale.set(s, s, s);
-      obj.rotation.set(0, 0, Math.PI/2);
-      let rotStep = Math.PI / 4;
-
-      for (let i=0.5; i<9.5; i+=0.5) {
-        let y = 0.25 + i;
-        let z = 6 + i;
-        let clone = obj.clone();
-        let rot = i * rotStep + z * Math.PI/4;
-        let r = Math.random();
-        let b = Math.random();
-        let g = Math.random();
-        clone.rotation.x = rot;
-        clone.position.set(5.5, y, z);
-        let mat = obj.children[0].material.clone();
-        mat.color.setRGB(r, g, b);
-        clone.children[0].material = mat;
-        this.ref.scene.add(clone);
-      }
-    });
-
-    // floors and walls
+  _createRoom() {
     let rx = 1;
     let ry = 1;
     let tiles = [
@@ -143,6 +140,65 @@ class World {
       this.createTiledPlane(randTile(), 5.25, startY+width*4, 0, 0, rot, rot, width, depth, tx, ty);
       this.createTiledPlane(randTile(), 5.25, startY+width*5, 0, 0, rot, rot, width, depth, tx, ty);
     }
+  }
+
+  _createCubes() {
+    // cube
+    let tex = this.getRepeatTexture('img/qr.png', 1, 1);
+    let geo = new THREE.BoxBufferGeometry(2, 2, 2);
+    let mat = this.mat.default.clone();
+    let mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(4, 1, 15);
+    mat.map = tex;
+    this.ref.scene.add(mesh);
+  }
+
+  _init() {
+    this._createCubes();
+
+    // text
+    let fontLoader = new THREE.FontLoader();
+    fontLoader.load('fonts/Karla_Bold.json', font => {
+      this.font = font;
+      this._initText();
+    });
+
+    // ball
+    let red = new THREE.MeshStandardMaterial({color:0xff0000, metalness: 0.5, roughness: 0.5,});
+    for (let z=0; z<1000; z+=5) {
+      let rad = 0.3;
+      let mesh = new THREE.Mesh(new THREE.SphereBufferGeometry(rad, 32, 32), red);
+      let x = -4;
+      let y = Math.abs(Math.sin(z/10 * Math.PI/8)) * 2 + rad;
+      mesh.position.set(x, y, z);
+      this.ref.scene.add(mesh);
+    }
+
+    this.loader.loadFBX('hand_01').then(obj => {
+      let s = 0.075;
+      obj.scale.set(s, s, s);
+      obj.rotation.set(0, 0, Math.PI/2);
+      let rotStep = Math.PI / 4;
+
+      for (let i=0.5; i<9.5; i+=0.5) {
+        let y = 0.25 + i;
+        let z = 6 + i;
+        let clone = obj.clone();
+        let rot = i * rotStep + z * Math.PI/4;
+        let r = Math.random();
+        let b = Math.random();
+        let g = Math.random();
+        clone.rotation.x = rot;
+        clone.position.set(5.5, y, z);
+        let mat = obj.children[0].material.clone();
+        mat.color.setRGB(r, g, b);
+        //mat.map = this.getRandomTexture(20, 20);
+        clone.children[0].material = mat;
+        this.ref.scene.add(clone);
+      }
+    });
+
+    this._createRoom();
   }
 }
 
