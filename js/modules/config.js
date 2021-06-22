@@ -3,10 +3,12 @@
 const Config = {
   Renderer: {
     lowQuality: false,
+    devicePixelRatioMin: 2,
   },
   Camera: {
-    fov: 65,
+    fov: 100,
     height: 2.5,
+    position: {x: 0, y: 0, z: 0},
   },
   Controls: {
     speed: 5,
@@ -15,6 +17,10 @@ const Config = {
     minPitch: -Math.PI / 8,
     blendPosition: 0.25,
     blendRotation: 0.25,
+    rotation: {
+      yaw: -Math.PI, //Math.PI * 0.655,
+      pitch: 0,
+    }
   },
   Navigation: {
     view: {

@@ -14,7 +14,7 @@ class Renderer {
     this.renderer = new THREE.WebGLRenderer({antialias: aa, alpha: true});
     this.renderer.outputEncoding = THREE.GammaEncoding;
     this.renderer.gammaFactor = 2.2;
-    this.renderer.setClearColor(0xeeeeee, 1);
+    this.renderer.setClearColor(0x888888, 1);
     document.querySelector('#canvas-target').appendChild(this.renderer.domElement);
   }
 
@@ -35,10 +35,11 @@ class Renderer {
   }
 
   resize() {
-    let dpr = Math.min(2, window.devicePixelRatio);
+    let dpr = Math.max(Config.Renderer.devicePixelRatioMin, window.devicePixelRatio);
     this.size = {x: window.innerWidth*dpr, y: window.innerHeight*dpr};
     this.renderer.setSize(this.size.x, this.size.y);
     this.composer.setSize(this.size.x, this.size.y);
+    console.log(this.size);
   }
 
   render(delta) {

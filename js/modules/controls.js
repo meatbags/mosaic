@@ -35,13 +35,15 @@ class Controls {
       previous: new THREE.Vector3(),
       changed: true,
     };
+    let pitch = Config.Controls.rotation.pitch;
+    let yaw = Config.Controls.rotation.yaw;
     this.rotation = {
-      pitch: 0,
-      yaw: Math.PI,
-      origin: {pitch: 0, yaw: Math.PI},
-      target: {pitch: 0, yaw: Math.PI},
-      cache: {pitch: 0, yaw: 0},
-      scale: {pitch: 0, yaw: 0},
+      pitch: pitch,
+      yaw: yaw,
+      origin: {pitch: pitch, yaw: yaw},
+      target: {pitch: pitch, yaw: yaw},
+      cache: {pitch: pitch, yaw: yaw},
+      scale: {pitch: pitch, yaw: yaw},
       previous: {pitch: -1, yaw: -1},
       changed: true,
     };

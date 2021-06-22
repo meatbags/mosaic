@@ -14,6 +14,7 @@ class World {
     this.ref.scene = root.modules.scene.getScene();
     this.mat = {};
     this.mat.default = new THREE.MeshBasicMaterial({side: THREE.DoubleSide});
+    this.mat.standard = new THREE.MeshStandardMaterial({metalness: 0, side: THREE.DoubleSide});
     this._init();
   }
 
@@ -43,32 +44,67 @@ class World {
     return this.getRepeatTexture(src, rx, ry);
   }
 
-  _initText() {
-    let text = 'abcdefghijklmnopqrstuvwxyz';
-    for (let i=0; i<text.length; i++) {
-      let chr = text[i];
-      let mat = new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0, roughness: 0.75});
-      mat.color.setRGB(Math.random(), Math.random(), Math.random());
-      let geo = new THREE.TextGeometry(chr, {
-        font: this.font,
-        size: 2,
-        height: 1,
-    		bevelEnabled: false,
-      });
+  _createText() {
+    let callback = () => {
+      let text = 'abcdefghijklmnopqrstuvwxyz';
+      for (let i=0; i<text.length; i++) {
+        let chr = text[i];
+        let mat = new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0, roughness: 0.75});
+        mat.color.setRGB(Math.random(), Math.random(), Math.random());
+        let geo = new THREE.TextGeometry(chr, {
+          font: this.font,
+          size: 2,
+          height: 1,
+      		bevelEnabled: false,
+        });
+        let mesh = new THREE.Mesh(geo, mat);
+        let x = RandRange(-9, 9) / 2;
+        let y = RandRange(0, 9) / 2;
+        let z = 10 + RandRange(0, 100);
+        let rx = 0;//RandRange(0, 3) * Math.PI/2;
+        let ry = Math.PI;//RandRange(0, 3) * Math.PI/2;
+        let rz = 0;//RandRange(0, 3) * Math.PI/2;
+        mesh.position.set(x, y, z);
+        mesh.rotation.set(rx, ry, rz);
+        this.ref.scene.add(mesh);
+      }
+    };
+
+    // load font
+    let fontLoader = new THREE.FontLoader();
+    fontLoader.load('fonts/Karla_Bold.json', font => {
+      this.font = font;
+      callback();
+    });
+  }
+
+  _createTarot() {
+    for (let i=0; i<22; i++) {
+      let n = i.toString().padStart(2, '0');
+      let src = `img/tarot_${n}.jpg`;
+      let tex = new THREE.TextureLoader().load(src);
+      let div = 3.8;
+      let w = 2.18 / div;
+      let h = 3.87 / div;
+      let geo = new THREE.PlaneBufferGeometry(w, h);
+      let mat = this.mat.default.clone();
+      mat.map = tex;
       let mesh = new THREE.Mesh(geo, mat);
-      let x = RandRange(-9, 9) / 2;
-      let y = RandRange(0, 9) / 2;
-      let z = 10 + RandRange(0, 100);
-      let rx = 0;//RandRange(0, 3) * Math.PI/2;
-      let ry = Math.PI;//RandRange(0, 3) * Math.PI/2;
-      let rz = 0;//RandRange(0, 3) * Math.PI/2;
-      mesh.position.set(x, y, z);
+      let rx = Math.PI*Math.random();
+      let ry = Math.PI*Math.random();
+      let rz = Math.PI*Math.random();
       mesh.rotation.set(rx, ry, rz);
+      let x = (Math.random() * 2 - 1) * 2.5;
+      let y = (Math.random() * 2 - 1) * 4 + 4;
+      let z = 5 + Math.random() * 30;
+      mesh.position.set(x, y, z);
       this.ref.scene.add(mesh);
     }
   }
 
   _createRoom() {
+    let width = 0.5;
+    let depth = 10000;
     let rx = 1;
     let ry = 1;
     let tiles = [
@@ -98,10 +134,9 @@ class World {
       let index = Math.floor(Math.random() * tiles.length);
       return tiles[index];
     };
+
     let limX = 10;
     for (let x=0; x<limX; x++) {
-      let width = 0.5;
-      let depth = 2000;
       let tx = 1;
       let ty = depth/width;
       let startX = (x-limX/2) * 6 * width;
@@ -119,10 +154,11 @@ class World {
       this.createTiledPlane(randTile(), startX+width*4, 10, 0, rot, 0, 0, width, depth, tx, ty);
       this.createTiledPlane(randTile(), startX+width*5, 10, 0, rot, 0, 0, width, depth, tx, ty);
     }
+
     let limY = 4;
     for (let y=0; y<limY; y++) {
-      let width = 0.5;
-      let depth = 1000;
+      //let width = 0.5;
+      //let depth = 1000;
       let tx = 1;
       let ty = depth / width;
       let startY = y * 6 * width + width/2;
@@ -153,27 +189,7 @@ class World {
     this.ref.scene.add(mesh);
   }
 
-  _init() {
-    this._createCubes();
-
-    // text
-    let fontLoader = new THREE.FontLoader();
-    fontLoader.load('fonts/Karla_Bold.json', font => {
-      this.font = font;
-      this._initText();
-    });
-
-    // ball
-    let red = new THREE.MeshStandardMaterial({color:0xff0000, metalness: 0.5, roughness: 0.5,});
-    for (let z=0; z<1000; z+=5) {
-      let rad = 0.3;
-      let mesh = new THREE.Mesh(new THREE.SphereBufferGeometry(rad, 32, 32), red);
-      let x = -4;
-      let y = Math.abs(Math.sin(z/10 * Math.PI/8)) * 2 + rad;
-      mesh.position.set(x, y, z);
-      this.ref.scene.add(mesh);
-    }
-
+  _createHandStairs() {
     this.loader.loadFBX('hand_01').then(obj => {
       let s = 0.075;
       obj.scale.set(s, s, s);
@@ -197,7 +213,27 @@ class World {
         this.ref.scene.add(clone);
       }
     });
+  }
 
+  _createBall() {
+    // ball
+    let red = new THREE.MeshStandardMaterial({color:0xff0000, metalness: 0.5, roughness: 0.5,});
+    for (let z=0; z<1000; z+=5) {
+      let rad = 0.3;
+      let mesh = new THREE.Mesh(new THREE.SphereBufferGeometry(rad, 32, 32), red);
+      let x = -4;
+      let y = Math.abs(Math.sin(z/10 * Math.PI/8)) * 2 + rad;
+      mesh.position.set(x, y, z);
+      this.ref.scene.add(mesh);
+    }
+  }
+
+  _init() {
+    this._createTarot();
+    this._createText();
+    this._createCubes();
+    this._createBall();
+    //this._createHandStairs();
     this._createRoom();
   }
 }
