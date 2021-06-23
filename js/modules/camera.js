@@ -9,8 +9,6 @@ class Camera {
     this.camera = new THREE.PerspectiveCamera(Config.Camera.fov, 1, 0.1, 200000);
     this.camera.up = new THREE.Vector3(0, 1, 0);
     this.camera.rotation.order = 'ZYX';//'YXZ';
-
-    // calculate FOV ?
     this.camera.fov = Config.Camera.fov;
     this.camera.lookAt(new THREE.Vector3(0, 0, -1));
     this.camera.updateProjectionMatrix();

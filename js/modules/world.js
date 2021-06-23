@@ -44,6 +44,55 @@ class World {
     return this.getRepeatTexture(src, rx, ry);
   }
 
+  _createMetaCube() {
+    // load tiles
+    let tiles = [];
+    let numTiles = 13;
+    for (let i=0; i<numTiles; i++) {
+      let n = (i + 1).toString().padStart(2, '0');
+      let tex = new THREE.TextureLoader().load(`img/tile/${n}.png`);
+      tiles.push(tex);
+    }
+
+    // tile list
+    this.tiles = [];
+
+    // create cube
+    let size = 3;
+    for (let x=-size; x<=size; x++) {
+      for (let y=-size; y<=size; y++) {
+        for (let z=-size; z<=size; z++) {
+          if (!(Math.abs(x)==size || Math.abs(y)==size || Math.abs(z)==size)) {
+            continue;
+          }
+          let geo = new THREE.BoxBufferGeometry(1, 1, 1);
+          let mat = this.mat.default.clone();//new THREE.MeshStandardMaterial({});
+          mat.map = tiles[RandRange(0, tiles.length-1)];
+          let mesh = new THREE.Mesh(geo, mat);
+          mesh.position.set(x, y, z);
+          let rx = RandRange(0, 4) * Math.PI / 2;
+          let ry = RandRange(0, 4) * Math.PI / 2;
+          let rz = RandRange(0, 4) * Math.PI / 2;
+          mesh.rotation.set(rx, ry, rz);
+          this.ref.scene.add(mesh);
+
+          // create animation state
+          mesh.userData.state = {
+            position: {x: 0, y: 0},
+            nextPosition: {x: 0, y: 0},
+            range: {
+              x: [-1, 1],
+              y: [-1, 1],
+              z: [-1, 1],
+            },
+          };
+
+          this.tiles.push(mesh);
+        }
+      }
+    }
+  }
+
   _createText() {
     let callback = () => {
       let text = 'abcdefghijklmnopqrstuvwxyz';
@@ -229,12 +278,17 @@ class World {
   }
 
   _init() {
-    this._createTarot();
-    this._createText();
-    this._createCubes();
-    this._createBall();
+    this._createMetaCube();
+    //this._createTarot();
+    //this._createText();
+    //this._createCubes();
+    //this._createBall();
     //this._createHandStairs();
-    this._createRoom();
+    //this._createRoom();
+  }
+
+  update(delta) {
+
   }
 }
 

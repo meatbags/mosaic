@@ -6,9 +6,9 @@ const Config = {
     devicePixelRatioMin: 2,
   },
   Camera: {
-    fov: 100,
-    height: 2.5,
-    position: {x: 0, y: 0, z: 0},
+    fov: 65,
+    height: 0, // 2.5
+    position: {x: 0, y: 0, z: -10},
   },
   Controls: {
     speed: 5,
