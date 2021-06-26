@@ -2,6 +2,7 @@
 
 import * as THREE from 'three';
 import Config from './config';
+import ColliderSystem from '../collider/collider_system';
 import Clamp from '../util/clamp';
 import Loader from '../loader/loader';
 
@@ -9,14 +10,13 @@ class Scene {
   constructor() {
     this.scene = new THREE.Scene();
     this.loader = new Loader('assets/');
+    this.colliderSystem = new ColliderSystem();
   }
 
   bind(root) {
     this.ref = {};
     this.ref.camera = root.modules.camera;
     this.ref.controls = root.modules.controls;
-    //this.ref.objectHandler = root.modules.objectHandler;
-    //this.ref.materialHandler = root.modules.materialHandler;
 
     // lighting
     const model = Config.Renderer.lowQuality ? 1 : 2;
@@ -32,6 +32,19 @@ class Scene {
     for (const key in this.light) {
       this.scene.add(this.light[key]);
     }
+
+    this.init();
+  }
+
+  init() {
+    this.loader.loadFBX('floor').then(obj => {
+      this.scene.add(obj);
+      this.colliderSystem.addFloor(obj);
+    });
+  }
+
+  getColliderSystem() {
+    return this.colliderSystem;
   }
 
   getScene() {

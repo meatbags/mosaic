@@ -18,6 +18,16 @@ class World {
     this._init();
   }
 
+  _init() {
+    //this._createMetaCube();
+    //this._createTarot();
+    //this._createText();
+    //this._createCubes();
+    //this._createBall();
+    //this._createHandStairs();
+    //this._createRoom();
+  }
+
   getRepeatTexture(tex, rx, ry) {
     if (typeof tex == 'string') {
       tex = new THREE.TextureLoader().load(tex);
@@ -275,16 +285,6 @@ class World {
       mesh.position.set(x, y, z);
       this.ref.scene.add(mesh);
     }
-  }
-
-  _init() {
-    this._createMetaCube();
-    //this._createTarot();
-    //this._createText();
-    //this._createCubes();
-    //this._createBall();
-    //this._createHandStairs();
-    //this._createRoom();
   }
 
   update(delta) {

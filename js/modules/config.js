@@ -7,20 +7,20 @@ const Config = {
   },
   Camera: {
     fov: 65,
-    height: 0, // 2.5
+    height: 2.5,
     position: {x: 0, y: 0, z: -10},
   },
   Controls: {
     speed: 5,
     speedNoclip: 15,
-    maxPitch: Math.PI / 8,
-    minPitch: -Math.PI / 8,
+    maxPitch: Math.PI * 0.45,
+    minPitch: -Math.PI * 0.45,
     blendPosition: 0.25,
     blendRotation: 0.25,
     rotation: {
-      yaw: -Math.PI, //Math.PI * 0.655,
+      yaw: -Math.PI,
       pitch: 0,
-    }
+    },
   },
   Navigation: {
     view: {

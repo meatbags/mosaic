@@ -1,15 +1,16 @@
 /** Camera controls */
 
 import * as THREE from 'three';
-import Config from '../modules/config';
+import Animation from './animation';
 import Blend from '../util/blend';
 import Clamp from '../util/clamp';
-import IsMobileDevice from '../util/is_mobile_device';
-import MinAngleBetween from '../util/min_angle_between';
+import ColliderObject from '../collider/collider_object';
+import Config from '../modules/config';
 import CreateElement from '../util/create_element';
-import Mouse from '../ui/mouse';
+import IsMobileDevice from '../util/is_mobile_device';
 import Keyboard from '../ui/keyboard';
-import Animation from './animation';
+import MinAngleBetween from '../util/min_angle_between';
+import Mouse from '../ui/mouse';
 import RoundToPlaces from '../util/round_to_places';
 
 class Controls {
@@ -69,15 +70,12 @@ class Controls {
     this.position.z = z;
     this.position.target.set(x, y, z);
 
-    // set initial rotation
-    /*
-    const pitch = this.ref.camera.rotation.x;
-    const yaw = this.ref.camera.rotation.y;
-    this.rotation.pitch = pitch;
-    this.rotation.yaw = yaw;
-    this.rotation.target.pitch = pitch;
-    this.rotation.target.yaw = yaw;
-    */
+    // create collision object
+    this.collider = new ColliderObject({
+      position: this.position.target,
+      motion: this.position.motion,
+      system: this.ref.scene.getColliderSystem(),
+    });
 
     // init mouse/ keyboard
     this.mouse = new Mouse({
@@ -90,26 +88,6 @@ class Controls {
     this.keyboard = new Keyboard((key) => {
       this.onKeyboard(key);
     });
-
-    // add mobile controls
-    /*
-    this.el = CreateElement({
-      class: 'mobile-controls',
-      childNodes: [{
-        class: 'mobile-controls__inner',
-        childNodes: [
-          { class: 'mobile-controls__control mobile-controls__control--left', },
-          { class: 'mobile-controls__control mobile-controls__control--right', },
-          { class: 'mobile-controls__control mobile-controls__control--up', },
-          { class: 'mobile-controls__control mobile-controls__control--down', },
-        ]
-      }]
-    });
-    if (!this.isMobile) {
-      this.el.classList.add('hidden');
-    }
-    document.querySelector('body').appendChild(this.el);
-    */
   }
 
   onMouseDown(evt) {
@@ -267,11 +245,12 @@ class Controls {
     }
 
     // set position
-    this.position.target.x += this.position.motion.x * delta;
-    this.position.target.y += this.position.motion.y * delta;
-    this.position.target.z += this.position.motion.z * delta;
     if (!this.keys.noclip) {
-      this.position.target.y = 0;
+      this.collider.collide(delta);
+    } else {
+      this.position.target.x += this.position.motion.x * delta;
+      this.position.target.y += this.position.motion.y * delta;
+      this.position.target.z += this.position.motion.z * delta;
     }
     this.position.x = Blend(this.position.x, this.position.target.x, this.blendPosition);
     this.position.y = Blend(this.position.y, this.position.target.y, this.blendPosition);
