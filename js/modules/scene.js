@@ -33,7 +33,27 @@ class Scene {
       this.scene.add(this.light[key]);
     }
 
-    this.init();
+    window.addEventListener('keydown', evt => {
+      this._onKeyDown(evt.key);
+    });
+
+    //this.init();
+  }
+
+  _onKeyDown(key) {
+    if (key !== ' ') {
+      return;
+    }
+
+    this.scene.children.forEach(child => {
+      if (child.type === 'Mesh' && child.material) {
+        if (child.material.type === 'MeshStandardMaterial') {
+          child.material = new THREE.MeshBasicMaterial({color: 0x0});
+        } else {
+          child.visible = false;
+        }
+      }
+    });
   }
 
   init() {
