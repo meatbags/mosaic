@@ -39,7 +39,6 @@ class Renderer {
     this.size = {x: window.innerWidth*dpr, y: window.innerHeight*dpr};
     this.renderer.setSize(this.size.x, this.size.y);
     this.composer.setSize(this.size.x, this.size.y);
-    console.log(this.size);
   }
 
   getRenderer() {

@@ -3,7 +3,7 @@
 const Config = {
   Renderer: {
     lowQuality: false,
-    devicePixelRatioMin: 2,
+    devicePixelRatioMin: 1,
   },
   Camera: {
     fov: 70,
@@ -33,10 +33,9 @@ const Config = {
       active: 17,
       enlarge: 10,
     },
-    lineOfSightObjects: [{
-      position: [0, 3.125, -1],
-      dimensions: [1, 6.25, 14.5],
-    }]
+    lineOfSightObjects: [
+      // { position: [0, 3.125, -1], dimensions: [1, 6.25, 14.5], }
+    ]
   },
 };
 

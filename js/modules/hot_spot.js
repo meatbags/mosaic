@@ -5,12 +5,12 @@ import Config from './config';
 import ScreenSpace from '../ui/screen_space';
 import IsMobileDevice from '../util/is_mobile_device';
 import MinAngleBetween from '../util/min_angle_between';
+import CreateElement from '../util/create_element';
 
 class HotSpot {
   constructor(params) {
     this.ref = {};
     this.ref.camera = params.camera;
-    this.ref.controls = params.controls;
 
     // state
     this.state = {
@@ -30,7 +30,7 @@ class HotSpot {
 
     // screenspace
     this.screenSpace = new ScreenSpace({
-      camera: this.ref.camera.getCamera(),
+      camera: this.ref.camera,
       position: this.state.position
     });
 
@@ -51,7 +51,7 @@ class HotSpot {
 
   hasLineOfSight() {
     // set raycaster
-    const origin = this.ref.camera.getCamera().position;
+    const origin = this.ref.camera.position;
     const v = new THREE.Vector3();
     v.copy(this.state.position);
     v.sub(origin);
@@ -78,7 +78,7 @@ class HotSpot {
     // update state
     this.state.onScreen = this.screenSpace.isOnScreen();
     this.state.hasLineOfSight = this.state.onScreen && this.hasLineOfSight();
-    this.state.distanceToCamera = this.ref.camera.getCamera().position.distanceTo(this.state.position);
+    this.state.distanceToCamera = this.ref.camera.position.distanceTo(this.state.position);
     this.state.insideActiveThreshold = this.state.distanceToCamera <= Config.HotSpot.threshold.active;
     this.state.insideEnlargedThreshold = this.state.distanceToCamera <= Config.HotSpot.threshold.enlarge;
     this.state.visible = this.state.onScreen && this.state.hasLineOfSight && this.state.insideActiveThreshold;

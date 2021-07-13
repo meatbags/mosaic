@@ -5,8 +5,11 @@ import Config from './config';
 import ColliderSystem from '../collider/collider_system';
 import ColliderObject from '../collider/collider_object';
 import Clamp from '../util/clamp';
+import CreateElement from '../util/create_element';
 import Loader from '../loader/loader';
 import PerlinNoise from '../util/perlin_noise';
+import HotSpot from './hot_spot';
+import ScreenSpace from '../ui/screen_space';
 import RandRange from '../util/rand_range';
 
 class Scene {
@@ -15,6 +18,7 @@ class Scene {
     this.loader = new Loader('assets/');
     this.colliderSystem = new ColliderSystem();
     this.objects = [];
+    this.animations = [];
   }
 
   bind(root) {
@@ -26,39 +30,35 @@ class Scene {
   }
 
   initText() {
-    let mat = new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0.65, roughness: 0.5});
+    let mat = new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0.35, roughness: 0.65});
 
     let callback = () => {
       let text = 'XAVIERBURROW';
+      let p = [
+        [-6, 6], [-5, 5], [-5, 2], [-4, 2], [-2, 4], [-2, 2],
+        [-2, -2], [-2, -4], [0, -4], [-1, -6], [5, -7], [7, -7],
+      ];
       for (let i=0; i<text.length; i++) {
-        let index = Math.floor(Math.random() * text.length);
-        let chr = text[i];
-        let geo = new THREE.TextGeometry(chr, {
-          font: this.font,
-          size: 1,
-          height: 0.125,
-      		bevelEnabled: false,
-        });
-        let mesh = new THREE.Mesh(geo, mat);
-        let box = new THREE.Box3().setFromObject( mesh );
+        let mesh = new THREE.Mesh(new THREE.TextGeometry(text[i], {font: this.font, size: 0.75, height: 0.125, bevelEnabled: false}), mat);
+        let box = new THREE.Box3().setFromObject(mesh);
         let size = new THREE.Vector3();
         box.getSize(size);
-        geo.translate(-size.x/2, 0, -size.z/2);
-        let x = -7.5 + (i / text.length) * 15;
-        let z = Math.random() * 7.5 - 3.75;
-        mesh.position.set(x, 0, z);
+        mesh.geometry.translate(-size.x/2, 0, -size.z/2);
+        mesh.position.set(p[i][0], 0, p[i][1]);
         mesh.position.y = this.colliderSystem.getMinimum(mesh.position);
-        mesh.rotation.y = RandRange(0, 8) * Math.PI / 8;
+        mesh.rotation.y = (Math.random() * 2 - 1) * Math.PI/4 + Math.PI/4;
         this.scene.add(mesh);
 
         // object refs
         let obj = {};
         obj.mesh = mesh;
-        obj.position = mesh.position;
-        let d = Math.random() * Math.PI * 2;
-        obj.motion = new THREE.Vector3(Math.cos(d), 0, Math.sin(d));
-        obj.speed = 0;// Math.random() > 0.5 ? 0 : Math.random() * 3;
+        obj.screenSpace = new ScreenSpace({
+          camera: this.ref.camera.camera,
+          position: mesh.position,
+        });
+        obj.el = CreateElement({class: 'overlay__hotspot', innerHTML: 'X'});
         this.objects.push(obj);
+        document.querySelector('#overlay').appendChild(obj.el);
       }
     };
 
@@ -81,10 +81,11 @@ class Scene {
     let geo = new THREE.PlaneBufferGeometry(15, 15, 50, 50);
     let mat = new THREE.MeshStandardMaterial({
       color: 0x00ff00,
-      metalness: 0.5,
-      roughness: 0.35,
+      metalness: 0.25,
+      roughness: 0.75,
       wireframe: true
     });
+    //mat = new THREE.MeshBasicMaterial({color: 0xff00, wireframe: true});
     let mesh = new THREE.Mesh(geo, mat);
     mesh.rotation.set(-Math.PI/2, 0, 0);
     mesh.updateMatrix();
@@ -100,8 +101,6 @@ class Scene {
       geo.attributes.position.array[i+1] = y;
     }
     geo.computeFaceNormals();
-    //geo.computeVertexNormals();
-    console.log(geo);
 
     this.scene.add(mesh);
 
@@ -150,17 +149,19 @@ class Scene {
   }
 
   update(delta) {
-    let bound = 7;
     this.objects.forEach(obj => {
-      if (Math.random() > 0.995) {
-        obj.position.x += RandRange(-1, 1) * 0.5;
-        obj.position.z += RandRange(-1, 1) * 0.5;
-        obj.position.x = Clamp(obj.position.x, -bound, bound);
-        obj.position.z = Clamp(obj.position.z, -bound, bound);
-        obj.position.y = this.colliderSystem.getMinimum(obj.position);
-        obj.mesh.rotation.y += RandRange(-1, 1) * Math.PI / 8;
-      }
+      obj.screenSpace.update();
+      let s = obj.screenSpace.getScreenPosition();
+      obj.el.style.left = `${s.x * window.innerWidth}px`;
+      obj.el.style.top = `${s.y * window.innerHeight - 100}px`;
     });
+
+    for (let i=this.animations.length-1; i>=0; i--) {
+      this.animations[i].update();
+      if (!this.animations[i].active) {
+        this.animations.splice(i, 1);
+      }
+    }
   }
 }
 
