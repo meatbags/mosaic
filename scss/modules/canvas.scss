@@ -4,7 +4,7 @@
   height: 100vh;
   z-index: $indexCanvas;
   overflow: hidden;
-  background: linear-gradient(to top, $white, transparent);
+  background: #444;
 
   canvas {
     position: absolute;
@@ -14,5 +14,8 @@
     height: 100% !important;
     z-index: 2;
     cursor: crosshair;
+    //background: linear-gradient(to left, green, transparent 1px),
+    //  linear-gradient(to top, green, transparent 1px);
+    //background-size: 50px 50px;
   }
 }

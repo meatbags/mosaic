@@ -136,11 +136,11 @@ body {
   width: 100%;
   height: 100vh;
   font-family: "Karla", sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: 1px;
   line-height: 1.2;
   background: #101010;
-  color: #fff; }
+  color: #eee; }
 
 .canvas-wrapper {
   position: absolute;
@@ -148,7 +148,7 @@ body {
   height: 100vh;
   z-index: 1;
   overflow: hidden;
-  background: linear-gradient(to top, #fff, transparent); }
+  background: #444; }
   .canvas-wrapper canvas {
     position: absolute;
     top: 0;
@@ -176,10 +176,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(255, 255, 255, 0.25); }
+  background: #555; }
   .loading-screen .loading-screen__inner {
-    color: #101010;
-    font-size: 32px; }
+    color: #eee;
+    font-size: 26px; }
 
 .title {
   padding-left: 16px;
@@ -192,4 +192,36 @@ body {
   z-index: 80;
   text-transform: uppercase;
   user-select: none; }
+
+.nav {
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  position: fixed;
+  bottom: 8px;
+  right: 8px;
+  color: #eee;
+  z-index: 90;
+  user-select: none;
+  display: flex; }
+  .nav .nav__item {
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    cursor: pointer;
+    font-size: 26px;
+    font-weight: bold;
+    color: #444;
+    text-shadow: 0.5px 0.5px #00bb00, -0.5px 0.5px #00bb00, 0.5px -0.5px #00bb00, -0.5px -0.5px #00bb00;
+    border-radius: 100%;
+    overflow: hidden;
+    background: linear-gradient(0deg, #00bb00, transparent 1px), linear-gradient(90deg, #00bb00, transparent 1px);
+    background-size: 7px 3px;
+    background-position: -1px -1px;
+    margin-left: 8px; }
+    .nav .nav__item:hover {
+      color: #00bb00;
+      text-shadow: none; }
 

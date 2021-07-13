@@ -9,10 +9,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba($white, 0.25);
+  background: #555;
 
   .loading-screen__inner {
-    color: $black;
+    color: $white;
     font-size: $fontSizeLarge;
   }
 }

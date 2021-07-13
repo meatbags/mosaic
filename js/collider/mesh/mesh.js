@@ -335,6 +335,20 @@ class Mesh {
   }
 
   /**
+    * Check point is inside XZ bounding box.
+    *
+    * @param point Object
+    * @return Boolean
+    */
+  insideXZBounds(point) {
+    if (!this.enabled) {
+      return false;
+    }
+    this.transform.setFromPoint(point);
+    return (this.box.containsPointXZ(this.transform.point));
+  }
+
+  /**
    * Get bounding box.
    *
    * @return Collider.Box

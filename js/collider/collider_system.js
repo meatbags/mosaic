@@ -55,8 +55,10 @@ class ColliderSystem {
 
     // check valid mesh
     if (mesh.planes.length > Config.system.maxPlanesPerMesh) {
-      console.log(`Mesh contains too many planes (max=${Config.system.maxPlanesPerMesh}):`, mesh);
+      console.log('Mesh contains too many planes:', mesh.planes.length, `(max=${Config.system.maxPlanesPerMesh}):`);
       return;
+    } else if (mesh.planes.length > Config.system.planesPerMeshWarning) {
+      console.log(`Warning: mesh contains ${mesh.planes.length} planes`);
     }
 
     // add to system
@@ -145,7 +147,7 @@ class ColliderSystem {
   }
 
   /**
-   * Get floor value.
+   * Get floor value (max(y, minimum y at x,z)
    *
    * @param point Object
    * @return Number y
@@ -154,6 +156,26 @@ class ColliderSystem {
     let floor = Config.settings.floor;
     this.meshes.forEach(mesh => {
       if (mesh.isFloor && mesh.insideFloorBounds(point)) {
+        let y = mesh.getBox().min.y;
+        let ceiling = mesh.getCeilingPlane({x: point.x, y: y, z: point.z});
+        if (ceiling && ceiling.y > floor) {
+          floor = ceiling.y;
+        }
+      }
+    });
+    return floor;
+  }
+
+  /**
+   * Get minimum value of y at x, z.
+   *
+   * @param point Object
+   * @return Number y
+   */
+  getMinimum(point) {
+    let floor = Config.settings.floor;
+    this.meshes.forEach(mesh => {
+      if (mesh.isFloor && mesh.insideXZBounds(point)) {
         let y = mesh.getBox().min.y;
         let ceiling = mesh.getCeilingPlane({x: point.x, y: y, z: point.z});
         if (ceiling && ceiling.y > floor) {

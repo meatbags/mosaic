@@ -1,0 +1,33 @@
+.nav {
+  @include padding(1, 1);
+  position: fixed;
+  bottom: $space;
+  right: $space;
+  color: $white;
+  z-index: $indexNav;
+  user-select: none;
+  display: flex;
+
+
+  .nav__item {
+    @include padding(1.5, 0.75);
+    cursor: pointer;
+    font-size: $fontSizeLarge;
+    font-weight: bold;
+    color: #444;
+    text-shadow: 0.5px 0.5px $green, -0.5px 0.5px $green,
+      0.5px -0.5px $green, -0.5px -0.5px $green;
+    border-radius: 100%;
+    overflow: hidden;
+    background: linear-gradient(0deg, $green, transparent 1px),
+      linear-gradient(90deg, $green, transparent 1px);
+    background-size: 7px 3px;
+    background-position: -1px -1px;
+    margin-left: $space;
+    
+    &:hover {
+      color: $green;
+      text-shadow: none;// 0px 0px 12px $green;
+    }
+  }
+}

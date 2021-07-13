@@ -7,19 +7,18 @@ import Camera from './modules/camera';
 import Controls from './modules/controls';
 import Audio from './modules/audio';
 import Loop from './modules/loop';
-import World from './modules/world';
+//import World from './modules/world';
 
 class App {
   constructor() {
     this.modules = {
       navigation: new Navigation(),
       renderer: new Renderer(),
-      controls: new Controls(),
+      //controls: new Controls(),
       camera: new Camera(),
       scene: new Scene(),
-      audio: new Audio(),
       loop: new Loop(),
-      world: new World(),
+      //world: new World(),
     };
 
     for (const key in this.modules) {

@@ -5,6 +5,7 @@ import Loader from '../loader/loader';
 import RandRange from '../util/rand_range';
 import Config from './config';
 import Reflection from './reflection';
+import PerlinNoise from '../util/perlin_noise';
 
 class World {
   constructor() {
@@ -22,14 +23,15 @@ class World {
   }
 
   _init() {
+    //this._createHeightMap();
     //this._createMetaCube();
-    this._createTarot();
-    this._createText();
-    this._createCubes();
-    this._createBall();
-    this._createGeometry();
-    this._createHandStairs();
-    this._createRoom();
+    //this._createTarot();
+    //this._createText();
+    //this._createCubes();
+    //this._createBall();
+    //this._createGeometry();
+    //this._createHandStairs();
+    //this._createRoom();
   }
 
   getRepeatTexture(tex, rx, ry) {
@@ -326,7 +328,7 @@ class World {
   }
 
   _createGeometry() {
-    
+
   }
 
   update(delta) {}

@@ -2,13 +2,14 @@
 
 const Config = {
   system: {
-    maxPlanesPerMesh: 200,
+    maxPlanesPerMesh: 1000,
+    planesPerMeshWarning: 250,
     useCache: false,
     cacheRadius: 20,
   },
   settings: {
     gravity: 10,
-    floor: 0,
+    floor: -5,
     maxVelocity: 50,
     friction: 0.5,
     snapUp: 0.75,
