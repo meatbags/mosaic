@@ -9,7 +9,7 @@ import Loader from '../loader/loader';
 import HotSpot from './hot_spot';
 import ScreenSpace from '../ui/screen_space';
 import RandRange from '../util/rand_range';
-// import PerlinNoise from '../util/perlin_noise';
+import Text from './text';
 import PerlinNoise2D from '../util/perlin_noise_2d';
 
 class Scene {
@@ -47,15 +47,9 @@ class Scene {
 
   setObjectHeights() {
     this.objects.forEach(obj => {
-      if (obj.mesh) {
-        if (Array.isArray(obj.mesh)) {
-          obj.mesh.forEach(mesh => {
-            mesh.position.y = this.getHeight(mesh.position.x, mesh.position.z);
-          });
-        } else {
-          obj.mesh.position.y = this.getHeight(obj.mesh.position.x, obj.mesh.position.z);
-        }
-      }
+      obj.meshes.forEach(mesh => {
+        mesh.position.y = this.getHeight(mesh.position.x, mesh.position.z);
+      });
     });
   }
 
@@ -104,105 +98,75 @@ class Scene {
   }
 
   initPages() {
-    // index
-    let text = 'XAVIERBURROW';
-    let p = [
-      [-6, 6], [-5, 5], [-5, 2], [-4, 2], [-2, 4], [-2, 2],
-      [-2, -2], [-2, -4], [0, -4], [-1, -6], [5, -7], [7, -7],
-    ];
-    for (let i=0; i<text.length; i++) {
-      let mesh = this.getTextMesh(text[i]);
-      mesh.position.set(p[i][0], 0, p[i][1]);
-      mesh.position.y = this.getHeight(mesh.position.x, mesh.position.z);
-      this.scene.add(mesh);
-
-      // object ref
-      let obj = {
+    // page -- index
+    let text = 'xavierburrow';
+    let p = [[-6, 6], [-5, 5], [-5, 2], [-4, 2], [-2, 4], [-2, 2], [-2, -2], [-2, -4], [0, -4], [-1, -6], [5, -7], [7, -7]];
+    text.split('').forEach((chr, i) => {
+      let obj = new Text({
+        root: this,
         page: 'index',
-        mesh: mesh,
-        screenSpace: new ScreenSpace({camera: this.ref.camera.camera, position: mesh.position}),
-      };
-      obj.el = CreateElement({
-        class: 'overlay__hotspot',
-        addEventListener: {
-          click: () => {
-            this.onIndexLetterClicked(obj);
-          }
-        }
+        text: chr,
+        el: {class: 'overlay__hotspot'},
+      });
+      obj.meshes[0].position.set(p[i][0], this.getHeight(p[i][0], p[i][1]), p[i][1]);
+      obj.el.addEventListener('click', () => {
+        this.onIndexLetterClicked(obj);
       });
       this.objects.push(obj);
-    }
-
-    // contact -- email
-    let meshes = [];
-    ('email').split('').forEach((chr, i) => {
-      let mesh = this.getTextMesh(chr);
-      let x = -7 + i * 1;
-      let z = -7;
-      mesh.position.set(x, this.getHeight(x, z), z);
-      this.scene.add(mesh);
-      meshes.push(mesh);
     });
-    this.objects.push({
+
+    // page -- contact
+    let email = new Text({
+      root: this,
       page: 'contact',
-      screenSpace: new ScreenSpace({camera: this.ref.camera.camera, position: meshes[2].position}),
-      mesh: meshes,
-      el: CreateElement({
+      text: 'email',
+      el: {
         type: 'a',
         class: 'overlay__hotspot overlay__hotspot--contact',
         attributes: {
           href: 'mailto:jxburrow@gmail.com',
           target: '_blank',
         },
-      })
+      }
     });
-
-    meshes = [];
-    ('instagram').split('').forEach((chr, i) => {
-      let mesh = this.getTextMesh(chr);
-      let t = i / 9;
-      let x = -6 + i * 0.5 + Math.cos(t * Math.PI / 2);
-      let z = 6 - i * 0.75;
+    email.meshes.forEach((mesh, i) => {
+      let x = -7 + i * 1;
+      let z = -7;
       mesh.position.set(x, this.getHeight(x, z), z);
-      this.scene.add(mesh);
-      meshes.push(mesh);
     });
-    this.objects.push({
+    this.objects.push(email);
+
+    let instagram = new Text({
+      root: this,
       page: 'contact',
-      screenSpace: new ScreenSpace({camera: this.ref.camera.camera, position: meshes[4].position}),
-      mesh: meshes,
-      el: CreateElement({
+      text: 'instagram',
+      el: {
         type: 'a',
         class: 'overlay__hotspot overlay__hotspot--contact',
         attributes: {
           href: 'https://www.instagram.com/xavebabes/',
           target: '_blank',
         },
-      })
+      }
     });
+    instagram.meshes.forEach((mesh, i) => {
+      let t = i / 9;
+      let x = -6 + i * 0.5 + Math.cos(t * Math.PI / 2);
+      let z = 6 - i * 0.75;
+      mesh.position.set(x, this.getHeight(x, z), z);
+    });
+    this.objects.push(instagram);
 
-    // add DOM elements
+    // go to index
+    let i = 0;
+    let cascade = 80;
     this.objects.forEach(obj => {
-      document.querySelector('#overlay').appendChild(obj.el);
+      if (obj.page === 'index') {
+        setTimeout(() => {
+          obj.show();
+        }, (++i) * cascade);
+      }
     });
-
-    // set objects
-    this.setObjectHeights();
-
-    // no animation
-    this.jumpToPage('index');
-  }
-
-  getTextMesh(text, params={}) {
-    let geo = new THREE.TextGeometry(text, {font: this.font, size: 1, height: 0.125, bevelEnabled: false, ...params});
-    let mat = new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0.35, roughness: 0.65});
-    let mesh = new THREE.Mesh(geo, mat);
-    let box = new THREE.Box3().setFromObject(mesh);
-    let size = new THREE.Vector3();
-    box.getSize(size);
-    mesh.geometry.translate(-size.x/2, 0, -size.z/2);
-    mesh.rotation.y = (Math.random() * 2 - 1) * Math.PI/4 + Math.PI/4;
-    return mesh;
   }
 
   onIndexLetterClicked(obj) {
@@ -210,27 +174,28 @@ class Scene {
     obj.locked = true;
 
     // get new position
+    let mesh = obj.meshes[0];
     let angle = Math.PI * Math.random() * 2;
     let dist = 1 + Math.random() * 2;
-    let p1 = (new THREE.Vector3()).copy(obj.mesh.position);
-    let p2 = (new THREE.Vector3()).copy(obj.mesh.position);
+    let p1 = (new THREE.Vector3()).copy(mesh.position);
+    let p2 = (new THREE.Vector3()).copy(mesh.position);
     let xOff = Math.cos(angle) * dist;
     let zOff = Math.sin(angle) * dist;
     p2.x += xOff * (Math.abs(p2.x + xOff) > 7 ? -1 : 1);
     p2.z += zOff * (Math.abs(p2.z + zOff) > 7 ? -1 : 1);
     dist = p2.distanceTo(p1);
     let dur = dist / 4;
-    let r1 = obj.mesh.rotation.y;
-    let r2 = obj.mesh.rotation.y + (Math.random() > 0.5 ? 1 : -1) * Math.PI * dist;
+    let r1 = mesh.rotation.y;
+    let r2 = mesh.rotation.y + (Math.random() > 0.5 ? 1 : -1) * Math.PI * dist;
 
     // animate
     let a = new Animation({
       duration: dur,
       callback: t => {
-        obj.mesh.position.x = p1.x + (p2.x - p1.x) * t;
-        obj.mesh.position.z = p1.z + (p2.z - p1.z) * t;
-        obj.mesh.position.y = this.getHeight(obj.mesh.position.x, obj.mesh.position.z);
-        obj.mesh.rotation.y = r1 + (r2 - r1) * t;
+        mesh.position.x = p1.x + (p2.x - p1.x) * t;
+        mesh.position.z = p1.z + (p2.z - p1.z) * t;
+        mesh.position.y = this.getHeight(mesh.position.x, mesh.position.z);
+        mesh.rotation.y = r1 + (r2 - r1) * t;
         if (t == 1) {
           obj.locked = false;
         }
@@ -243,28 +208,6 @@ class Scene {
     return this.scene;
   }
 
-  jumpToPage(page) {
-    this.objects.forEach(obj => {
-      if (obj.page !== page) {
-        obj.active = false;
-        obj.el.classList.add('hidden');
-        if (Array.isArray(obj.mesh)) {
-          obj.mesh.forEach(mesh => { mesh.visible = false; });
-        } else {
-          obj.mesh.visible = false;
-        }
-      } else {
-        obj.active = true;
-        obj.el.classList.remove('hidden');
-        if (Array.isArray(obj.mesh)) {
-          obj.mesh.forEach(mesh => { mesh.visible = true; });
-        } else {
-          obj.mesh.visible = true;
-        }
-      }
-    });
-  }
-
   goToPage(page) {
     if (this.pageTransitionLock) { return; }
     this.pageTransitionLock = true;
@@ -275,52 +218,16 @@ class Scene {
     // close current page
     this.objects.forEach(obj => {
       if (obj.page !== page && obj.active) {
-        // cascade close word
-        if (Array.isArray(obj.mesh)) {
-          obj.mesh.forEach(mesh => {
-            setTimeout(() => {
-              mesh.visible = false;
-            }, (++i) * cascade);
-          });
-          setTimeout(() => {
-            obj.active = false;
-            obj.el.classList.add('hidden');
-          }, i * cascade);
-
-        // close single mesh
-        } else {
-          setTimeout(() => {
-            obj.active = false;
-            obj.mesh.visible = false;
-            obj.el.classList.add('hidden');
-          }, (++i) * cascade);
-        }
+        setTimeout(() => {  obj.hide(); }, i * cascade);
+        i += obj.meshes.length;
       }
     });
 
     // open next page
     this.objects.forEach(obj => {
       if (obj.page == page) {
-        // cascade in word
-        if (Array.isArray(obj.mesh)) {
-          obj.mesh.forEach(mesh => {
-            setTimeout(() => {
-              mesh.visible = true;
-            }, (++i) * cascade);
-          });
-          setTimeout(() => {
-            obj.active = true
-            obj.el.classList.remove('hidden');
-          }, i * cascade);
-
-        // cascade in single mesh
-        } else {
-          setTimeout(() => {
-            obj.active = true
-            obj.mesh.visible = true;
-            obj.el.classList.remove('hidden');
-          }, (++i) * cascade);
-        }
+        setTimeout(() => { obj.show(); }, i * cascade);
+        i += obj.meshes.length;
       }
     });
 
@@ -355,14 +262,7 @@ class Scene {
   }
 
   update(delta) {
-    this.objects.forEach(obj => {
-      if (obj.active) {
-        obj.screenSpace.update();
-        let s = obj.screenSpace.getScreenPosition();
-        obj.el.style.left = `${s.x * window.innerWidth}px`;
-        obj.el.style.top = `${s.y * window.innerHeight - 10}px`;
-      }
-    });
+    this.objects.forEach(obj => { obj.update(delta); });
 
     for (let i=this.animations.length-1; i>=0; i--) {
       this.animations[i].update(delta);
