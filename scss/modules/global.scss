@@ -16,4 +16,11 @@ body {
   line-height: $lineHeight;
   background: $black;
   color: $white;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }

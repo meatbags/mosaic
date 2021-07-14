@@ -5,7 +5,7 @@ import * as THREE from 'three';
 class ScreenSpace {
   constructor(params) {
     this.camera = params.camera;
-    this.position = params.position.clone();
+    this.position = params.position;
     this.screen = new THREE.Vector2(0, 0);
     this.temp = new THREE.Vector3();
     this.worldVector = new THREE.Vector3();

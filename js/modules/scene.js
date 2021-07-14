@@ -2,6 +2,7 @@
 
 import * as THREE from 'three';
 import Config from './config';
+import Animation from './animation';
 import ColliderSystem from '../collider/collider_system';
 import ColliderObject from '../collider/collider_object';
 import Clamp from '../util/clamp';
@@ -52,11 +53,47 @@ class Scene {
         // object refs
         let obj = {};
         obj.mesh = mesh;
-        obj.screenSpace = new ScreenSpace({
-          camera: this.ref.camera.camera,
-          position: mesh.position,
+        obj.screenSpace = new ScreenSpace({camera: this.ref.camera.camera, position: mesh.position});
+        obj.locked = false;
+        obj.active = true;
+        obj.page = 'index';
+        obj.onClick = () => {
+          if (obj.locked) { return; }
+          obj.locked = true;
+
+          // get new position
+          let angle = Math.PI * Math.random() * 2;
+          let dist = 1 + Math.random() * 2;
+          let p1 = (new THREE.Vector3()).copy(obj.mesh.position);
+          let p2 = (new THREE.Vector3()).copy(obj.mesh.position);
+          let xOff = Math.cos(angle) * dist;
+          let zOff = Math.sin(angle) * dist;
+          p2.x += xOff * (Math.abs(p2.x + xOff) > 7 ? -1 : 1);
+          p2.z += zOff * (Math.abs(p2.z + zOff) > 7 ? -1 : 1);
+          dist = p2.distanceTo(p1);
+          let dur = dist / 4;
+          let r1 = obj.mesh.rotation.y;
+          let r2 = obj.mesh.rotation.y + (Math.random() > 0.5 ? 1 : -1) * Math.PI * dist;
+
+          // animate
+          let a = new Animation({
+            duration: dur,
+            callback: t => {
+              obj.mesh.position.x = p1.x + (p2.x - p1.x) * t;
+              obj.mesh.position.z = p1.z + (p2.z - p1.z) * t;
+              obj.mesh.position.y = this.colliderSystem.getMinimum(obj.mesh.position);
+              obj.mesh.rotation.y = r1 + (r2 - r1) * t;
+              if (t == 1) {
+                obj.locked = false;
+              }
+            },
+          });
+          this.animations.push(a);
+        };
+        obj.el = CreateElement({
+          class: 'overlay__hotspot',
+          addEventListener: { click: obj.onClick }
         });
-        obj.el = CreateElement({class: 'overlay__hotspot', innerHTML: 'X'});
         this.objects.push(obj);
         document.querySelector('#overlay').appendChild(obj.el);
       }
@@ -148,16 +185,54 @@ class Scene {
     return this.scene;
   }
 
+  goToPage(page) {
+    if (this.pageTransitionLock) { return; }
+    this.pageTransitionLock = true;
+
+    let i = 0;
+    let cascade = 50;
+
+    // close current page
+    this.objects.forEach(obj => {
+      if (obj.page !== page) {
+        obj.active = false;
+        setTimeout(() => {
+          obj.mesh.visible = false;
+        }, (++i) * cascade);
+      }
+    });
+
+    // open next page
+    this.objects.forEach(obj => {
+      if (obj.page == page) {
+        obj.active = true
+        setTimeout(() => {
+          obj.mesh.visible = true;
+        }, (++i) * cascade);
+      }
+    });
+
+    // remove lock
+    setTimeout(() => {
+      this.pageTransitionLock = false;
+    }, i * cascade);
+  }
+
   update(delta) {
     this.objects.forEach(obj => {
       obj.screenSpace.update();
       let s = obj.screenSpace.getScreenPosition();
       obj.el.style.left = `${s.x * window.innerWidth}px`;
-      obj.el.style.top = `${s.y * window.innerHeight - 100}px`;
+      obj.el.style.top = `${s.y * window.innerHeight - 10}px`;
     });
 
+    if (Math.random() > 0.99) {
+      //let index = Math.floor(Math.random() * this.objects.length);
+      //this.objects[index].el.click();
+    }
+
     for (let i=this.animations.length-1; i>=0; i--) {
-      this.animations[i].update();
+      this.animations[i].update(delta);
       if (!this.animations[i].active) {
         this.animations.splice(i, 1);
       }

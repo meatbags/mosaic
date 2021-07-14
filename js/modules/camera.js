@@ -2,6 +2,7 @@
 
 import * as THREE from 'three';
 import Config from './config';
+import IsMobileDevice from '../util/is_mobile_device';
 
 class Camera {
   constructor(root) {
@@ -17,13 +18,19 @@ class Camera {
     let height = window.innerHeight;
     this.camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 0.1, 1000);
     this.camera.position.set(0, 0, 0);
-    this.origin = new THREE.Vector3(0, 0, 0);
+    this.origin = new THREE.Vector3(0, -1, 0);
     this.rotation = Math.PI * 0.25;
 
-    window.addEventListener('mousedown', evt => { this.onMouseDown(evt); });
-    window.addEventListener('mousemove', evt => { this.onMouseMove(evt); });
-    window.addEventListener('mouseup', evt => { this.onMouseUp(evt); });
-    window.addEventListener('mouseleave', evt => { this.onMouseUp(evt); });
+    if (!IsMobileDevice()) {
+      window.addEventListener('mousedown', evt => { this.onMouseDown(evt); });
+      window.addEventListener('mousemove', evt => { this.onMouseMove(evt); });
+      window.addEventListener('mouseup', evt => { this.onMouseUp(evt); });
+      window.addEventListener('mouseleave', evt => { this.onMouseUp(evt); });
+    } else {
+      window.addEventListener('touchstart', evt => { this.onMouseDown(evt.touches[0]); });
+      window.addEventListener('touchmove', evt => { this.onMouseMove(evt.touches[0]); });
+      window.addEventListener('touchend', evt => { this.onMouseUp(null); });
+    }
   }
 
   bind(root) {
