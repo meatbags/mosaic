@@ -28,6 +28,13 @@ function CreateElement(params) {
         });
       }
 
+      // set attributes
+      else if (key === 'attributes' || key === 'setAttributes' || key === 'setAttribute') {
+        Object.keys(params[key]).forEach(attr => {
+          res.setAttribute(attr, params[key][attr]);
+        });
+      }
+
       // set nested values
       else {
         Object.keys(params[key]).forEach(subkey => {

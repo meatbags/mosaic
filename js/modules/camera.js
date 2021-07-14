@@ -6,14 +6,6 @@ import IsMobileDevice from '../util/is_mobile_device';
 
 class Camera {
   constructor(root) {
-    //this.camera = new THREE.PerspectiveCamera(Config.Camera.fov, 1, 0.1, 200000);
-    //this.camera.up = new THREE.Vector3(0, 1, 0);
-    //this.camera.rotation.order = 'ZYX';//'YXZ';
-    //this.camera.fov = Config.Camera.fov;
-    //this.camera.lookAt(new THREE.Vector3(0, 0, -1));
-    //let p = Config.Camera.position;
-    //this.camera.position.set(p.x, p.y, p.z);
-    //this.camera.lookAt(new THREE.Vector3(0, -3, 0));
     let width = window.innerWidth;
     let height = window.innerHeight;
     this.camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 0.1, 1000);
@@ -53,9 +45,10 @@ class Camera {
   }
 
   resize() {
+    let portrait = window.innerWidth < window.innerHeight;
     let dpr = Math.max(Config.Renderer.devicePixelRatioMin, window.devicePixelRatio);
     this.size = {x: window.innerWidth*dpr, y: window.innerHeight*dpr};
-    let scale = 12 / this.size.x;
+    let scale = (portrait ? 11.5 : 15) / this.size.x;
     // this.camera.aspect = this.size.x / this.size.y;
 
     this.camera.left = -this.size.x * scale;
@@ -86,8 +79,7 @@ class Camera {
   }
 
   update(delta) {
-    //this.age += delta;
-    //let d = this.age * Math.PI * 0.01 + Math.PI * 0.25;
+
     let x = Math.cos(this.rotation) * 10;
     let z = Math.sin(this.rotation) * 10;
     this.camera.position.set(x, 5, z);

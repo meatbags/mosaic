@@ -200,34 +200,26 @@ a {
   user-select: none; }
 
 .nav {
-  padding-left: 8px;
-  padding-right: 8px;
-  padding-top: 8px;
-  padding-bottom: 8px;
   position: fixed;
-  bottom: 8px;
-  right: 8px;
+  bottom: 16px;
+  right: 16px;
   color: #eee;
   z-index: 90;
   user-select: none;
-  display: flex; }
+  display: flex;
+  background: linear-gradient(0deg, #00dd00, transparent 1px), linear-gradient(90deg, #00dd00, transparent 1px);
+  background-size: 7px 3px; }
   .nav .nav__item {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
     padding-top: 6px;
     padding-bottom: 6px;
     cursor: pointer;
-    font-size: 26px;
-    color: #eee;
-    text-shadow: 1.5px 0px #999;
-    border-radius: 100%;
-    overflow: hidden;
-    background: linear-gradient(0deg, #00bb00, transparent 1px), linear-gradient(90deg, #00bb00, transparent 1px);
-    background-size: 7px 3px;
-    background-position: -1px -1px;
-    margin-left: 8px; }
+    font-size: 20px;
+    font-weight: bold;
+    color: #eee; }
     .nav .nav__item:hover {
-      color: #00bb00;
+      color: #00dd00;
       text-shadow: none; }
 
 .overlay {
@@ -239,11 +231,17 @@ a {
   height: 100%;
   pointer-events: none; }
   .overlay .overlay__hotspot {
-    width: 50px;
-    height: 50px;
+    width: 4vw;
+    height: 4vw;
     position: fixed;
     transform: translate(-50%, -50%);
     user-select: none;
     pointer-events: all;
-    cursor: pointer; }
+    cursor: pointer;
+    border: 1px solid red; }
+    .overlay .overlay__hotspot.overlay__hotspot--contact {
+      width: 20vw;
+      height: 8vw; }
+    .overlay .overlay__hotspot.hidden {
+      display: none; }
 
