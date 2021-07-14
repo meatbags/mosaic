@@ -18,7 +18,7 @@ class Camera {
     let height = window.innerHeight;
     this.camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 0.1, 1000);
     this.camera.position.set(0, 0, 0);
-    this.origin = new THREE.Vector3(0, -1, 0);
+    this.origin = new THREE.Vector3(0, 0, 0);
     this.rotation = Math.PI * 0.25;
 
     if (!IsMobileDevice()) {

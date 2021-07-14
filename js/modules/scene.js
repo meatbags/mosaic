@@ -8,10 +8,11 @@ import ColliderObject from '../collider/collider_object';
 import Clamp from '../util/clamp';
 import CreateElement from '../util/create_element';
 import Loader from '../loader/loader';
-import PerlinNoise from '../util/perlin_noise';
 import HotSpot from './hot_spot';
 import ScreenSpace from '../ui/screen_space';
 import RandRange from '../util/rand_range';
+import PerlinNoise from '../util/perlin_noise';
+import PerlinNoise2D from '../util/perlin_noise_2d';
 
 class Scene {
   constructor() {
@@ -109,8 +110,9 @@ class Scene {
 
   initHeightMap() {
     const getHeight = (x, z) => {
-      let y = PerlinNoise(x/200, z/200, 1, 8) * 20 - 10;
-      y += PerlinNoise(x, z, 1, 8) * 0.5;
+      let scale = 5;
+      let y = PerlinNoise2D(x/scale, z/scale) * 2.125;
+      y += PerlinNoise2D(x, z) * 0.5;
       return y;
     };
 
@@ -134,10 +136,12 @@ class Scene {
     for (let i=0; i<geo.attributes.position.array.length; i+=3) {
       let x = geo.attributes.position.array[i];
       let z = geo.attributes.position.array[i+2];
-      let y = getHeight(x, z) - 0.05;
+      let y = getHeight(x, z);
       geo.attributes.position.array[i+1] = y;
     }
     geo.computeFaceNormals();
+
+    console.log(geo);
 
     this.scene.add(mesh);
 

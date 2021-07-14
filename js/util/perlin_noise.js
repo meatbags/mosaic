@@ -2,18 +2,9 @@
 
 const PERLIN_PERSISTENCE = 0.75;
 
-const mod289 = arr => {
-  return arr.map(x => x - Math.floor(x * (1.0 / 289.0)) * 289.0);
-};
-
-const permute = arr => {
-  const res = arr.map(x => ((x * 34.0) + 1.0) * x);
-  return mod289(res);
-};
-
-const taylorInvSqrt = arr => {
-  return arr.map(x => 1.79284291400159 - 0.85373472095314 * x);
-};
+const mod289 = arr => { return arr.map(x => x - Math.floor(x * (1.0 / 289.0)) * 289.0); };
+const permute = arr => { return mod289(arr.map(x => ((x * 34.0) + 1.0) * x)); };
+const taylorInvSqrt = arr => { return arr.map(x => 1.79284291400159 - 0.85373472095314 * x); };
 
 // GLSL analogues
 const dot = (a, b) => {
@@ -41,6 +32,7 @@ const max = (a, b) => { return a.map((x, i) => Math.max(x, b[i])); };
 const vec3 = v => { return [v,v,v]; };
 const vec4 = v => { return [v,v,v,v]; };
 
+// globals
 const C = [1/6, 1/3]; //const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);
 const D = [0, 0.5, 1, 2]; //const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
 const n_ = 1/7; //const float n_ = 1.0 / 7.0;
@@ -141,6 +133,9 @@ const PerlinNoise = (x, y, z, octaves) => {
     maxValue += amplitude;
     amplitude *= PERLIN_PERSISTENCE;
     frequency *= 2.0;
+  }
+  if (x == 0 && y == 0) {
+    console.log(((total / maxValue) + 1) / 2);
   }
   return ((total / maxValue) + 1) / 2;
 };
