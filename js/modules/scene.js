@@ -3,8 +3,6 @@
 import * as THREE from 'three';
 import Config from './config';
 import Animation from './animation';
-import ColliderSystem from '../collider/collider_system';
-import ColliderObject from '../collider/collider_object';
 import Clamp from '../util/clamp';
 import CreateElement from '../util/create_element';
 import Loader from '../loader/loader';
@@ -18,9 +16,9 @@ class Scene {
   constructor() {
     this.scene = new THREE.Scene();
     this.loader = new Loader('assets/');
-    this.colliderSystem = new ColliderSystem();
     this.objects = [];
     this.animations = [];
+    this.perlin = {offsetX: 0, offsetZ: 0, scale: 5};
   }
 
   bind(root) {
@@ -29,6 +27,14 @@ class Scene {
     this.initHeightMap();
     this.initText();
     this.initLighting();
+  }
+
+  getHeight(x, z) {
+    x += this.perlin.offsetX;
+    z += this.perlin.offsetZ;
+    let y = PerlinNoise2D(x / this.perlin.scale, z / this.perlin.scale) * 2.125;
+    y += PerlinNoise2D(x, z) * 0.35;
+    return y;
   }
 
   initText() {
@@ -47,7 +53,7 @@ class Scene {
         box.getSize(size);
         mesh.geometry.translate(-size.x/2, 0, -size.z/2);
         mesh.position.set(p[i][0], 0, p[i][1]);
-        mesh.position.y = this.colliderSystem.getMinimum(mesh.position);
+        mesh.position.y = this.getHeight(mesh.position.x, mesh.position.z);
         mesh.rotation.y = (Math.random() * 2 - 1) * Math.PI/4 + Math.PI/4;
         this.scene.add(mesh);
 
@@ -82,7 +88,7 @@ class Scene {
             callback: t => {
               obj.mesh.position.x = p1.x + (p2.x - p1.x) * t;
               obj.mesh.position.z = p1.z + (p2.z - p1.z) * t;
-              obj.mesh.position.y = this.colliderSystem.getMinimum(obj.mesh.position);
+              obj.mesh.position.y = this.getHeight(mesh.position.x, mesh.position.z);
               obj.mesh.rotation.y = r1 + (r2 - r1) * t;
               if (t == 1) {
                 obj.locked = false;
@@ -109,15 +115,8 @@ class Scene {
   }
 
   initHeightMap() {
-    const getHeight = (x, z) => {
-      let scale = 5;
-      let y = PerlinNoise2D(x/scale, z/scale) * 2.125;
-      y += PerlinNoise2D(x, z) * 0.5;
-      return y;
-    };
-
     // create height map
-    let geo = new THREE.PlaneBufferGeometry(15, 15, 50, 50);
+    let geo = new THREE.PlaneBufferGeometry(15, 15, 60, 60);
     let mat = new THREE.MeshStandardMaterial({
       color: 0x00ff00,
       metalness: 0.25,
@@ -136,16 +135,16 @@ class Scene {
     for (let i=0; i<geo.attributes.position.array.length; i+=3) {
       let x = geo.attributes.position.array[i];
       let z = geo.attributes.position.array[i+2];
-      let y = getHeight(x, z);
+      let y = this.getHeight(x, z);
       geo.attributes.position.array[i+1] = y;
     }
     geo.computeFaceNormals();
 
-    console.log(geo);
-
+    this.heightMap = mesh;
     this.scene.add(mesh);
 
     // create collision map
+    /*
     let geo2 = new THREE.PlaneBufferGeometry(15, 15, 14, 14);
     let mesh2 = new THREE.Mesh(geo2, mat);
     mesh2.rotation.set(-Math.PI/2, 0, 0);
@@ -158,12 +157,12 @@ class Scene {
     for (let i=0; i<geo2.attributes.position.array.length; i+=3) {
       let x = geo2.attributes.position.array[i];
       let z = geo2.attributes.position.array[i+2];
-      let y = getHeight(x, z);
+      let y = this.getHeight(x, z);
       geo2.attributes.position.array[i+1] = y;
     }
     geo2.computeVertexNormals();
-
     this.colliderSystem.addFloor(mesh2);
+    */
   }
 
   initLighting() {
@@ -194,7 +193,7 @@ class Scene {
     this.pageTransitionLock = true;
 
     let i = 0;
-    let cascade = 50;
+    let cascade = 80;
 
     // close current page
     this.objects.forEach(obj => {
@@ -215,6 +214,34 @@ class Scene {
         }, (++i) * cascade);
       }
     });
+
+    // animate map
+    let dur = (i * cascade) / 1000 + 0.5;
+    let dist = dur * 4;
+    let fromX = this.perlin.offsetX;
+    let toX = fromX + dist;
+    const anim = new Animation({
+      duration: dur,
+      callback: t => {
+        this.perlin.offsetX = fromX + (toX - fromX) * t;
+        let geo = this.heightMap.geometry;
+        for (let i=0; i<geo.attributes.position.array.length; i+=3) {
+          let x = geo.attributes.position.array[i];
+          let z = geo.attributes.position.array[i+2];
+          let y = this.getHeight(x, z);
+          geo.attributes.position.array[i+1] = y;
+        }
+        geo.computeFaceNormals();
+        geo.attributes.position.needsUpdate = true;
+        geo.attributes.normal.needsUpdate = true;
+        this.objects.forEach(obj => {
+          if (obj.mesh) {
+            obj.mesh.position.y = this.getHeight(obj.mesh.position.x, obj.mesh.position.z);
+          }
+        });
+      },
+    });
+    this.animations.push(anim);
 
     // remove lock
     setTimeout(() => {
