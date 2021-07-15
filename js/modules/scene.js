@@ -164,7 +164,7 @@ class Scene {
       {name:'panic_buy', date: '2020', url: ''},
       {name:'closed_on_monday', date: '2020', url: ''},
       {name:'toxotes', date: '2020', url: ''},
-      {name:'mcncs', data:'2018', url:''},
+      {name:'mcncs', date: '2018', url:''},
       {name:'the_pixies', date: '2020', url: ''},
       {name:'dongles', date: '2020', url: ''},
       {name:'pixelsort', date: '2020', url: ''},
@@ -188,12 +188,61 @@ class Scene {
           }]
         },
       });
+      menuItem.el.addEventListener('click', () => {
+        this.goToPage(p.name);
+      })
       let x = (Math.random() * 2 - 1) * 7;
       let z = (Math.random() * 2 - 1) * 7;
       menuItem.meshes[0].position.set(x, this.getHeight(x, z), z);
       this.objects.push(menuItem);
 
       // page -- project
+      let backButton = new Interactive({
+        root: this,
+        page: p.name,
+        text: '<',
+        textSize: 0.75,
+        el: {
+          class: 'overlay__hotspot overlay__hotspot--back',
+          childNodes: [{
+            class: 'label',
+            innerHTML: '&larr; back',
+          }]
+        },
+      });
+      backButton.meshes[0].position.set(-7, this.getHeight(-7, 7), 7);
+      backButton.el.addEventListener('click', () => { this.goToPage('work'); });
+      this.objects.push(backButton);
+
+      let titleSize = 0.75;
+      let title = new Interactive({
+        root: this, page: p.name, text: p.name, textSize: titleSize,
+        el: {
+          class: 'overlay__hotspot overlay__hotspot--wide',
+        }
+      });
+      title.el.addEventListener('click', () => { this.goToPage(p.name); });
+      let midpoint = Math.floor(title.meshes.length / 2);
+      title.meshes.forEach((mesh, i) => {
+        let x, z;
+        if (i < midpoint) {
+          x = -7;
+          z = -7 + (midpoint - i - 1) * titleSize;
+        } else {
+          x = -7 + (i - midpoint + 1) * titleSize;
+          z = -7;
+        }
+        mesh.position.set(x, this.getHeight(x, z), z);
+      });
+      this.objects.push(title);
+
+      let date = new Interactive({root: this, page: p.name, text: p.date, textSize: 0.5});
+      date.meshes.forEach((mesh, i) => {
+        let x = 6.5 + (-date.meshes.length + i + 1) * 0.5;
+        let z = -7;
+        mesh.position.set(x, this.getHeight(x, z), z);
+      });
+      this.objects.push(date);
     });
 
     // go to index

@@ -237,9 +237,20 @@ a {
     transform: translate(-50%, -50%);
     user-select: none;
     pointer-events: all;
-    cursor: pointer;
-    border: 1px solid red; }
-    .overlay .overlay__hotspot.overlay__hotspot--contact {
+    cursor: pointer; }
+    .overlay .overlay__hotspot .label {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+      pointer-events: none;
+      font-size: 20px;
+      font-weight: bold;
+      opacity: 0;
+      white-space: nowrap; }
+    .overlay .overlay__hotspot:hover .label {
+      opacity: 1; }
+    .overlay .overlay__hotspot.overlay__hotspot--contact, .overlay .overlay__hotspot.overlay__hotspot--wide {
       width: 20vw;
       height: 8vw; }
     .overlay .overlay__hotspot.overlay__hotspot--project .project-title {

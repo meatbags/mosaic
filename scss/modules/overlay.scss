@@ -15,11 +15,33 @@
     user-select: none;
     pointer-events: all;
     cursor: pointer;
-    border: 1px solid red;
+    //border: 1px solid red;
 
-    &.overlay__hotspot--contact {
+    .label {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+      pointer-events: none;
+      font-size: $fontSizeMedium;
+      font-weight: bold;
+      opacity: 0;
+      white-space: nowrap;
+    }
+
+    &:hover {
+      .label {
+        opacity: 1;
+      }
+    }
+
+    &.overlay__hotspot--contact, &.overlay__hotspot--wide {
       width: 20vw;
       height: 8vw;
+    }
+
+    &.overlay__hotspot--back {
+
     }
 
     &.overlay__hotspot--project {

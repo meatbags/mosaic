@@ -18,7 +18,7 @@ class Interactive {
     this.meshes = [];
     if (params.text) {
       params.text.split('').forEach(chr => {
-        let geo = new THREE.TextGeometry(chr, {font: this.root.font, size: 1, height: 0.125, bevelEnabled: false});
+        let geo = new THREE.TextGeometry(chr, {font: this.root.font, size: params.textSize || 1, height: 0.125, bevelEnabled: false});
         let mat = new THREE.MeshStandardMaterial({color: this.colour.default, metalness: 0.35, roughness: 0.65});
         let mesh = new THREE.Mesh(geo, mat);
         let box = new THREE.Box3().setFromObject(mesh);
