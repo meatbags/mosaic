@@ -69,7 +69,7 @@ class Scene {
     let mesh = new THREE.Mesh(geo, mat);
     mesh.rotation.set(-Math.PI/2, 0, 0);
     mesh.updateMatrix();
-    mesh.geometry.applyMatrix(mesh.matrix);
+    mesh.geometry.applyMatrix4(mesh.matrix);
     mesh.rotation.set(0, 0, 0);
     mesh.updateMatrix();
 
@@ -99,7 +99,21 @@ class Scene {
   }
 
   initPages() {
-    // page -- index
+    this.initPageIndex();
+    this.initPageContact();
+    this.initPageWork();
+
+    // set page to index
+    let i = 0;
+    let cascade = 80;
+    this.objects.forEach(obj => {
+      if (obj.page === 'work') {
+        obj.show(0);
+      }
+    });
+  }
+
+  initPageIndex() {
     let text = 'xavierburrow';
     let p = [[-6, 6], [-5, 5], [-5, 2], [-4, 2], [-2, 4], [-2, 2], [-2, -2], [-2, -4], [0, -4], [-1, -6], [5, -7], [7, -7]];
     text.split('').forEach((chr, i) => {
@@ -115,7 +129,9 @@ class Scene {
       });
       this.objects.push(obj);
     });
+  }
 
+  initPageContact() {
     // page -- contact
     let email = new Interactive({
       root: this,
@@ -156,8 +172,9 @@ class Scene {
       mesh.position.set(x, this.getHeight(x, z), z);
     });
     this.objects.push(instagram);
+  }
 
-    // projects
+  initPageWork() {
     let projects = [
       {name:'preppers', date: '2020', url: ''},
       {name:'epoch_wars', date: '2021', url: ''},
@@ -174,12 +191,10 @@ class Scene {
     ];
     projects.forEach(p => {
       // page -- work
-      let geo = new THREE.SphereBufferGeometry(0.2, 12, 12);
-      let mat = new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0.35, roughness: 0.65});
       let menuItem = new Interactive({
         root: this,
         page: 'work',
-        mesh: new THREE.Mesh(geo, mat),
+        mesh: this.getCrumpledPaperMesh(),
         el: {
           class: 'overlay__hotspot overlay__hotspot--project',
           childNodes: [{
@@ -191,27 +206,37 @@ class Scene {
       menuItem.el.addEventListener('click', () => {
         this.goToPage(p.name);
       })
-      let x = (Math.random() * 2 - 1) * 7;
-      let z = (Math.random() * 2 - 1) * 7;
-      menuItem.meshes[0].position.set(x, this.getHeight(x, z), z);
+      let baseX = (Math.random() * 2 - 1) * 7;
+      let baseZ = (Math.random() * 2 - 1) * 7;
+      menuItem.meshes.forEach((mesh, i) => {
+        let x = baseX + i * 1;
+        let z = baseZ + i * 1;
+        mesh.position.set(x, this.getHeight(x, z), z);
+      });
       this.objects.push(menuItem);
 
       // page -- project
       let backButton = new Interactive({
         root: this,
         page: p.name,
-        text: '<',
-        textSize: 0.75,
+        text: 'back',
+        textSize: 0.5,
         el: {
           class: 'overlay__hotspot overlay__hotspot--back',
           childNodes: [{
             class: 'label',
-            innerHTML: '&larr; back',
-          }]
+            innerHTML: '&larr;',
+          }],
+          addEventListener: {
+            click: () => { this.goToPage('work'); },
+          }
         },
       });
-      backButton.meshes[0].position.set(-7, this.getHeight(-7, 7), 7);
-      backButton.el.addEventListener('click', () => { this.goToPage('work'); });
+      backButton.meshes.forEach((mesh, i) => {
+        let x = -7;
+        let z = 7 - i * 0.5;
+        mesh.position.set(x, this.getHeight(x, z), z);
+      });
       this.objects.push(backButton);
 
       let titleSize = 0.75;
@@ -222,7 +247,7 @@ class Scene {
         }
       });
       title.el.addEventListener('click', () => { this.goToPage(p.name); });
-      let midpoint = Math.floor(title.meshes.length / 2);
+      let midpoint = Math.ceil(title.meshes.length / 2);
       title.meshes.forEach((mesh, i) => {
         let x, z;
         if (i < midpoint) {
@@ -238,21 +263,41 @@ class Scene {
 
       let date = new Interactive({root: this, page: p.name, text: p.date, textSize: 0.5});
       date.meshes.forEach((mesh, i) => {
-        let x = 6.5 + (-date.meshes.length + i + 1) * 0.5;
+        let x = 7 + (-date.meshes.length + i + 1) * 0.5;
         let z = -7;
         mesh.position.set(x, this.getHeight(x, z), z);
       });
       this.objects.push(date);
     });
+  }
 
-    // go to index
-    let i = 0;
-    let cascade = 80;
-    this.objects.forEach(obj => {
-      if (obj.page === 'index') {
-        obj.show(0);
-      }
-    });
+  getCrumpledPaperMesh() {
+    let geo = new THREE.PlaneBufferGeometry(1, 1, 10, 10);
+    let mat = new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0.35, roughness: 0.65, side: THREE.DoubleSide});
+    let offX = Math.random() * 100;
+    let offY = Math.random() * 100;
+    let scale = 1 + Math.random() * 0.125;
+    for (let i=0; i<geo.attributes.position.array.length; i+=3) {
+      let x = geo.attributes.position.array[i] * 2 + offX;
+      let y = geo.attributes.position.array[i+1] * 2 + offY;
+      let z = this.getHeight(x, y) * 1;
+      geo.attributes.position.array[i+0] = geo.attributes.position.array[i+0] * scale;
+      geo.attributes.position.array[i+1] = geo.attributes.position.array[i+1] * scale;
+      geo.attributes.position.array[i+2] = z * scale;
+    }
+    geo.computeFaceNormals();
+    let mesh = new THREE.Mesh(geo, mat);
+    mesh.userData.isPaper = true;
+    mesh.geometry.center();
+    mesh.geometry.translate(0, 0.5, 0);
+    let rx = Math.random() * Math.PI * 2;
+    let ry = Math.random() * Math.PI * 2;
+    let rz = Math.random() * Math.PI * 2;
+    mesh.rotation.set(rx, ry, rz);
+    mesh.updateMatrix();
+    mesh.rotation.set(0, 0, 0);
+    mesh.updateMatrix();
+    return mesh;
   }
 
   onIndexLetterClicked(obj) {

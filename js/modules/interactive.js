@@ -62,6 +62,7 @@ class Interactive {
 
   hide(cascade=80) {
     this.active = false;
+    this.hover = false;
     this.meshes.forEach((mesh, i) => {
       setTimeout(() => {
         mesh.visible = false;
@@ -85,12 +86,14 @@ class Interactive {
   }
 
   _onMouseEnter() {
+    this.hover = true;
     this.meshes.forEach(mesh => {
       mesh.material.color.setHex(this.colour.hover);
     });
   }
 
   _onMouseLeave() {
+    this.hover = false;
     this.meshes.forEach(mesh => {
       mesh.material.color.setHex(this.colour.default);
     });
@@ -105,6 +108,11 @@ class Interactive {
       let s = this.screenSpace.getScreenPosition();
       this.el.style.left = `${s.x * window.innerWidth}px`;
       this.el.style.top = `${s.y * window.innerHeight - 10}px`;
+    }
+
+    // rotate if paper
+    if (this.hover && this.meshes[0].userData.isPaper) {
+      // this.meshes[0].rotation.y += delta * Math.PI;
     }
   }
 }

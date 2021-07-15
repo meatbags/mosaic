@@ -237,7 +237,8 @@ a {
     transform: translate(-50%, -50%);
     user-select: none;
     pointer-events: all;
-    cursor: pointer; }
+    cursor: pointer;
+    border: 1px solid red; }
     .overlay .overlay__hotspot .label {
       position: absolute;
       top: 0;
