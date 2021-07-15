@@ -22,6 +22,26 @@
       height: 8vw;
     }
 
+    &.overlay__hotspot--project {
+      .project-title {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -100%);
+        pointer-events: none;
+        font-size: $fontSizeMedium;
+        font-weight: bold;
+        opacity: 0;
+        //color: #f00;
+      }
+
+      &:hover {
+        .project-title {
+          opacity: 1;
+        }
+      }
+    }
+
     &.hidden {
       display: none;
     }

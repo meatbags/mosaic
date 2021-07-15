@@ -20,12 +20,12 @@ class Renderer {
 
   bind(root) {
     this.ref = {};
-    this.ref.scene = root.modules.scene.scene;
+    this.ref.scene = root.modules.scene;
     this.ref.camera = root.modules.camera.camera;
 
     // effect composer
     this.composer = new EffectComposer(this.renderer);
-		this.composer.addPass(new RenderPass(this.ref.scene, this.ref.camera));
+		this.composer.addPass(new RenderPass(this.ref.scene.scene, this.ref.camera));
 		//this.afterimagePass = new AfterimagePass();
     //this.afterimagePass.uniforms.damp.value = 1;//0.98125;
 		//this.composer.addPass(this.afterimagePass);
@@ -46,11 +46,7 @@ class Renderer {
   }
 
   render(delta) {
-    if (this.composerEnabled) {
-      this.composer.render(this.ref.scene, this.ref.camera);
-    } else {
-      this.renderer.render(this.ref.scene, this.ref.camera);
-    }
+    this.renderer.render(this.ref.scene.scene, this.ref.camera);
   }
 }
 

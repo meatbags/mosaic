@@ -9,7 +9,7 @@ import Loader from '../loader/loader';
 import HotSpot from './hot_spot';
 import ScreenSpace from '../ui/screen_space';
 import RandRange from '../util/rand_range';
-import Text from './text';
+import Interactive from './interactive';
 import PerlinNoise2D from '../util/perlin_noise_2d';
 
 class Scene {
@@ -19,6 +19,7 @@ class Scene {
     this.objects = [];
     this.animations = [];
     this.perlin = {offsetX: 0, offsetZ: 0, scale: 5};
+    this.active = false;
   }
 
   bind(root) {
@@ -34,6 +35,8 @@ class Scene {
     fontLoader.load('fonts/Karla_Bold.json', font => {
       this.font = font;
       this.initPages();
+      this.scene.add(this.heightMap);
+      this.active = true;
     });
   }
 
@@ -78,9 +81,7 @@ class Scene {
       geo.attributes.position.array[i+1] = y;
     }
     geo.computeFaceNormals();
-
     this.heightMap = mesh;
-    this.scene.add(mesh);
   }
 
   initLighting() {
@@ -102,7 +103,7 @@ class Scene {
     let text = 'xavierburrow';
     let p = [[-6, 6], [-5, 5], [-5, 2], [-4, 2], [-2, 4], [-2, 2], [-2, -2], [-2, -4], [0, -4], [-1, -6], [5, -7], [7, -7]];
     text.split('').forEach((chr, i) => {
-      let obj = new Text({
+      let obj = new Interactive({
         root: this,
         page: 'index',
         text: chr,
@@ -116,7 +117,7 @@ class Scene {
     });
 
     // page -- contact
-    let email = new Text({
+    let email = new Interactive({
       root: this,
       page: 'contact',
       text: 'email',
@@ -135,8 +136,7 @@ class Scene {
       mesh.position.set(x, this.getHeight(x, z), z);
     });
     this.objects.push(email);
-
-    let instagram = new Text({
+    let instagram = new Interactive({
       root: this,
       page: 'contact',
       text: 'instagram',
@@ -157,14 +157,51 @@ class Scene {
     });
     this.objects.push(instagram);
 
+    // projects
+    let projects = [
+      {name:'preppers', date: '2020', url: ''},
+      {name:'epoch_wars', date: '2021', url: ''},
+      {name:'panic_buy', date: '2020', url: ''},
+      {name:'closed_on_monday', date: '2020', url: ''},
+      {name:'toxotes', date: '2020', url: ''},
+      {name:'mcncs', data:'2018', url:''},
+      {name:'the_pixies', date: '2020', url: ''},
+      {name:'dongles', date: '2020', url: ''},
+      {name:'pixelsort', date: '2020', url: ''},
+      {name:'we_are_city_plaza', date: '2020', url: ''},
+      {name:'delaval_film', date: '2020', url: ''},
+      {name:'pencil_mmo', date: '2020', url: ''}
+    ];
+    projects.forEach(p => {
+      // page -- work
+      let geo = new THREE.SphereBufferGeometry(0.2, 12, 12);
+      let mat = new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0.35, roughness: 0.65});
+      let menuItem = new Interactive({
+        root: this,
+        page: 'work',
+        mesh: new THREE.Mesh(geo, mat),
+        el: {
+          class: 'overlay__hotspot overlay__hotspot--project',
+          childNodes: [{
+            class: 'project-title',
+            innerHTML: p.name,
+          }]
+        },
+      });
+      let x = (Math.random() * 2 - 1) * 7;
+      let z = (Math.random() * 2 - 1) * 7;
+      menuItem.meshes[0].position.set(x, this.getHeight(x, z), z);
+      this.objects.push(menuItem);
+
+      // page -- project
+    });
+
     // go to index
     let i = 0;
     let cascade = 80;
     this.objects.forEach(obj => {
       if (obj.page === 'index') {
-        setTimeout(() => {
-          obj.show();
-        }, (++i) * cascade);
+        obj.show(0);
       }
     });
   }
