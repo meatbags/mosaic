@@ -18,7 +18,7 @@ class Interactive {
       }
     };
 
-    // create meshes
+    // create text meshes
     this.meshes = [];
     if (params.text) {
       params.text.split('').forEach(chr => {
@@ -35,6 +35,27 @@ class Interactive {
         this.root.scene.add(mesh);
       });
     }
+
+    // create totem pole
+    if (params.totem) {
+      let group = new THREE.Group();
+      params.totem.split('').forEach((chr, i) => {
+        let geo = new THREE.TextGeometry(chr, {font: this.root.font, size: params.textSize || 0.75, height: 0.25, bevelEnabled: false});
+        let mat = new THREE.MeshStandardMaterial({color: this.state.colour.default, metalness: 0.35, roughness: 0.65});
+        let mesh = new THREE.Mesh(geo, mat);
+        let box = new THREE.Box3().setFromObject(mesh);
+        let size = new THREE.Vector3();
+        box.getSize(size);
+        mesh.geometry.translate(-size.x/2, (params.totem.length - i - 1) * 0.75, -size.z/2);
+        group.add(mesh);
+      });
+      group.visible = false;
+      group.rotation.y = (Math.random() * 2 - 1) * Math.PI/4 + Math.PI/4;
+      this.meshes.push(group);
+      this.root.scene.add(group);
+    }
+
+    // add custom mesh
     if (params.mesh) {
       this.meshes.push(params.mesh);
       this.root.scene.add(params.mesh);
@@ -80,6 +101,103 @@ class Interactive {
     this.hide(0);
   }
 
+  hide(cascade=Config.Scene.cascade) {
+    this.active = false;
+    this.hover = false;
+    this.meshes.forEach((mesh, i) => {
+      setTimeout(() => {
+        mesh.visible = false;
+      }, i * cascade);
+    });
+    if (this.el) {
+      this._closeContent();
+      this.el.classList.add('hidden');
+    }
+  }
+
+  show(cascade=Config.Scene.cascade) {
+    this.active = true;
+    this.meshes.forEach((mesh, i) => {
+      setTimeout(() => {
+        mesh.visible = true;
+      }, i * cascade);
+    });
+    if (this.el) {
+      let lazy = this.el.querySelector('[data-src]');
+      if (lazy) {
+        lazy.src = lazy.dataset.src;
+        lazy.removeAttribute('data-src');
+      }
+      this.el.classList.remove('hidden');
+    }
+  }
+
+  setHeight() {
+    if (this.state.fold && this.state.fold.isFolded === false) {
+      return;
+    }
+    this.meshes.forEach(mesh => {
+      mesh.position.y = this.root.getHeight(mesh.position.x, mesh.position.z);
+    });
+  }
+
+  _onMouseEnter() {
+    this.hover = true;
+    this.meshes.forEach(mesh => {
+      if (mesh.type == 'Group') {
+        mesh.children.forEach(child => {
+          child.material.color.setHex(this.state.colour.hover);
+        });
+      } else {
+        mesh.material.color.setHex(this.state.colour.hover);
+      }
+    });
+  }
+
+  _onMouseLeave() {
+    this.hover = false;
+    this.meshes.forEach(mesh => {
+      if (mesh.type == 'Group') {
+        mesh.children.forEach(child => {
+          child.material.color.setHex(this.state.colour.default);
+        });
+      } else {
+        mesh.material.color.setHex(this.state.colour.default);
+      }
+    });
+  }
+
+  _openContent() {
+    this.el.classList.add('transition');
+    setTimeout(() => {
+      this.el.classList.add('active');
+    }, 25);
+  }
+
+  _closeContent() {
+    this.el.classList.remove('active');
+    setTimeout(() => {
+      this.el.classList.remove('transition');
+    }, 350);
+  }
+
+  update(delta) {
+    if (!this.active) { return; }
+
+    // update screen space position
+    if (this.el) {
+      this.screenSpace.update();
+      let s = this.screenSpace.getScreenPosition();
+      this.el.style.left = `${s.x * window.innerWidth}px`;
+      this.el.style.top = `${s.y * window.innerHeight - 10}px`;
+    }
+
+    // animate
+    if (this.state.animation) {
+      this.state.animation.update(delta);
+    }
+  }
+
   unfold() {
     if (this.state.fold.locked) { return; }
     this.state.fold.locked = true;
@@ -87,11 +205,10 @@ class Interactive {
     let from = this.meshes[0].userData.folded;
     let fromPosition = this.meshes[0].position.clone();
     let to = this.meshes[0].userData.unfolded;
-    let toPosition = new THREE.Vector3(
-      (Math.random() * 2 - 1) * 5,
-      5,
-      (Math.random() * 2 - 1) * 5,
-    );
+    let x = (Math.random() * 2 - 1) * 5;
+    let y = 5;
+    let z = (Math.random() * 2 - 1) * 5;
+    let toPosition = new THREE.Vector3(x, y, z);
     let geo = this.meshes[0].geometry.attributes.position.array;
     this.state.fold.fromPosition = fromPosition;
     this.state.fold.toPosition = toPosition;
@@ -151,91 +268,6 @@ class Interactive {
         }
       },
     });
-  }
-
-  hide(cascade=Config.Scene.cascade) {
-    this.active = false;
-    this.hover = false;
-    this.meshes.forEach((mesh, i) => {
-      setTimeout(() => {
-        mesh.visible = false;
-      }, i * cascade);
-    });
-    if (this.el) {
-      this._closeContent();
-      this.el.classList.add('hidden');
-    }
-  }
-
-  show(cascade=Config.Scene.cascade) {
-    this.active = true;
-    this.meshes.forEach((mesh, i) => {
-      setTimeout(() => {
-        mesh.visible = true;
-      }, i * cascade);
-    });
-    if (this.el) {
-      let lazy = this.el.querySelector('[data-src]');
-      if (lazy) {
-        lazy.src = lazy.dataset.src;
-        lazy.removeAttribute('data-src');
-      }
-      this.el.classList.remove('hidden');
-    }
-  }
-
-  setHeight() {
-    if (this.state.fold && this.state.fold.isFolded === false) {
-      return;
-    }
-    this.meshes.forEach(mesh => {
-      mesh.position.y = this.root.getHeight(mesh.position.x, mesh.position.z);
-    });
-  }
-
-  _onMouseEnter() {
-    this.hover = true;
-    this.meshes.forEach(mesh => {
-      mesh.material.color.setHex(this.state.colour.hover);
-    });
-  }
-
-  _onMouseLeave() {
-    this.hover = false;
-    this.meshes.forEach(mesh => {
-      mesh.material.color.setHex(this.state.colour.default);
-    });
-  }
-
-  _openContent() {
-    this.el.classList.add('animating');
-    setTimeout(() => {
-      this.el.classList.add('active');
-    }, 50);
-  }
-
-  _closeContent() {
-    this.el.classList.remove('active');
-    setTimeout(() => {
-      this.el.classList.remove('animating');
-    }, 350);
-  }
-
-  update(delta) {
-    if (!this.active) { return; }
-
-    // update screen space position
-    if (this.el) {
-      this.screenSpace.update();
-      let s = this.screenSpace.getScreenPosition();
-      this.el.style.left = `${s.x * window.innerWidth}px`;
-      this.el.style.top = `${s.y * window.innerHeight - 10}px`;
-    }
-
-    // animate
-    if (this.state.animation) {
-      this.state.animation.update(delta);
-    }
   }
 }
 

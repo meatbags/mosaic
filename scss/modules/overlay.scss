@@ -15,6 +15,7 @@
     user-select: none;
     pointer-events: all;
     cursor: pointer;
+    // outline: 1px solid red;
 
     .label {
       position: absolute;
@@ -29,22 +30,19 @@
     }
 
     .content {
-      @include padding(4, 4);
+      @include padding(8, 8);
       position: absolute;
+      width: 100%;
+      height: 100%;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 85%;
-      height: 85%;
       pointer-events: none;
-      transition: opacity $transition;
-      opacity: 0;
-      background: linear-gradient(0deg, $green, transparent 1px), linear-gradient(90deg, $green, transparent 1px);
-      background-size: 6px 8px;
+      display: flex;
       justify-content: center;
       align-items: center;
-      display: none;
       overflow: hidden;
+      display: none;
 
       img {
         width: 100%;
@@ -55,7 +53,8 @@
       iframe {
         position: absolute;
         width: 100%;
-        height: 80%;
+        height: auto;
+        max-height: 80%;
         outline: none;
         border: none;
         top: 50%;
@@ -69,12 +68,15 @@
         color: $black;
         font-size: $fontSizeMedium;
         max-width: 100%;
+        max-height: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .overlay__hotspot-close {
         position: absolute;
-        top: -1px;
-        right: -1px;
+        top: 20px;
+        right: 20px;
         width: 40px;
         height: 40px;
         cursor: pointer;
@@ -87,8 +89,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        display: none;
         background: $black;
+        z-index: 1;
+        display: none;
 
         &:hover {
           color: red;
@@ -97,13 +100,18 @@
     }
 
     &:hover {
+      .content {
+        // display: flex;
+      }
+
       .label {
         opacity: 1;
       }
     }
 
-    &.animating {
-      transition: 0.35s;
+    &.transition {
+      transition: $transition;
+      transition-timing-function: linear;
 
       .content {
         display: flex;
@@ -111,6 +119,8 @@
     }
 
     &.active {
+      background: linear-gradient(0deg, $green, transparent 1px), linear-gradient(90deg, $green, transparent 1px);
+      background-size: 6px 8px;
       display: flex;
       position: fixed;
       top: 50% !important;
@@ -120,10 +130,11 @@
       transform: translate(-50%, -50%);
       cursor: crosshair;
       z-index: 999;
+      transition: $transition;
+      transition-timing-function: linear;
 
       .content {
         display: flex;
-        opacity: 1;
 
         .overlay__hotspot-close {
           display: flex;
@@ -138,7 +149,10 @@
 
     &.overlay__hotspot--button {}
 
-    &.overlay__hotspot--project {
+    &.overlay__hotspot--tall {
+      height: 8.5vw;
+      transform: translate(-50%, calc(-100% + 2vw));
+
       .project-title {
         position: absolute;
         top: 0;
@@ -146,9 +160,9 @@
         transform: translate(-50%, -100%);
         pointer-events: none;
         font-size: $fontSizeMedium;
+        text-shadow: 0px 0px 4px $red, 0px 0px 4px $red, 0px 0px 4px $red;
         font-weight: bold;
         opacity: 0;
-        //color: #f00;
       }
 
       &:hover {

@@ -105,7 +105,7 @@ class Scene {
     let i = 0;
     let cascade = Config.Scene.cascade;
     this.objects.forEach(obj => {
-      if (obj.page === 'preppers') {
+      if (obj.page === 'work') {
         obj.show(0);
       }
     });
@@ -245,9 +245,9 @@ class Scene {
       let menuItem = new Interactive({
         root: this,
         page: 'work',
-        mesh: this.getCrumpledPaperMesh(),
+        totem: p.icon || p.name,
         el: {
-          class: 'overlay__hotspot overlay__hotspot--project',
+          class: 'overlay__hotspot overlay__hotspot--tall',
           childNodes: [{
             class: 'project-title',
             innerHTML: p.name,
@@ -257,23 +257,28 @@ class Scene {
       menuItem.el.addEventListener('click', () => {
         this.goToPage(p.name);
       })
-      let baseX = (Math.random() * 2 - 1) * 5;
-      let baseZ = (Math.random() * 2 - 1) * 5;
-      menuItem.meshes.forEach((mesh, i) => {
-        let x = baseX + i * 1;
-        let z = baseZ + i * 1;
-        mesh.position.set(x, this.getHeight(x, z), z);
-      });
-      this.objects.push(menuItem);
-      if (p.titleImage) {
-        let loader = new THREE.TextureLoader();
-        let tex = loader.load(p.titleImage, tex => {
-          let sx = tex.image.naturalWidth / 1000;
-          let sy = tex.image.naturalHeight / 1000;
-          menuItem.meshes[0].scale.set(sx, sy, 1);
+
+      // avoid a few collisions
+      let place = () => {
+        let x = (Math.random() * 2 - 1) * 6;
+        let z = (Math.random() * 2 - 1) * 6;
+        menuItem.meshes.forEach((mesh, i) => {
+          mesh.position.set(x, this.getHeight(x, z), z);
         });
-        menuItem.meshes[0].material.map = tex;
       }
+      place();
+      let tries = 10;
+      let ok = false;
+      let threshold = 0.75;
+      while (--tries > 0 && !ok) {
+        ok = this.objects.findIndex(obj => {
+          return obj.page == 'work' &&
+            obj.meshes[0].position.distanceTo(menuItem.meshes[0].position) < threshold;
+        }) == -1;
+      }
+
+      // add to tree
+      this.objects.push(menuItem);
 
       // to work button
       this.createButton({
@@ -291,7 +296,7 @@ class Scene {
       // title
       this.createButton({
         page: p.name,
-        text: p.name,
+        text: `${p.name}`,
         textSize: 0.75,
         onClick: () => { this.goToPage(p.name); },
         placementCallback: (mesh, i) => {
@@ -300,16 +305,7 @@ class Scene {
           let z = i < midpoint ? -7 + (midpoint - i - 1) * 0.75 : -7;
           mesh.position.set(x, this.getHeight(x, z), z);
         },
-      })
-
-      // date
-      let date = new Interactive({root: this, page: p.name, text: p.date, textSize: 0.5});
-      date.meshes.forEach((mesh, i) => {
-        let x = 7 + (-date.meshes.length + i + 1) * 0.5;
-        let z = -7;
-        mesh.position.set(x, this.getHeight(x, z), z);
       });
-      this.objects.push(date);
 
       // project images
       if (p.images) {
@@ -396,8 +392,8 @@ class Scene {
         let url= new Interactive({
           root: this,
           page: p.name,
-          text: 'visit site ->',//p.url.replace('https://', '').substring(0, 15) + '...',
-          textSize: 0.75,
+          text: 'https://*',
+          textSize: 0.5,
           el: {
             type: 'a',
             class: 'overlay__hotspot overlay__hotspot--wide',
@@ -407,10 +403,9 @@ class Scene {
             },
           },
         });
-        let midpoint = 5;
         url.meshes.forEach((mesh, i) => {
-          let x = i < midpoint ? 7 + (i - midpoint) * 0.75 : 7;
-          let z = i < midpoint ? 7 : 7 - (i - midpoint) * 0.75;
+          let x = 7 + (-url.meshes.length + 1 + i) * 0.5;
+          let z = -7;
           mesh.position.set(x, this.getHeight(x, z), z);
         });
         this.objects.push(url);
