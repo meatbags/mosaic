@@ -1,6 +1,51 @@
 /** Config */
 
 const Config = {
+  Scene: {
+    cascade: 70,
+    projects: [
+      {
+        name:'preppers',
+        date: '2020',
+        url: 'https://preppers.gallery/',
+        titleImage: 'img/example.jpg',
+        images: [
+          'img/example.jpg',
+          'img/example.jpg',
+          'img/example.jpg',
+        ],
+        videos: [
+          'https://www.youtube.com/watch?v=-SLgXBLQA2M',
+        ],
+        description: 'PREPPERS',
+      }, {
+        name:'epoch_wars',
+        date: '2021',
+        url: 'https://epoch-wars.com/',
+        description: 'website for arts org. Pony Express',
+      }, {
+        name:'panic_buy', date: '2020', url: 'https://panic-buy-online.com/'
+      }, {
+        name:'closed_on_monday',
+        date: '2020',
+        url: 'https://closedonmondaygallery.com/',
+        description: 'virtual gallery',
+      }, {
+        name:'toxotes',
+        date: '2020',
+        videos: [
+          'https://www.youtube.com/watch?v=7Rc7XGBK6sg',
+        ]
+      },
+      {name:'mcncs', date: '2018', url:'http://www.mcncs.io/'},
+      {name:'we_are_city_plaza', date: '2020', url: 'https://wearecityplaza.net/'},
+      {name:'the_pixies', date: '2020', videos: ['https://www.youtube.com/watch?v=-SLgXBLQA2M']},
+      {name:'dongles', date: '2020', videos: ['https://www.youtube.com/watch?v=CQv_DFBlqEU']},
+      {name:'delaval_film', date: '2020', url: 'https://www.delavalfilm.com/'},
+      {name:'pixelsort', date: '2020',},
+      {name:'pencil_mmo', date: '2020',}
+    ]
+  },
   Renderer: {
     lowQuality: false,
     devicePixelRatioMin: 1,

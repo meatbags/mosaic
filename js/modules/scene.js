@@ -50,9 +50,7 @@ class Scene {
 
   setObjectHeights() {
     this.objects.forEach(obj => {
-      obj.meshes.forEach(mesh => {
-        mesh.position.y = this.getHeight(mesh.position.x, mesh.position.z);
-      });
+      obj.setHeight();
     });
   }
 
@@ -105,9 +103,9 @@ class Scene {
 
     // set page to index
     let i = 0;
-    let cascade = 80;
+    let cascade = Config.Scene.cascade;
     this.objects.forEach(obj => {
-      if (obj.page === 'work') {
+      if (obj.page === 'preppers') {
         obj.show(0);
       }
     });
@@ -129,6 +127,32 @@ class Scene {
       });
       this.objects.push(obj);
     });
+
+    // to work button
+    this.createButton({
+      page: 'index',
+      text: 'work',
+      textSize: 0.5,
+      onClick: () => { this.goToPage('work'); },
+      placementCallback: (mesh, i) => {
+        let x = -5.5 + i * 0.15;
+        let z = -2 - i * 0.45;
+        mesh.position.set(x, this.getHeight(x, z), z);
+      },
+    });
+
+    // to contact button
+    this.createButton({
+      page: 'index',
+      text: 'contact',
+      textSize: 0.5,
+      onClick: () => { this.goToPage('contact'); },
+      placementCallback: (mesh, i) => {
+        let x = 1.5 + i * 0.45;
+        let z = 0.5 - i * 0.15;
+        mesh.position.set(x, this.getHeight(x, z), z);
+      },
+    })
   }
 
   initPageContact() {
@@ -172,24 +196,51 @@ class Scene {
       mesh.position.set(x, this.getHeight(x, z), z);
     });
     this.objects.push(instagram);
+
+    // to index button
+    this.createButton({
+      page: 'contact',
+      text: 'index',
+      textSize: 0.5,
+      onClick: () => { this.goToPage('index'); },
+      placementCallback: (mesh, i) => {
+        let x = -7;
+        let z = 7 - i * 0.5;
+        mesh.position.set(x, this.getHeight(x, z), z);
+      },
+    });
   }
 
   initPageWork() {
-    let projects = [
-      {name:'preppers', date: '2020', url: ''},
-      {name:'epoch_wars', date: '2021', url: ''},
-      {name:'panic_buy', date: '2020', url: ''},
-      {name:'closed_on_monday', date: '2020', url: ''},
-      {name:'toxotes', date: '2020', url: ''},
-      {name:'mcncs', date: '2018', url:''},
-      {name:'the_pixies', date: '2020', url: ''},
-      {name:'dongles', date: '2020', url: ''},
-      {name:'pixelsort', date: '2020', url: ''},
-      {name:'we_are_city_plaza', date: '2020', url: ''},
-      {name:'delaval_film', date: '2020', url: ''},
-      {name:'pencil_mmo', date: '2020', url: ''}
-    ];
-    projects.forEach(p => {
+    // to index button
+    this.createButton({
+      page: 'work',
+      text: 'index',
+      textSize: 0.5,
+      onClick: () => { this.goToPage('index'); },
+      placementCallback: (mesh, i) => {
+        let x = -7;
+        let z = 7 - i * 0.5;
+        mesh.position.set(x, this.getHeight(x, z), z);
+      },
+    });
+
+    // page title
+    this.createButton({
+      page: 'work',
+      text: 'work',
+      textSize: 0.75,
+      onClick: () => { this.goToPage('work'); },
+      placementCallback: (mesh, i) => {
+        let midpoint = 2;
+        let x = i < midpoint ? -7 : -7 + (i - midpoint + 1) * 0.75;
+        let z = i < midpoint ? -7 + (midpoint - i - 1) * 0.75 : -7;
+        mesh.position.set(x, this.getHeight(x, z), z);
+      }
+    });
+
+    // project menu items & pages
+    Config.Scene.projects.forEach(p => {
       // page -- work
       let menuItem = new Interactive({
         root: this,
@@ -200,67 +251,58 @@ class Scene {
           childNodes: [{
             class: 'project-title',
             innerHTML: p.name,
-          }]
+          }],
         },
       });
       menuItem.el.addEventListener('click', () => {
         this.goToPage(p.name);
       })
-      let baseX = (Math.random() * 2 - 1) * 7;
-      let baseZ = (Math.random() * 2 - 1) * 7;
+      let baseX = (Math.random() * 2 - 1) * 5;
+      let baseZ = (Math.random() * 2 - 1) * 5;
       menuItem.meshes.forEach((mesh, i) => {
         let x = baseX + i * 1;
         let z = baseZ + i * 1;
         mesh.position.set(x, this.getHeight(x, z), z);
       });
       this.objects.push(menuItem);
+      if (p.titleImage) {
+        let loader = new THREE.TextureLoader();
+        let tex = loader.load(p.titleImage, tex => {
+          let sx = tex.image.naturalWidth / 1000;
+          let sy = tex.image.naturalHeight / 1000;
+          menuItem.meshes[0].scale.set(sx, sy, 1);
+        });
+        menuItem.meshes[0].material.map = tex;
+      }
 
-      // page -- project
-      let backButton = new Interactive({
-        root: this,
+      // to work button
+      this.createButton({
         page: p.name,
         text: 'back',
         textSize: 0.5,
-        el: {
-          class: 'overlay__hotspot overlay__hotspot--back',
-          childNodes: [{
-            class: 'label',
-            innerHTML: '&larr;',
-          }],
-          addEventListener: {
-            click: () => { this.goToPage('work'); },
-          }
+        onClick: () => { this.goToPage('work'); },
+        placementCallback: (mesh, i) => {
+          let x = -7;
+          let z = 7 - i * 0.5;
+          mesh.position.set(x, this.getHeight(x, z), z);
         },
-      });
-      backButton.meshes.forEach((mesh, i) => {
-        let x = -7;
-        let z = 7 - i * 0.5;
-        mesh.position.set(x, this.getHeight(x, z), z);
-      });
-      this.objects.push(backButton);
+      })
 
-      let titleSize = 0.75;
-      let title = new Interactive({
-        root: this, page: p.name, text: p.name, textSize: titleSize,
-        el: {
-          class: 'overlay__hotspot overlay__hotspot--wide',
-        }
-      });
-      title.el.addEventListener('click', () => { this.goToPage(p.name); });
-      let midpoint = Math.ceil(title.meshes.length / 2);
-      title.meshes.forEach((mesh, i) => {
-        let x, z;
-        if (i < midpoint) {
-          x = -7;
-          z = -7 + (midpoint - i - 1) * titleSize;
-        } else {
-          x = -7 + (i - midpoint + 1) * titleSize;
-          z = -7;
-        }
-        mesh.position.set(x, this.getHeight(x, z), z);
-      });
-      this.objects.push(title);
+      // title
+      this.createButton({
+        page: p.name,
+        text: p.name,
+        textSize: 0.75,
+        onClick: () => { this.goToPage(p.name); },
+        placementCallback: (mesh, i) => {
+          let midpoint = Math.ceil(p.name.length / 2);
+          let x = i < midpoint ? -7 : -7 + (i - midpoint + 1) * 0.75;
+          let z = i < midpoint ? -7 + (midpoint - i - 1) * 0.75 : -7;
+          mesh.position.set(x, this.getHeight(x, z), z);
+        },
+      })
 
+      // date
       let date = new Interactive({root: this, page: p.name, text: p.date, textSize: 0.5});
       date.meshes.forEach((mesh, i) => {
         let x = 7 + (-date.meshes.length + i + 1) * 0.5;
@@ -268,7 +310,132 @@ class Scene {
         mesh.position.set(x, this.getHeight(x, z), z);
       });
       this.objects.push(date);
+
+      // project images
+      if (p.images) {
+        p.images.forEach(img => {
+          let menuItem = new Interactive({
+            root: this,
+            page: p.name,
+            mesh: this.getCrumpledPaperMesh(),
+            el: {
+              class: 'overlay__hotspot overlay__hotspot--image',
+              childNodes: [{
+                class: 'content',
+                childNodes: [{
+                  type: 'img',
+                  dataset: { src: img, },
+                }]
+              }]
+            },
+          });
+          let x = (Math.random() * 2 - 1) * 5;
+          let z = (Math.random() * 2 - 1) * 5;
+          menuItem.meshes[0].position.set(x, this.getHeight(x, z), z);
+          let loader = new THREE.TextureLoader();
+          let tex = loader.load(img, tex => {
+            let sx = tex.image.naturalWidth / 1000;
+            let sy = tex.image.naturalHeight / 1000;
+            menuItem.meshes[0].scale.set(sx, sy, 1);
+          });
+          menuItem.meshes[0].material.map = tex;
+          this.objects.push(menuItem);
+        });
+      }
+
+      // project videos
+      if (p.videos) {
+        p.videos.forEach(video => {
+          let v = new Interactive({
+            root: this,
+            page: p.name,
+            mesh: this.getCrumpledPaperMesh(),
+            el: {
+              class: 'overlay__hotspot overlay__hotspot--video',
+              childNodes: [{
+                class: 'content',
+                childNodes: [{
+                  type: 'iframe',
+                  dataset: { src: video },
+                }]
+              }]
+            },
+          });
+          let x = (Math.random() * 2 - 1) * 5;
+          let z = (Math.random() * 2 - 1) * 5;
+          v.meshes[0].position.set(x, this.getHeight(x, z), z);
+          this.objects.push(v);
+        });
+      }
+
+      // description
+      if (p.description) {
+        let desc = new Interactive({
+          root: this,
+          page: p.name,
+          mesh: this.getCrumpledPaperMesh(),
+          el: {
+            class: 'overlay__hotspot overlay__hotspot--description',
+            childNodes: [{
+              class: 'content',
+              childNodes: [{
+                class: 'description',
+                innerHTML: p.description,
+              }]
+            }],
+          },
+        });
+        let x = (Math.random() * 2 - 1) * 5;
+        let z = (Math.random() * 2 - 1) * 5;
+        desc.meshes[0].position.set(x, this.getHeight(x, z), z);
+        this.objects.push(desc);
+      }
+
+      // url
+      if (p.url) {
+        let url= new Interactive({
+          root: this,
+          page: p.name,
+          text: 'visit site ->',//p.url.replace('https://', '').substring(0, 15) + '...',
+          textSize: 0.75,
+          el: {
+            type: 'a',
+            class: 'overlay__hotspot overlay__hotspot--wide',
+            attributes: {
+              href: p.url,
+              target: '_blank',
+            },
+          },
+        });
+        let midpoint = 5;
+        url.meshes.forEach((mesh, i) => {
+          let x = i < midpoint ? 7 + (i - midpoint) * 0.75 : 7;
+          let z = i < midpoint ? 7 : 7 - (i - midpoint) * 0.75;
+          mesh.position.set(x, this.getHeight(x, z), z);
+        });
+        this.objects.push(url);
+      }
     });
+  }
+
+  createButton(params) {
+    // back to index button
+    let textSize = params.textSize || 0.5;
+    let buttonClass = textSize == 0.5 ? 'overlay__hotspot--button' : 'overlay__hotspot--wide';
+    let button = new Interactive({
+      root: this,
+      page: params.page || 'index',
+      text: params.text,
+      textSize: params.textSize || 0.5,
+      el: {
+        class: 'overlay__hotspot ' + buttonClass,
+        addEventListener: {
+          click: params.onClick,
+        }
+      },
+    });
+    button.meshes.forEach(params.placementCallback);
+    this.objects.push(button);
   }
 
   getCrumpledPaperMesh() {
@@ -277,6 +444,8 @@ class Scene {
     let offX = Math.random() * 100;
     let offY = Math.random() * 100;
     let scale = 1 + Math.random() * 0.125;
+
+    // crumple geometry
     for (let i=0; i<geo.attributes.position.array.length; i+=3) {
       let x = geo.attributes.position.array[i] * 2 + offX;
       let y = geo.attributes.position.array[i+1] * 2 + offY;
@@ -286,8 +455,9 @@ class Scene {
       geo.attributes.position.array[i+2] = z * scale;
     }
     geo.computeFaceNormals();
+
+    // centre & reposition
     let mesh = new THREE.Mesh(geo, mat);
-    mesh.userData.isPaper = true;
     mesh.geometry.center();
     mesh.geometry.translate(0, 0.5, 0);
     let rx = Math.random() * Math.PI * 2;
@@ -297,6 +467,14 @@ class Scene {
     mesh.updateMatrix();
     mesh.rotation.set(0, 0, 0);
     mesh.updateMatrix();
+
+    // animation data
+    let folded = [ ...geo.attributes.position.array ];
+    let unfolded = new THREE.PlaneBufferGeometry(10, 10, 10, 10).attributes.position.array;
+    mesh.userData.unfolded = unfolded;
+    mesh.userData.folded = folded;
+    mesh.userData.isPaper = true;
+
     return mesh;
   }
 
@@ -344,7 +522,7 @@ class Scene {
     this.pageTransitionLock = true;
 
     let i = 0;
-    let cascade = 80;
+    let cascade = Config.Scene.cascade;
 
     // close current page
     this.objects.forEach(obj => {
@@ -385,6 +563,15 @@ class Scene {
       },
     });
     this.animations.push(anim);
+
+    // menu item
+    document.querySelectorAll('[data-page]').forEach(el => {
+      if (el.dataset.page == page) {
+        el.classList.add('active');
+      } else {
+        el.classList.remove('active');
+      }
+    });
 
     // remove lock
     setTimeout(() => {
