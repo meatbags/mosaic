@@ -25,6 +25,7 @@ class Scene {
   bind(root) {
     this.ref = {};
     this.ref.camera = root.modules.camera;
+    this.ref.navigation = root.modules.navigation;
 
     // height map & lighting
     this.initHeightMap();
@@ -37,6 +38,7 @@ class Scene {
       this.initPages();
       this.scene.add(this.heightMap);
       this.active = true;
+      this.ref.navigation.removeLoadingScreen();
     });
   }
 
@@ -100,9 +102,7 @@ class Scene {
     this.initPageIndex();
     this.initPageContact();
     this.initPageWork();
-    setTimeout(() => {
-      this.goToPage('index', false);
-    }, 500);
+    this.goToPage('index', false);
   }
 
   initPageIndex() {

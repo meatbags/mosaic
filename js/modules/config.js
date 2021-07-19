@@ -85,7 +85,7 @@ const Config = {
           music video for TOXOTES by ZHE NHIR
         `,
         videos: [
-          'https://www.youtube.com/watch?v=7Rc7XGBK6sg',
+          'https://www.youtube.com/embed/7Rc7XGBK6sg',
         ]
       }, {
         name: 'mcncs',
@@ -155,10 +155,11 @@ const Config = {
           self portrait and proof-of-concept looping video animation<br /><br />
           <a href='https://www.youtube.com/watch?v=CQv_DFBlqEU' target='_blank'>on youtube</a>
         `,
-        videos: ['https://www.youtube.com/watch?v=CQv_DFBlqEU']
+        videos: [
+          'https://www.youtube.com/embed/CQv_DFBlqEU'
+        ]
       }, {
         name: 'pencil_mmo',
-        date: '2020',
         description: `
           <strong>PENCIL MMO</strong> DEVELOPER<br />
           MMO art game / 2020<br /><br />
@@ -176,6 +177,9 @@ const Config = {
           pencil.visible = false;
           return pencil;
         }
+      }, {
+        name: 'misc.',
+        character: '*',
       }
       //{ name:'delaval_film', icon:'DLV', date: '2020', url: 'https://www.delavalfilm.com/' },
       //{ name:'pixelsort', icon:'SRT', date: '2020', },

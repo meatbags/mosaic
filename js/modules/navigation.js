@@ -13,8 +13,6 @@ class Navigation {
         this.ref.scene.goToPage(el.dataset.page);
       });
     });
-
-    this.removeLoadingScreen();
   }
 
   removeLoadingScreen() {
