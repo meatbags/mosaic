@@ -105,8 +105,8 @@ class Scene {
     let i = 0;
     let cascade = Config.Scene.cascade;
     this.objects.forEach(obj => {
-      if (obj.page === 'preppers') {
-        obj.show(0);
+      if (obj.page === 'index') {
+        obj.show();
       }
     });
   }
