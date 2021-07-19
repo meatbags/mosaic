@@ -21,25 +21,43 @@ const Config = {
         date: '2020',
         character: 'P',
         url: 'https://preppers.gallery/',
-        images: [ 'img/example.jpg', 'img/example.jpg', 'img/example.jpg' ],
-        videos: [ 'https://www.youtube.com/watch?v=-SLgXBLQA2M', ],
-        description: 'PRP',
+        description: `
+          <strong>PREPPERS</strong> WEB DESIGNER/DEVELOPER<br />
+          website / 2020<br /><br />
+          PREPPERS is an art project / installation by ART ON THE MOVE<br /><br />
+          <a href='https://preppers.gallery/' target='_blank'>visit PREPPERS</a>
+        `,
       }, {
         name: 'epoch_wars',
         character: '!',
         date: '2021',
         url: 'https://epoch-wars.com/',
-        description: 'website for arts org. Pony Express',
+        description: `
+          <strong>EPOCH WARS</strong> WEB DESIGNER/DEVELOPER<br />
+          website / 2021<br /><br />
+          EPOCH WARS is an art project by PONY EXPRESS<br /><br />
+          <a href='https://epoch-wars.com/' target='_blank'>visit EPOCH WARS</a>
+        `,
       }, {
         name: 'panic_buy',
         character: '$',
         date: '2020',
-        url: 'https://panic-buy-online.com/'
+        url: 'https://panic-buy-online.com/',
+        description: `
+          <strong>PANIC BUY</strong> DEVELOPER<br />
+          website / 2020<br /><br />
+          PANIC BUY is an art project / installation by TIYAN BAKER and GUY LOUDEN<br /><br />
+          <a href='https://panic-buy-online.com/' target='_blank'>visit PANIC BUY</a>
+        `,
       }, {
         name: 'closed_on_monday',
-        date: '2020',
         url: 'https://closedonmondaygallery.com/',
-        description: 'virtual gallery',
+        description: `
+          <strong>CLOSED ON MONDAY</strong> CO-FOUNDER<br />
+          virtual gallery / 2019-present<br /><br />
+          CLOSED ON MONDAY is a virtual gallery featuring audio-visual works by Sydney-based artists<br /><br />
+          <a href='https://closedonmondaygallery.com/' target='_blank'>visit gallery</a>
+        `,
         getMesh: () => {
           // create mesh -- com
           let mat = new THREE.MeshStandardMaterial({color:0xffffff});
@@ -60,12 +78,26 @@ const Config = {
       }, {
         name: 'toxotes',
         character: 'X',
-        date: '2020',
+        desciption: `
+          <strong>TOXOTES</strong> ANIMATOR<br />
+          music video / 2019<br /><br />
+          music video for TOXOTES by ZHE NHIR
+        `,
         videos: [
           'https://www.youtube.com/watch?v=7Rc7XGBK6sg',
         ]
       }, {
-        name:'mcncs', date: '2018', url:'http://www.mcncs.io/',
+        name: 'mcncs',
+        url: 'http://www.mcncs.io/',
+        description: `
+          <strong>MCNCS</strong> DEVELOPER<br />
+          website / 2018<br /><br />
+          pre-launch branding and microsite for MECHANICS festival<br /><br />
+          <a href='http://www.mcncs.io/' target='_blank'>visit MCNCS</a>
+        `,
+        images: [
+          'img/mcncs_01.jpg',
+        ],
         getMesh: () => {
           // create mesh -- com
           let mat = new THREE.MeshStandardMaterial({color:0xffffff});
@@ -82,7 +114,14 @@ const Config = {
           return mcncs;
         }
       }, {
-        name:'we_are_city_plaza', date: '2020', url: 'https://wearecityplaza.net/',
+        name: 'we_are_city_plaza',
+        url: 'https://wearecityplaza.net/',
+        description: `
+          <strong>WE ARE CITY PLAZA</strong> DEVELOPER<br />
+          exhibition website / 2018<br /><br />
+          WE ARE CITY PLAZA is a photographic exhibition centred around the CITY PLAZA refugee housing project in ATHENS, GREECE<br /><br />
+          <a href='https://wearecityplaza.net/' target='_blank'>visit site</a>
+        `,
         getMesh: () => {
           let mat = new THREE.MeshStandardMaterial({color:0xffffff});
           let wacp = new THREE.Group();
@@ -95,12 +134,33 @@ const Config = {
           return wacp;
         }
       }, {
-        name:'the_pixies', character: '?', date: '2020', videos: ['https://www.youtube.com/watch?v=-SLgXBLQA2M']
+        name:'the_pixies',
+        character: '?',
+        description: `
+          <strong>TENEMENT SONG</strong> ANIMATOR<br />
+          music video / 2016<br /><br />
+          music video for TENEMENT SONG by THE PIXIES<br /><br />
+          <a href='https://www.youtube.com/watch?v=-SLgXBLQA2M' target='_blank'>on youtube</a>
+        `,
+        videos: ['https://www.youtube.com/watch?v=-SLgXBLQA2M']
       }, {
-        name:'dongles', character: 'D', date: '2020', videos: ['https://www.youtube.com/watch?v=CQv_DFBlqEU']
+        name:'dongles',
+        character: 'D',
+        description: `
+          <strong>DONGLES</strong> ANIMATOR<br />
+          animation / 2019<br /><br />
+          self portrait and proof-of-concept looping video animation<br /><br />
+          <a href='https://www.youtube.com/watch?v=CQv_DFBlqEU' target='_blank'>on youtube</a>
+        `,
+        videos: ['https://www.youtube.com/watch?v=CQv_DFBlqEU']
       }, {
         name: 'pencil_mmo',
         date: '2020',
+        description: `
+          <strong>PENCIL MMO</strong> DEVELOPER<br />
+          MMO art game / 2020<br /><br />
+          massively multiplayer drawing game / proof-of-concept<br />
+        `,
         getMesh: () => {
           let mat = new THREE.MeshStandardMaterial({color:0xffffff});
           let pencil = new THREE.Group();
@@ -115,7 +175,6 @@ const Config = {
       }
       //{ name:'delaval_film', icon:'DLV', date: '2020', url: 'https://www.delavalfilm.com/' },
       //{ name:'pixelsort', icon:'SRT', date: '2020', },
-
     ]
   },
   Renderer: {

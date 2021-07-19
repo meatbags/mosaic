@@ -161,7 +161,7 @@ class Interactive {
       this.el.classList.remove('transition');
     }, 350);
   }
-
+  
   update(delta) {
     if (!this.active) { return; }
 

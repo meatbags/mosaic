@@ -446,7 +446,7 @@ class Scene {
 
   getCrumpledPaperMesh() {
     let geo = new THREE.PlaneBufferGeometry(1, 1, 10, 10);
-    let mat = new THREE.MeshStandardMaterial({color: 0xffffff, side: THREE.DoubleSide});
+    let mat = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.DoubleSide});
     let offX = Math.random() * 100;
     let offY = Math.random() * 100;
     let scale = 1 + Math.random() * 0.125;
