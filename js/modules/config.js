@@ -73,6 +73,7 @@ const Config = {
           com_r.position.set(0, 0.75, 0.5 - r/2);
           com.add(com_t, com_b, com_l, com_r);
           com.rotation.y = Math.PI * 0;
+          com.visible = false;
           return com;
         }
       }, {
@@ -111,6 +112,7 @@ const Config = {
             child.position.y = 0.5;
           });
           mcncs.rotation.y = Math.PI * 0.25 + (Math.random() * 2 - 1) * Math.PI * 0.125;
+          mcncs.visible = false;
           return mcncs;
         }
       }, {
@@ -131,6 +133,7 @@ const Config = {
           wacp.add(new THREE.Mesh(new THREE.BoxBufferGeometry(wacp_size, 0.2, wacp_size), mat.clone()));
           wacp.add(new THREE.Mesh(new THREE.BoxBufferGeometry(wacp_size, 0.2, wacp_size), mat.clone()));
           wacp.children.forEach((child, i) => { child.position.y = 0.1 + i * 0.35; });
+          wacp.visible = false;
           return wacp;
         }
       }, {
@@ -170,6 +173,7 @@ const Config = {
           tip.geometry.translate(0, 0.125, 0);
           pencil.add(shaft, tip);
           pencil.rotation.set(-Math.PI * 0.1, 0, -Math.PI * 0.1);
+          pencil.visible = false;
           return pencil;
         }
       }

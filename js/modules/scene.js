@@ -100,15 +100,9 @@ class Scene {
     this.initPageIndex();
     this.initPageContact();
     this.initPageWork();
-
-    // set page to index
-    let i = 0;
-    let cascade = Config.Scene.cascade;
-    this.objects.forEach(obj => {
-      if (obj.page === 'index') {
-        obj.show();
-      }
-    });
+    setTimeout(() => {
+      this.goToPage('index', false);
+    }, 500);
   }
 
   initPageIndex() {
@@ -479,6 +473,9 @@ class Scene {
     box.getSize(size);
     mesh.geometry.translate(0, size.y/2, 0);
 
+    // hide
+    mesh.visible = false;
+
     return mesh;
   }
 
@@ -513,6 +510,10 @@ class Scene {
     let size = new THREE.Vector3();
     box.getSize(size);
     geo.translate(0, size.y/4, 0);
+
+    // hide
+    mesh.visible = false;
+
     return mesh;
   }
 
@@ -555,7 +556,7 @@ class Scene {
     return this.scene;
   }
 
-  goToPage(page) {
+  goToPage(page, ripple=true) {
     if (this.pageTransitionLock) { return; }
     this.pageTransitionLock = true;
 
@@ -579,28 +580,30 @@ class Scene {
     });
 
     // animate map
-    let dur = (i * cascade) / 1000 + 0.5;
-    let dist = dur * 4;
-    let fromX = this.perlin.offsetX;
-    let toX = fromX + dist;
-    const anim = new Animation({
-      duration: dur,
-      callback: t => {
-        this.perlin.offsetX = fromX + (toX - fromX) * t;
-        let geo = this.heightMap.geometry;
-        for (let i=0; i<geo.attributes.position.array.length; i+=3) {
-          let x = geo.attributes.position.array[i];
-          let z = geo.attributes.position.array[i+2];
-          let y = this.getHeight(x, z);
-          geo.attributes.position.array[i+1] = y;
-        }
-        geo.computeFaceNormals();
-        geo.attributes.position.needsUpdate = true;
-        geo.attributes.normal.needsUpdate = true;
-        this.setObjectHeights();
-      },
-    });
-    this.animations.push(anim);
+    if (ripple) {
+      let dur = (i * cascade) / 1000 + 0.5;
+      let dist = dur * 4;
+      let fromX = this.perlin.offsetX;
+      let toX = fromX + dist;
+      const anim = new Animation({
+        duration: dur,
+        callback: t => {
+          this.perlin.offsetX = fromX + (toX - fromX) * t;
+          let geo = this.heightMap.geometry;
+          for (let i=0; i<geo.attributes.position.array.length; i+=3) {
+            let x = geo.attributes.position.array[i];
+            let z = geo.attributes.position.array[i+2];
+            let y = this.getHeight(x, z);
+            geo.attributes.position.array[i+1] = y;
+          }
+          geo.computeFaceNormals();
+          geo.attributes.position.needsUpdate = true;
+          geo.attributes.normal.needsUpdate = true;
+          this.setObjectHeights();
+        },
+      });
+      this.animations.push(anim);
+    }
 
     // menu item
     document.querySelectorAll('[data-page]').forEach(el => {
