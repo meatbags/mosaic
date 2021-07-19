@@ -15,7 +15,7 @@
     user-select: none;
     pointer-events: all;
     cursor: pointer;
-    // outline: 1px solid red;
+    outline: 1px solid red;
 
     .label {
       position: absolute;
@@ -150,7 +150,8 @@
     &.overlay__hotspot--button {}
 
     &.overlay__hotspot--tall {
-      height: 8.5vw;
+      width: 4.5vw;
+      height: 6.5vw;
       transform: translate(-50%, calc(-100% + 2vw));
 
       .project-title {

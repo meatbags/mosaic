@@ -226,6 +226,7 @@ class Scene {
     });
 
     // page title
+    /*
     this.createButton({
       page: 'work',
       text: 'work',
@@ -238,44 +239,34 @@ class Scene {
         mesh.position.set(x, this.getHeight(x, z), z);
       }
     });
+    */
 
     // project menu items & pages
-    Config.Scene.projects.forEach(p => {
+    let slotIndex = Math.floor(Math.random() * Config.Scene.slots.length);
+    Config.Scene.projects.forEach((p, i) => {
       // page -- work
       let menuItem = new Interactive({
         root: this,
         page: 'work',
-        totem: p.icon || p.name,
+        mesh: p.getMesh ? p.getMesh() : null,
+        text: p.character || null,
         el: {
           class: 'overlay__hotspot overlay__hotspot--tall',
           childNodes: [{
             class: 'project-title',
             innerHTML: p.name,
           }],
+          addEventListener: {
+            click: () => { this.goToPage(p.name); },
+          },
         },
       });
-      menuItem.el.addEventListener('click', () => {
-        this.goToPage(p.name);
-      })
 
       // avoid a few collisions
-      let place = () => {
-        let x = (Math.random() * 2 - 1) * 6;
-        let z = (Math.random() * 2 - 1) * 6;
-        menuItem.meshes.forEach((mesh, i) => {
-          mesh.position.set(x, this.getHeight(x, z), z);
-        });
-      }
-      place();
-      let tries = 10;
-      let ok = false;
-      let threshold = 0.75;
-      while (--tries > 0 && !ok) {
-        ok = this.objects.findIndex(obj => {
-          return obj.page == 'work' &&
-            obj.meshes[0].position.distanceTo(menuItem.meshes[0].position) < threshold;
-        }) == -1;
-      }
+      let slot = Config.Scene.slots[(slotIndex + i) % Config.Scene.slots.length];
+      let x = slot[0];
+      let z = slot[1];
+      menuItem.meshes.forEach((mesh, i) => { mesh.position.set(x, this.getHeight(x, z), z); });
 
       // add to tree
       this.objects.push(menuItem);
@@ -392,7 +383,7 @@ class Scene {
         let url= new Interactive({
           root: this,
           page: p.name,
-          text: 'https://*',
+          text: '[LINK]',
           textSize: 0.5,
           el: {
             type: 'a',
@@ -435,7 +426,7 @@ class Scene {
 
   getCrumpledPaperMesh() {
     let geo = new THREE.PlaneBufferGeometry(1, 1, 10, 10);
-    let mat = new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0.35, roughness: 0.65, side: THREE.DoubleSide});
+    let mat = new THREE.MeshStandardMaterial({color: 0xffffff, side: THREE.DoubleSide});
     let offX = Math.random() * 100;
     let offY = Math.random() * 100;
     let scale = 1 + Math.random() * 0.125;

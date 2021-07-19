@@ -23,7 +23,7 @@ class Interactive {
     if (params.text) {
       params.text.split('').forEach(chr => {
         let geo = new THREE.TextGeometry(chr, {font: this.root.font, size: params.textSize || 1, height: 0.125, bevelEnabled: false});
-        let mat = new THREE.MeshStandardMaterial({color: this.state.colour.default, metalness: 0.35, roughness: 0.65});
+        let mat = new THREE.MeshStandardMaterial({color: this.state.colour.default});
         let mesh = new THREE.Mesh(geo, mat);
         let box = new THREE.Box3().setFromObject(mesh);
         let size = new THREE.Vector3();
@@ -34,25 +34,6 @@ class Interactive {
         this.meshes.push(mesh);
         this.root.scene.add(mesh);
       });
-    }
-
-    // create totem pole
-    if (params.totem) {
-      let group = new THREE.Group();
-      params.totem.split('').forEach((chr, i) => {
-        let geo = new THREE.TextGeometry(chr, {font: this.root.font, size: params.textSize || 0.75, height: 0.25, bevelEnabled: false});
-        let mat = new THREE.MeshStandardMaterial({color: this.state.colour.default, metalness: 0.35, roughness: 0.65});
-        let mesh = new THREE.Mesh(geo, mat);
-        let box = new THREE.Box3().setFromObject(mesh);
-        let size = new THREE.Vector3();
-        box.getSize(size);
-        mesh.geometry.translate(-size.x/2, (params.totem.length - i - 1) * 0.75, -size.z/2);
-        group.add(mesh);
-      });
-      group.visible = false;
-      group.rotation.y = (Math.random() * 2 - 1) * Math.PI/4 + Math.PI/4;
-      this.meshes.push(group);
-      this.root.scene.add(group);
     }
 
     // add custom mesh

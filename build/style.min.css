@@ -240,7 +240,8 @@ a {
     transform: translate(-50%, -50%);
     user-select: none;
     pointer-events: all;
-    cursor: pointer; }
+    cursor: pointer;
+    outline: 1px solid red; }
     .overlay .overlay__hotspot .label {
       position: absolute;
       top: 0;
@@ -344,7 +345,8 @@ a {
       width: 20vw;
       height: 8vw; }
     .overlay .overlay__hotspot.overlay__hotspot--tall {
-      height: 8.5vw;
+      width: 4.5vw;
+      height: 6.5vw;
       transform: translate(-50%, calc(-100% + 2vw)); }
       .overlay .overlay__hotspot.overlay__hotspot--tall .project-title {
         position: absolute;
