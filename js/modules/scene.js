@@ -105,7 +105,7 @@ class Scene {
     let i = 0;
     let cascade = Config.Scene.cascade;
     this.objects.forEach(obj => {
-      if (obj.page === 'work') {
+      if (obj.page === 'preppers') {
         obj.show(0);
       }
     });
@@ -285,18 +285,49 @@ class Scene {
       })
 
       // title
+      let midpoint = Math.floor(p.name.length * Math.random());
       this.createButton({
         page: p.name,
         text: `${p.name}`,
         textSize: 0.75,
         onClick: () => { this.goToPage(p.name); },
         placementCallback: (mesh, i) => {
-          let midpoint = Math.ceil(p.name.length / 2);
           let x = i < midpoint ? -7 : -7 + (i - midpoint + 1) * 0.75;
           let z = i < midpoint ? -7 + (midpoint - i - 1) * 0.75 : -7;
           mesh.position.set(x, this.getHeight(x, z), z);
         },
       });
+
+      // init slot index
+      let slots = Config.Scene.projectSlots.sort(() => Math.random() - 0.5);
+      let slotIndex2 = Math.floor(Math.random() * slots.length);
+
+      // url
+      if (p.url) {
+        let url= new Interactive({
+          root: this,
+          page: p.name,
+          text: '{LINK}',
+          textSize: 0.5,
+          el: {
+            type: 'a',
+            class: 'overlay__hotspot',
+            attributes: {
+              href: p.url,
+              target: '_blank',
+            },
+          },
+        });
+        let slot = slots[(slotIndex2++) % slots.length];
+        let baseX = slot[0];
+        let baseZ = slot[1];
+        url.meshes.forEach((mesh, i) => {
+          let x = baseX;
+          let z = baseZ - i * 0.5;
+          mesh.position.set(x, this.getHeight(x, z), z);
+        });
+        this.objects.push(url);
+      }
 
       // project images
       if (p.images) {
@@ -316,8 +347,9 @@ class Scene {
               }]
             },
           });
-          let x = (Math.random() * 2 - 1) * 5;
-          let z = (Math.random() * 2 - 1) * 5;
+          let slot = slots[(slotIndex2++) % slots.length];
+          let x = slot[0];
+          let z = slot[1];
           menuItem.meshes[0].position.set(x, this.getHeight(x, z), z);
           let loader = new THREE.TextureLoader();
           let tex = loader.load(img, tex => {
@@ -336,7 +368,8 @@ class Scene {
           let v = new Interactive({
             root: this,
             page: p.name,
-            mesh: this.getCrumpledPaperMesh(),
+            text: '{VIDEO}',
+            textSize: 0.5,
             el: {
               class: 'overlay__hotspot overlay__hotspot--video',
               childNodes: [{
@@ -348,9 +381,14 @@ class Scene {
               }]
             },
           });
-          let x = (Math.random() * 2 - 1) * 5;
-          let z = (Math.random() * 2 - 1) * 5;
-          v.meshes[0].position.set(x, this.getHeight(x, z), z);
+          let slot = slots[(slotIndex2++) % slots.length];
+          let baseX = slot[0];
+          let baseZ = slot[1];
+          v.meshes.forEach((mesh, i) => {
+            let x = baseX + i * 0.5;
+            let z = baseZ + 0;
+            mesh.position.set(x, this.getHeight(x, z), z);
+          });
           this.objects.push(v);
         });
       }
@@ -360,7 +398,8 @@ class Scene {
         let desc = new Interactive({
           root: this,
           page: p.name,
-          mesh: this.getCrumpledPaperMesh(),
+          text: '{INFO}',
+          textSize: 0.5,
           el: {
             class: 'overlay__hotspot overlay__hotspot--description',
             childNodes: [{
@@ -372,34 +411,15 @@ class Scene {
             }],
           },
         });
-        let x = (Math.random() * 2 - 1) * 5;
-        let z = (Math.random() * 2 - 1) * 5;
-        desc.meshes[0].position.set(x, this.getHeight(x, z), z);
-        this.objects.push(desc);
-      }
-
-      // url
-      if (p.url) {
-        let url= new Interactive({
-          root: this,
-          page: p.name,
-          text: '[LINK]',
-          textSize: 0.5,
-          el: {
-            type: 'a',
-            class: 'overlay__hotspot overlay__hotspot--wide',
-            attributes: {
-              href: p.url,
-              target: '_blank',
-            },
-          },
-        });
-        url.meshes.forEach((mesh, i) => {
-          let x = 7 + (-url.meshes.length + 1 + i) * 0.5;
-          let z = -7;
+        let slot = slots[(slotIndex2++) % slots.length];
+        let baseX = slot[0];
+        let baseZ = slot[1];
+        desc.meshes.forEach((mesh, i) => {
+          let x = baseX;
+          let z = baseZ - i * 0.5;
           mesh.position.set(x, this.getHeight(x, z), z);
         });
-        this.objects.push(url);
+        this.objects.push(desc);
       }
     });
   }
@@ -445,22 +465,54 @@ class Scene {
     // centre & reposition
     let mesh = new THREE.Mesh(geo, mat);
     mesh.geometry.center();
-    mesh.geometry.translate(0, 0.5, 0);
+    // mesh.geometry.translate(0, 0.5, 0);
     let rx = Math.random() * Math.PI * 2;
     let ry = Math.random() * Math.PI * 2;
     let rz = Math.random() * Math.PI * 2;
     mesh.rotation.set(rx, ry, rz);
     mesh.updateMatrix();
+    mesh.geometry.applyMatrix4(mesh.matrix);
+    mesh.rotation.set(0, 0, 0);
+    mesh.updateMatrix();
+    let box = new THREE.Box3().setFromObject(mesh);
+    let size = new THREE.Vector3();
+    box.getSize(size);
+    mesh.geometry.translate(0, size.y/2, 0);
+
+    return mesh;
+  }
+
+  getScroll() {
+    let geo = new THREE.PlaneBufferGeometry(1.25, 1.75, 1, 20);
+    let mat = new THREE.MeshStandardMaterial({color: 0xffffff, side: THREE.DoubleSide});
+    // crumple geometry
+    for (let i=0; i<geo.attributes.position.array.length; i+=3) {
+      let x = geo.attributes.position.array[i+0];
+      let y = geo.attributes.position.array[i+1];
+      let z = Math.cos(y / 1.75 * Math.PI * 6) * 0.25;// geo.attributes.position.array[i+2];
+      geo.attributes.position.array[i+0] = x;
+      geo.attributes.position.array[i+1] = y;
+      geo.attributes.position.array[i+2] = z;
+    }
+    geo.computeFaceNormals();
+
+    // centre & reposition
+    let mesh = new THREE.Mesh(geo, mat);
+    mesh.geometry.center();
+    let rx = Math.random() * Math.PI * 2;
+    let ry = Math.random() * Math.PI * 2;
+    let rz = Math.random() * Math.PI * 2;
+    mesh.rotation.set(rx, ry, rz);
+    mesh.updateMatrix();
+    mesh.geometry.applyMatrix4(mesh.matrix);
     mesh.rotation.set(0, 0, 0);
     mesh.updateMatrix();
 
-    // animation data
-    let folded = [ ...geo.attributes.position.array ];
-    let unfolded = new THREE.PlaneBufferGeometry(10, 10, 10, 10).attributes.position.array;
-    mesh.userData.unfolded = unfolded;
-    mesh.userData.folded = folded;
-    mesh.userData.isPaper = true;
-
+    //let mesh = new THREE.Mesh(geo, mat);
+    let box = new THREE.Box3().setFromObject(mesh);
+    let size = new THREE.Vector3();
+    box.getSize(size);
+    geo.translate(0, size.y/4, 0);
     return mesh;
   }
 

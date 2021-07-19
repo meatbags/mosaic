@@ -8,8 +8,13 @@ const Config = {
     slots: [
       [-5, 5], [-4, 3], [-2, 3], [-2, 0],
       [3, 6], [5, 5], [1, 5], [5, 0],
-      [-4, -4],
-      [4, -6], [2, -4], [0.5, -5], [0, -0.5]
+      [-4, -4], [-3, -4.5],
+      [4, -6], [2, -4], [0.5, -5.5], [0, -0.5]
+    ],
+    projectSlots: [
+      [-3.5, -3.5], [0, -3.5], [4, -3.5],
+      [-4.5,  0], [0, 0.5], [4.5,  0],
+      [-4,  3.5], [0,  5], [4,  4.5],
     ],
     projects: [{
         name: 'preppers',
@@ -19,7 +24,6 @@ const Config = {
         images: [ 'img/example.jpg', 'img/example.jpg', 'img/example.jpg' ],
         videos: [ 'https://www.youtube.com/watch?v=-SLgXBLQA2M', ],
         description: 'PRP',
-
       }, {
         name: 'epoch_wars',
         character: '!',

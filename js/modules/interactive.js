@@ -173,82 +173,15 @@ class Interactive {
       this.el.style.top = `${s.y * window.innerHeight - 10}px`;
     }
 
+    // hover
+    if (this.hover && this.meshes.length == 1) {
+      // this.meshes[0].rotation.y += delta * Math.PI;
+    }
+
     // animate
     if (this.state.animation) {
       this.state.animation.update(delta);
     }
-  }
-
-  unfold() {
-    if (this.state.fold.locked) { return; }
-    this.state.fold.locked = true;
-
-    let from = this.meshes[0].userData.folded;
-    let fromPosition = this.meshes[0].position.clone();
-    let to = this.meshes[0].userData.unfolded;
-    let x = (Math.random() * 2 - 1) * 5;
-    let y = 5;
-    let z = (Math.random() * 2 - 1) * 5;
-    let toPosition = new THREE.Vector3(x, y, z);
-    let geo = this.meshes[0].geometry.attributes.position.array;
-    this.state.fold.fromPosition = fromPosition;
-    this.state.fold.toPosition = toPosition;
-    this.state.fold.fromRotation = this.meshes[0].rotation.y;
-    this.state.fold.toRotation = this.root.ref.camera.camera.rotation.y;
-    this.state.fold.isFolded = false;
-
-    this.state.foldAnimation = new Animation({
-      duration: 0.35,
-      callback: t => {
-        for (let i=0; i<geo.length; i++) {
-          geo[i] = from[i] + (to[i] - from[i]) * t;
-        }
-        this.meshes[0].position.set(
-          this.state.fold.fromPosition.x + (this.state.fold.toPosition.x - this.state.fold.fromPosition.x) * t,
-          this.state.fold.fromPosition.y + (this.state.fold.toPosition.y - this.state.fold.fromPosition.y) * t,
-          this.state.fold.fromPosition.z + (this.state.fold.toPosition.z - this.state.fold.fromPosition.z) * t
-        );
-        this.meshes[0].rotation.y = this.state.fold.fromRotation + (this.state.fold.toRotation - this.state.fold.fromRotation) * t;
-        this.meshes[0].geometry.attributes.position.needsUpdate = true;
-        if (t == 1) {
-          this.state.foldAnimation = null;
-          this.state.fold.locked = false;
-        }
-      },
-    });
-  }
-
-  fold() {
-    if (this.state.fold.locked) { return; }
-    this.state.fold.locked = true;
-
-    let to = this.meshes[0].userData.folded;
-    let toPosition = this.state.fold.fromPosition;
-    let from = this.meshes[0].userData.unfolded;
-    let fromPosition = this.state.fold.toPosition;
-    let geo = this.meshes[0].geometry.attributes.position.array;
-    this.state.fold.toPosition = toPosition;
-    this.state.fold.fromPosition = fromPosition;
-
-    this.state.foldAnimation = new Animation({
-      duration: 0.35,
-      callback: t => {
-        for (let i=0; i<geo.length; i++) {
-          geo[i] = from[i] + (to[i] - from[i]) * t;
-        }
-        this.meshes[0].position.set(
-          this.state.fold.fromPosition.x + (this.state.fold.toPosition.x - this.state.fold.fromPosition.x) * t,
-          this.state.fold.fromPosition.y + (this.state.fold.toPosition.y - this.state.fold.fromPosition.y) * t,
-          this.state.fold.fromPosition.z + (this.state.fold.toPosition.z - this.state.fold.fromPosition.z) * t
-        );
-        this.meshes[0].geometry.attributes.position.needsUpdate = true;
-        if (t == 1) {
-          this.state.foldAnimation = null;
-          this.state.fold.locked = false;
-          this.state.fold.isFolded = true;
-        }
-      },
-    });
   }
 }
 
