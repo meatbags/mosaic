@@ -48,8 +48,7 @@ class Camera {
     let portrait = window.innerWidth < window.innerHeight;
     let dpr = Math.max(Config.Renderer.devicePixelRatioMin, window.devicePixelRatio);
     this.size = {x: window.innerWidth*dpr, y: window.innerHeight*dpr};
-    let scale = (portrait ? 11.5 : 15) / this.size.x;
-    // this.camera.aspect = this.size.x / this.size.y;
+    let scale = (portrait ? 10.5 : 15) / this.size.x;
 
     this.camera.left = -this.size.x * scale;
     this.camera.right = this.size.x * scale;
@@ -79,7 +78,6 @@ class Camera {
   }
 
   update(delta) {
-
     let x = Math.cos(this.rotation) * 10;
     let z = Math.sin(this.rotation) * 10;
     this.camera.position.set(x, 5, z);

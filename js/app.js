@@ -28,6 +28,9 @@ class App {
     }
 
     window.addEventListener('resize', () => { this._resize(); });
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => { this._resize(); }, 250);
+    });
     this._resize();
     this.modules.loop.start();
   }

@@ -102,7 +102,11 @@ class Scene {
     this.initPageIndex();
     this.initPageContact();
     this.initPageWork();
-    this.goToPage('index', false);
+    let p = 'index';
+    if (document.querySelector('body').dataset.initialPage) {
+      p = document.querySelector('body').dataset.initialPage;
+    }
+    this.goToPage(p, false);
   }
 
   initPageIndex() {
@@ -293,7 +297,7 @@ class Scene {
       });
 
       // init slot index
-      let slots = Config.Scene.projectSlots.sort(() => Math.random() - 0.5);
+      let slots = Config.Scene.projectSlots;
       let slotIndex2 = Math.floor(Math.random() * slots.length);
 
       // url

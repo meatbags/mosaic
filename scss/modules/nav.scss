@@ -26,4 +26,17 @@
       color: $green;
     }
   }
+
+  @media screen and (max-width: $mobile) {
+    right: auto;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background: linear-gradient(0deg, $green, transparent 1px),
+      linear-gradient(90deg, $green, transparent 1px);
+    background-size: 3.5px 3px;
+
+    .nav__item {
+      font-size: $fontSize;
+    }
+  }
 }

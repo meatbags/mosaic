@@ -5,17 +5,24 @@ import * as THREE from 'three';
 const Config = {
   Scene: {
     cascade: 70,
-    slots: [
-      [-5, 5], [-4, 3], [-2, 3], [-2, 0],
-      [3, 6], [5, 5], [1, 5], [5, 0],
-      [-4, -4], [-3, -4.5],
-      [4, -6], [2, -4], [0.5, -5.5], [0, -0.5]
-    ],
-    projectSlots: [
-      [-3.5, -3.5], [0, -3.5], [4, -3.5],
-      [-4.5,  0], [0, 0.5], [4.5,  0],
-      [-4,  3.5], [0,  5], [4,  4.5],
-    ],
+    slots: (() => {
+      let res = [];
+      for (let x=-5; x<=5; x+=2.5) {
+        for (let z=-5; z<=5; z+=2.5) {
+          res.push([x, z]);
+        }
+      }
+      return res.sort(() => Math.random() - 0.5);
+    })(),
+    projectSlots: (() => {
+      let res = [];
+      for (let x=-4; x<=4; x+=2) {
+        for (let z=-4; z<=4; z+=2) {
+          res.push([x, z]);
+        }
+      }
+      return res.sort(() => Math.random() - 0.5);
+    })(),
     projects: [{
         name: 'preppers',
         date: '2020',

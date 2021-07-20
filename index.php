@@ -1,9 +1,10 @@
+<?php $page = $_GET['page'] ?? 'index'; ?>
 <!DOCTYPE html>
 <html>
   <head>
     <title>xavier_burrow</title>
 	  <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <script type='text/javascript' src='build/inflate.min.js'></script>
     <script type='text/javascript' src='build/app.min.js'></script>
     <link rel='stylesheet' href='build/style.min.css'>
@@ -14,7 +15,7 @@
       }
     </script>
   </head>
-  <body>
+  <body data-initial-page='<?php echo $page; ?>'>
     <div id='loading-screen' class='loading-screen'>
       <div class='loading-screen__inner'>Loading...</div>
     </div>

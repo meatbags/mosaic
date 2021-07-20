@@ -113,7 +113,7 @@
     }
 
     &.transition {
-      transition: width $transition, height $transition, transform $transition;
+      transition: width $transition, height $transition, min-height $transition, transform $transition;
       transition-timing-function: linear;
 
       .content {
@@ -127,7 +127,8 @@
       display: flex;
       position: fixed;
       width: 40vw;
-      height: 25vw;
+      height: auto;
+      min-height: 25vw;
       transform: translate(-50%, -50%);
       cursor: crosshair;
       z-index: 999;
