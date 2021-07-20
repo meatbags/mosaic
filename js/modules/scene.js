@@ -349,13 +349,7 @@ class Scene {
           let x = slot[0];
           let z = slot[1];
           menuItem.meshes[0].position.set(x, this.getHeight(x, z), z);
-          let loader = new THREE.TextureLoader();
-          let tex = loader.load(img, tex => {
-            let sx = tex.image.naturalWidth / 1000;
-            let sy = tex.image.naturalHeight / 1000;
-            menuItem.meshes[0].scale.set(sx, sy, 1);
-          });
-          menuItem.meshes[0].material.map = tex;
+
           this.objects.push(menuItem);
         });
       }
@@ -444,10 +438,10 @@ class Scene {
 
   getCrumpledPaperMesh() {
     let geo = new THREE.PlaneBufferGeometry(1, 1, 10, 10);
-    let mat = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.DoubleSide});
+    let mat = new THREE.MeshStandardMaterial({color: 0xffffff, side: THREE.DoubleSide});
     let offX = Math.random() * 100;
     let offY = Math.random() * 100;
-    let scale = 1 + Math.random() * 0.125;
+    let scale = 1;// + Math.random() * 0.125;
 
     // crumple geometry
     for (let i=0; i<geo.attributes.position.array.length; i+=3) {
