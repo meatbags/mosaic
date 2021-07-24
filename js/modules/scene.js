@@ -106,7 +106,9 @@ class Scene {
     if (document.querySelector('body').dataset.initialPage) {
       p = document.querySelector('body').dataset.initialPage;
     }
-    this.goToPage(p, false);
+    setTimeout(() => {
+      this.goToPage(p, false);
+    }, 1000);
   }
 
   initPageIndex() {
@@ -299,6 +301,7 @@ class Scene {
       // init slot index
       let slots = Config.Scene.projectSlots;
       let slotIndex2 = Math.floor(Math.random() * slots.length);
+      let clickableIndex = 0;
 
       // url
       if (p.url) {
@@ -329,10 +332,11 @@ class Scene {
 
       // project images
       if (p.images) {
-        p.images.forEach(img => {
+        p.images.forEach((img, index) => {
           let menuItem = new Interactive({
             root: this,
             page: p.name,
+            index: clickableIndex++,
             mesh: this.getCrumpledPaperMesh(),
             el: {
               class: 'overlay__hotspot overlay__hotspot--image',
@@ -362,6 +366,7 @@ class Scene {
             page: p.name,
             text: '{VIDEO}',
             textSize: 0.5,
+            index: clickableIndex++,
             el: {
               class: 'overlay__hotspot overlay__hotspot--video',
               childNodes: [{
@@ -391,6 +396,7 @@ class Scene {
           root: this,
           page: p.name,
           text: '{INFO}',
+          index: clickableIndex++,
           textSize: 0.5,
           el: {
             class: 'overlay__hotspot overlay__hotspot--description',
@@ -548,6 +554,29 @@ class Scene {
       },
     });
     this.animations.push(a);
+  }
+
+  onProjectItemNextClicked(obj) {
+    if (obj.index === -1) {
+      return;
+    }
+
+    let candidates = this.objects.filter(o => o.page === obj.page && o.index !== -1);
+    let next = (obj.index + 1) % candidates.length;
+    obj.closeContent();
+    candidates[next].openContent();
+  }
+
+  onProjectItemPreviousClicked(obj) {
+    if (obj.index === -1) {
+      return;
+    }
+
+    let candidates = this.objects.filter(o => o.page === obj.page && o.index !== -1);
+    let prev = obj.index - 1;
+    prev += prev < 0 ? candidates.length : 0;
+    obj.closeContent();
+    candidates[prev].openContent();
   }
 
   getScene() {

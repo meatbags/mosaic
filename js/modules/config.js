@@ -31,9 +31,15 @@ const Config = {
         description: `
           <strong>PREPPERS</strong> WEB DESIGNER/DEVELOPER<br />
           website / 2020<br /><br />
-          PREPPERS is an art project / installation by ART ON THE MOVE<br /><br />
+          An art project / installation by ART ON THE MOVE<br /><br />
           <a href='https://preppers.gallery/' target='_blank'>visit PREPPERS</a>
         `,
+        images: [
+          'img/preppers_01.jpg',
+          'img/preppers_02.jpg',
+          'img/preppers_03.jpg',
+          'img/preppers_04.jpg',
+        ]
       }, {
         name: 'epoch_wars',
         character: '!',

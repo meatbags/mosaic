@@ -18,7 +18,10 @@ class Navigation {
   removeLoadingScreen() {
     let target = document.querySelector('#loading-screen');
     if (target) {
-      target.remove();
+      target.classList.add('hidden');
+      setTimeout(() => {
+        target.remove();
+      }, 1250);
     }
   }
 }

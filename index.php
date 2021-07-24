@@ -18,6 +18,9 @@
   <body data-initial-page='<?php echo $page; ?>'>
     <div id='loading-screen' class='loading-screen'>
       <div class='loading-screen__inner'>Loading...</div>
+      <div class='loading-screen__background'>
+        <div></div><div></div><div></div><div></div>
+      </div>
     </div>
 
     <div class='wrapper'>

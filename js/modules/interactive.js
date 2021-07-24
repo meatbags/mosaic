@@ -11,6 +11,7 @@ class Interactive {
     this.active = false;
     this.root = params.root;
     this.page = params.page;
+    this.index = params.index === undefined ? -1 : params.index;
     this.state = {
       colour: {
         default: 0xffffff,
@@ -53,7 +54,11 @@ class Interactive {
       document.querySelector('#overlay').appendChild(this.el);
       let content = this.el.querySelector('.content');
       if (content) {
-        this.el.addEventListener('click', () => { this._openContent(); });
+        this.el.addEventListener('click', () => {
+          if (!this.el.classList.contains('active')) {
+            this.openContent();
+          }
+        });
         let close = CreateElement({
           class: 'overlay__hotspot-close',
           innerHTML: 'x',
@@ -61,11 +66,39 @@ class Interactive {
             click: evt => {
               evt.preventDefault();
               evt.stopPropagation();
-              this._closeContent();
+              this.closeContent();
             }
           }
         });
+        let controls = CreateElement({
+          class: 'overlay__controls',
+          childNodes: [{
+            class: 'overlay__controls-previous',
+            innerHTML: '<',
+            addEventListener: {
+              click: evt => {
+                evt.preventDefault();
+                evt.stopPropagation();
+                this.root.onProjectItemPreviousClicked(this);
+              },
+            }
+          }, {
+            class: 'overlay__controls-index',
+            innerHTML: `${this.index}`,
+          }, {
+            class: 'overlay__controls-next',
+            innerHTML: '>',
+            addEventListener: {
+              click: evt => {
+                evt.preventDefault();
+                evt.stopPropagation();
+                this.root.onProjectItemNextClicked(this);
+              },
+            }
+          }],
+        });
         content.appendChild(close);
+        content.appendChild(controls);
       }
     } else {
       this.el = null;
@@ -91,7 +124,7 @@ class Interactive {
       }, i * cascade);
     });
     if (this.el) {
-      this._closeContent();
+      this.closeContent();
       this.el.classList.add('hidden');
     }
   }
@@ -148,20 +181,14 @@ class Interactive {
     });
   }
 
-  _openContent() {
-    this.el.classList.add('transition');
-    setTimeout(() => {
-      this.el.classList.add('active');
-    }, 25);
+  openContent() {
+    this.el.classList.add('active');
   }
 
-  _closeContent() {
+  closeContent() {
     this.el.classList.remove('active');
-    setTimeout(() => {
-      this.el.classList.remove('transition');
-    }, 350);
   }
-  
+
   update(delta) {
     if (!this.active) { return; }
 
