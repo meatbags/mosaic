@@ -62,6 +62,11 @@ const Config = {
           PANIC BUY is an art project / installation by TIYAN BAKER and GUY LOUDEN<br /><br />
           <a href='https://panic-buy-online.com/' target='_blank'>visit PANIC BUY</a>
         `,
+        images: [
+          'img/panic_buy_01.jpg',
+          'img/panic_buy_02.jpg',
+          'img/panic_buy_03.jpg',
+        ]
       }, {
         name: 'closed_on_monday',
         url: 'https://closedonmondaygallery.com/',
@@ -88,7 +93,12 @@ const Config = {
           com.rotation.y = Math.PI * 0;
           com.visible = false;
           return com;
-        }
+        },
+        images: [
+          'img/com_01.jpg',
+          'img/com_02.jpg',
+          'img/com_03.jpg',
+        ]
       }, {
         name: 'toxotes',
         character: 'X',

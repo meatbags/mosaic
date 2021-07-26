@@ -204,12 +204,14 @@
 
   @media screen and (max-width: $mobile) {
     .overlay__hotspot {
-      .content {
-        @include padding(6, 4);
 
-        .description {
-          max-width: 100%;
-        }
+      .content {
+        @include padding(1, 1);
+      }
+
+      &.active {
+        width: 99vw;
+        height: 99vh;
       }
     }
   }
