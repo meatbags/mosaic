@@ -4,7 +4,6 @@
   height: 100vh;
   z-index: $indexCanvas;
   overflow: hidden;
-  background: #444444;
 
   canvas {
     position: absolute;
@@ -14,8 +13,12 @@
     height: 100% !important;
     z-index: 2;
     cursor: crosshair;
-    //background: linear-gradient(to left, green, transparent 1px),
-    //  linear-gradient(to top, green, transparent 1px);
-    //background-size: 50px 50px;
+    transform: translate(8.5vw, 0);
+  }
+
+  @media screen and (max-width: $mobile) {
+    canvas {
+      transform: translate(0, 0);
+    }
   }
 }

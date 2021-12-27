@@ -217,6 +217,7 @@ class Scene {
       page: 'work',
       text: 'index',
       textSize: 0.5,
+      description: Config.Scene.indexHTML,
       onClick: () => { this.goToPage('index'); },
       placementCallback: (mesh, i) => {
         let x = -7;
@@ -224,22 +225,6 @@ class Scene {
         mesh.position.set(x, this.getHeight(x, z), z);
       },
     });
-
-    // page title
-    /*
-    this.createButton({
-      page: 'work',
-      text: 'work',
-      textSize: 0.75,
-      onClick: () => { this.goToPage('work'); },
-      placementCallback: (mesh, i) => {
-        let midpoint = 2;
-        let x = i < midpoint ? -7 : -7 + (i - midpoint + 1) * 0.75;
-        let z = i < midpoint ? -7 + (midpoint - i - 1) * 0.75 : -7;
-        mesh.position.set(x, this.getHeight(x, z), z);
-      }
-    });
-    */
 
     // project menu items & pages
     let slotIndex = Math.floor(Math.random() * Config.Scene.slots.length);
@@ -392,6 +377,7 @@ class Scene {
 
       // description
       if (p.description) {
+        /*
         let desc = new Interactive({
           root: this,
           page: p.name,
@@ -418,8 +404,13 @@ class Scene {
           mesh.position.set(x, this.getHeight(x, z), z);
         });
         this.objects.push(desc);
+        */
       }
     });
+  }
+
+  setDescription(html) {
+    document.querySelector('#text-container').innerHTML = html;
   }
 
   createButton(params) {
@@ -593,7 +584,7 @@ class Scene {
     // close current page
     this.objects.forEach(obj => {
       if (obj.page !== page && obj.active) {
-        setTimeout(() => {  obj.hide(); }, i * cascade);
+        setTimeout(() => { obj.hide(); }, i * cascade);
         i += obj.meshes.length;
       }
     });
@@ -605,6 +596,20 @@ class Scene {
         i += obj.meshes.length;
       }
     });
+
+    // set description
+    let desc = Config.Scene.indexHTML;
+    Config.Scene.projects.forEach((item, i) => {
+      if (item.name == page && item.description) {
+        desc = item.description;
+      }
+    });
+    if (desc != Config.Scene.indexHTML) {
+      this.setDescription('');
+    }
+    setTimeout(() => {
+      this.setDescription(desc); }, i * cascade
+    );
 
     // animate map
     if (ripple) {

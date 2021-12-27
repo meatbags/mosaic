@@ -13,6 +13,7 @@ $space: 8px;
 $indexCanvas: 1;
 $indexOverlay: 100;
 $indexNav: 90;
+$indexText: 90;
 $indexLoadingScreen: 999;
 
 // animation
@@ -21,6 +22,7 @@ $transitionSlow: 0.7s;
 
 // style
 $border: 1px solid $white;
+$frameBorder: none;//6px double blue;
 
 // breakpoints
 $mobile: 760px;

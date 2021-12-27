@@ -15,7 +15,7 @@ body {
   font-size: $fontSize;
   letter-spacing: $letterSpacing;
   line-height: $lineHeight;
-  background: $black;
+  background: linear-gradient(to bottom, $black, #222);
   color: $white;
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;

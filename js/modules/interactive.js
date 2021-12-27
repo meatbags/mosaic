@@ -12,6 +12,7 @@ class Interactive {
     this.root = params.root;
     this.page = params.page;
     this.index = params.index === undefined ? -1 : params.index;
+
     this.state = {
       colour: {
         default: 0xffffff,
@@ -136,6 +137,7 @@ class Interactive {
         mesh.visible = true;
       }, i * cascade);
     });
+
     if (this.el) {
       let lazy = this.el.querySelector('[data-src]');
       if (lazy) {
@@ -196,7 +198,8 @@ class Interactive {
     if (this.el) {
       this.screenSpace.update();
       let s = this.screenSpace.getScreenPosition();
-      this.el.style.left = `${s.x * window.innerWidth}px`;
+      let rect = document.querySelector('#canvas-target canvas').getBoundingClientRect();
+      this.el.style.left = `${s.x * window.innerWidth + rect.left}px`;
       this.el.style.top = `${s.y * window.innerHeight - 10}px`;
     }
 

@@ -34,14 +34,18 @@
       </div>
 
       <div class='nav'>
-        <div class='nav__item' data-page='index'>index</div>
-        <div class='nav__item' data-page='work'>work</div>
+        <div class='nav__item' data-page='index'>index</div> --
+        <div class='nav__item' data-page='work'>work</div> --
         <div class='nav__item' data-page='contact'>contact</div>
       </div>
 
       <div id='overlay' class='overlay'>
         <!-- 3d items load here -->
       </div>
+    </div>
+
+    <div id='text-container' class='text'>
+      <!-- description here -->
     </div>
   </body>
 </html>

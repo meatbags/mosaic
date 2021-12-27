@@ -23,16 +23,19 @@ const Config = {
       }
       return res.sort(() => Math.random() - 0.5);
     })(),
+    indexHTML: `
+      <span>Xavier Burrow</span> is a digital artist and designer based in Sydney, Australia.
+      Practicing across film, animation, and interactive mediums, his work aims to
+      bewilder, frustrate, yet ultimately delight.
+    `,
     projects: [{
         name: 'preppers',
         date: '2020',
         character: 'P',
         url: 'https://preppers.gallery/',
         description: `
-          <strong>PREPPERS</strong> WEB DESIGNER/DEVELOPER<br />
-          website / 2020<br /><br />
-          An art project / installation by ART ON THE MOVE<br /><br />
-          <a href='https://preppers.gallery/' target='_blank'>visit PREPPERS</a>
+          <span>PREPPERS</span> (web installation 2020) is an art installation
+          by ART ON THE MOVE exploring the freshly relevant PREPPER culture
         `,
         images: [
           'img/preppers_01.jpg',
@@ -46,36 +49,36 @@ const Config = {
         date: '2021',
         url: 'https://epoch-wars.com/',
         description: `
-          <strong>EPOCH WARS</strong> WEB DESIGNER/DEVELOPER<br />
-          website / 2021<br /><br />
-          EPOCH WARS is an art project by PONY EXPRESS<br /><br />
-          <a href='https://epoch-wars.com/' target='_blank'>visit EPOCH WARS</a>
+          <span>EPOCH WARS</span> (web installation 2021)
+          is an art project by PONY EXPRESS exploring the definition of EPOCHS
+          through esoteric EPOCH commissions
         `,
+        images: [
+          'img/ew_1.jpg',
+          'img/ew_2.jpg',
+          'img/ew_3.jpg',
+          'img/ew_4.jpg',
+        ]
       }, {
         name: 'panic_buy',
         character: '$',
         date: '2020',
         url: 'https://panic-buy-online.com/',
         description: `
-          <strong>PANIC BUY</strong> DEVELOPER<br />
-          website / 2020<br /><br />
-          PANIC BUY is an art project / installation by TIYAN BAKER and GUY LOUDEN<br /><br />
-          <a href='https://panic-buy-online.com/' target='_blank'>visit PANIC BUY</a>
+          <span>PANIC BUY</span> (web installation/video game 2020) is an art installation
+          by TIYAN BAKER and GUY LOUDEN exploring the phenomenon of PANIC BUYING
         `,
         images: [
           'img/panic_buy_01.jpg',
-          'img/panic_buy_02.jpg',
-          'img/panic_buy_03.jpg',
+          'img/panic_buy_02.png',
+          'img/panic_buy_03.png',
         ]
       }, {
         name: 'closed_on_monday',
         url: 'https://closedonmondaygallery.com/',
         description: `
-          <strong>CLOSED ON MONDAY</strong> CO-FOUNDER<br />
-          virtual gallery / 2019-present<br /><br />
-          CLOSED ON MONDAY is a virtual gallery featuring audio-visual works by Sydney-based artists<br /><br />
-          <a href='https://closedonmondaygallery.com/' target='_blank'>visit gallery</a>
-        `,
+          <span>Closed On Monday</span> (2019 - present) is a virtual gallery
+          featuring audio, visual, and sculpture works by Sydney-based artists`,
         getMesh: () => {
           // create mesh -- com
           let mat = new THREE.MeshStandardMaterial({color:0xffffff});
@@ -103,8 +106,8 @@ const Config = {
         name: 'toxotes',
         character: 'X',
         desciption: `
-          <strong>TOXOTES</strong> ANIMATOR<br />
-          music video / 2019<br /><br />
+          <span>TOXOTES</span> ANIMATOR
+          music video / 2019
           music video for TOXOTES by ZHE NHIR
         `,
         videos: [
@@ -113,12 +116,7 @@ const Config = {
       }, {
         name: 'mcncs',
         url: 'http://www.mcncs.io/',
-        description: `
-          <strong>MCNCS</strong> DEVELOPER<br />
-          website / 2018<br /><br />
-          pre-launch branding and microsite for MECHANICS festival<br /><br />
-          <a href='http://www.mcncs.io/' target='_blank'>visit MCNCS</a>
-        `,
+        description: `<span>MCNCS</span> (2018) pre-launch branding and microsite for MECHANICS festival`,
         images: [
           'img/mcncs_01.jpg',
         ],
@@ -142,11 +140,14 @@ const Config = {
         name: 'we_are_city_plaza',
         url: 'https://wearecityplaza.net/',
         description: `
-          <strong>WE ARE CITY PLAZA</strong> DEVELOPER<br />
-          exhibition website / 2018<br /><br />
-          WE ARE CITY PLAZA is a photographic exhibition centred around the CITY PLAZA refugee housing project in ATHENS, GREECE<br /><br />
-          <a href='https://wearecityplaza.net/' target='_blank'>visit site</a>
+          <span>WE ARE CITY PLAZA</span> (exhibition website 2018)
+          is a photography exhibition centred around the CITY PLAZA refugee housing project in ATHENS, GREECE
         `,
+        images: [
+          'img/cp_1.jpg',
+          'img/cp_2.jpg',
+          'img/cp_3.jpg',
+        ],
         getMesh: () => {
           let mat = new THREE.MeshStandardMaterial({color:0xffffff});
           let wacp = new THREE.Group();
@@ -163,31 +164,42 @@ const Config = {
         name:'the_pixies',
         character: '?',
         description: `
-          <strong>TENEMENT SONG</strong> ANIMATOR<br />
-          music video / 2016<br /><br />
-          music video for TENEMENT SONG by THE PIXIES<br /><br />
-          <a href='https://www.youtube.com/watch?v=-SLgXBLQA2M' target='_blank'>on youtube</a>
+          <span>TENEMENT SONG</span> (music video 2016) for TENEMENT SONG by THE PIXIES
         `,
-        videos: ['https://www.youtube.com/watch?v=-SLgXBLQA2M']
+        images: [
+          'img/pixies_1.jpg',
+          'img/pixies_2.jpg',
+          'img/pixies_3.jpg',
+          'img/pixies_4.jpg',
+        ],
+        videos: ['https://www.youtube.com/embed/-SLgXBLQA2M']
       }, {
         name:'dongles',
         character: 'D',
         description: `
-          <strong>DONGLES</strong> ANIMATOR<br />
-          animation / 2019<br /><br />
-          self portrait and proof-of-concept looping video animation<br /><br />
-          <a href='https://www.youtube.com/watch?v=CQv_DFBlqEU' target='_blank'>on youtube</a>
+          <span>DONGLES</span> (animation 2019) a proof-of-concept video animation
+          with looping components
         `,
+        images: [
+          'img/dongles_1.jpg',
+          'img/dongles_2.jpg',
+          'img/dongles_3.jpg',
+        ],
         videos: [
           'https://www.youtube.com/embed/CQv_DFBlqEU'
         ]
       }, {
         name: 'pencil_mmo',
         description: `
-          <strong>PENCIL MMO</strong> DEVELOPER<br />
-          MMO art game / 2020<br /><br />
-          massively multiplayer drawing game / proof-of-concept<br />
+          <span>PENCIL MMO</span> (MMO art game / 2020)
+          massively multiplayer drawing game
         `,
+        images: [
+          'img/mmo_1.jpg',
+          'img/mmo_2.jpg',
+          'img/mmo_3.jpg',
+          'img/mmo_4.jpg',
+        ],
         getMesh: () => {
           let mat = new THREE.MeshStandardMaterial({color:0xffffff});
           let pencil = new THREE.Group();
@@ -200,10 +212,7 @@ const Config = {
           pencil.visible = false;
           return pencil;
         }
-      }, {
-        name: 'misc.',
-        character: '*',
-      }
+      },
       //{ name:'delaval_film', icon:'DLV', date: '2020', url: 'https://www.delavalfilm.com/' },
       //{ name:'pixelsort', icon:'SRT', date: '2020', },
     ]

@@ -1,0 +1,46 @@
+#text-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  //background: linear-gradient(to top, transparent, $red);
+  font-size: $fontSizeLarge;
+  // display: flex;
+  //align-items: flex-end;
+  width: 20vw;
+  height: 80vh;
+  border-right: $frameBorder;
+  //background: linear-gradient(to top, transparent, black);
+  @include padding(2, 2);
+  pointer-events: none;
+  z-index: $indexText;
+
+  span {
+    color: $green;
+  }
+
+  &:after {
+    content: ' ';
+    width: 40px;
+    height: 40px;
+    border: $frameBorder;
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    height: 10vh;
+    width: 10vw;
+    border-bottom-left-radius: 100px;
+    border-top: none;
+    border-right: none;
+  }
+
+  @media screen and (max-width: $mobile) {
+    font-size: $fontSize;
+    width: 100%;
+    height: 30vh;
+    text-align: center;
+
+    &:after {
+      display: none;
+    }
+  }
+}

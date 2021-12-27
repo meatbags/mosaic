@@ -29,7 +29,7 @@
     }
 
     .content {
-      @include padding(8, 8);
+      //@include padding(8, 8);
       position: relative;
       width: 100%;
       height: 100%;
@@ -38,6 +38,7 @@
       align-items: center;
       overflow: hidden;
       display: none;
+      background: black;
 
       img {
         width: 100%;
@@ -82,11 +83,11 @@
         font-weight: bold;
         user-select: none;
         pointer-events: all;
-        line-height: 1;
+        line-height: 0;
         display: flex;
         justify-content: center;
         align-items: center;
-        background: $black;
+        background: black;
         z-index: 1;
         display: none;
 
@@ -110,7 +111,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: $black;
+        background: black;
         z-index: 1;
         display: none;
 
@@ -142,7 +143,7 @@
     }
 
     &.active {
-      background: linear-gradient(0deg, $green, transparent 1px), linear-gradient(90deg, $green, transparent 1px);
+      //background: linear-gradient(0deg, $green, transparent 1px), linear-gradient(90deg, $green, transparent 1px);
       background-size: 6px 8px;
       display: flex;
       position: fixed;
@@ -153,7 +154,7 @@
       transform: translate(-50%, -50%);
       cursor: crosshair;
       z-index: 999;
-      outline: 2px dashed red;
+      //outline: 2px dashed red;
 
       .content {
         display: flex;
@@ -204,7 +205,6 @@
 
   @media screen and (max-width: $mobile) {
     .overlay__hotspot {
-
       .content {
         @include padding(1, 1);
       }
