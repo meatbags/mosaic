@@ -23,22 +23,6 @@ const Config = {
       }
       return res.sort(() => Math.random() - 0.5);
     })(),
-    staticDescriptions: [{
-      page: 'index',
-      description: `
-        <span>Xavier Burrow</span> is a digital artist and designer based in Sydney, Australia.
-        Practicing across film, animation, and interactive mediums, his work aims to
-        bewilder, frustrate, yet ultimately delight.
-      `,
-    }, {
-      page: 'contact',
-      description: `
-        <span>GET IN TOUCH:</span><br />
-        <a href='mailto:jxburrow@gmail.com'>jxburrow@gmail.com</a><br />
-        <a href='https://www.instagram.com/xavebabes/' target='_blank'>instagram</a>
-        <a href='https://github.com/meatbags' target='_blank'>github</a>
-      `,
-    }],
     projects: [{
         name: 'preppers',
         date: '2020',
@@ -47,6 +31,8 @@ const Config = {
         description: `
           <span>PREPPERS</span> (web installation 2020) is an art installation
           by ART ON THE MOVE exploring the freshly relevant PREPPER culture
+          <br />
+          <a href="https://preppers.gallery/" target="_blank">VISIT SITE</a>
         `,
         images: [
           'img/preppers_01.jpg',
@@ -63,6 +49,8 @@ const Config = {
           <span>EPOCH WARS</span> (web installation 2021)
           is an art project by PONY EXPRESS exploring the definition of EPOCHS
           through esoteric EPOCH commissions
+          <br />
+          <a href="https://epoch-wars.com/" target="_blank">VISIT SITE</a>
         `,
         images: [
           'img/ew_1.jpg',
@@ -77,7 +65,8 @@ const Config = {
         url: 'https://panic-buy-online.com/',
         description: `
           <span>PANIC BUY</span> (web installation/video game 2020) is an art installation
-          by TIYAN BAKER and GUY LOUDEN exploring the phenomenon of PANIC BUYING
+          by TIYAN BAKER and GUY LOUDEN exploring the phenomenon of PANIC BUYING<br />
+          <a href="https://panic-buy-online.com/" target="_blank">VISIT SITE</a>
         `,
         images: [
           'img/panic_buy_01.jpg',
@@ -86,10 +75,13 @@ const Config = {
         ]
       }, {
         name: 'closed_on_monday',
+        date: '2020',
         url: 'https://closedonmondaygallery.com/',
         description: `
           <span>Closed On Monday</span> (2019 - present) is a virtual gallery
-          featuring audio, visual, and sculpture works by Sydney-based artists`,
+          featuring audio, visual, and sculpture works by Sydney-based artists
+          <br />
+          <a href="https://closedonmondaygallery.com/" target="_blank">VISIT SITE</a>`,
         getMesh: () => {
           // create mesh -- com
           let mat = new THREE.MeshStandardMaterial({color:0xffffff});
@@ -116,6 +108,7 @@ const Config = {
       }, {
         name: 'toxotes',
         character: 'X',
+        date: '2019',
         description: `
           <span>TOXOTES</span> (music video / 2019)
           is a music video for Sydney artist ZHE NHIR featuring
@@ -125,7 +118,35 @@ const Config = {
           'https://www.youtube.com/embed/7Rc7XGBK6sg',
         ]
       }, {
+        name: 'we_are_city_plaza',
+        date: '2018',
+        url: 'https://wearecityplaza.net/',
+        description: `
+          <span>WE ARE CITY PLAZA</span> (exhibition website 2018)
+          is a photography exhibition centred around the CITY PLAZA refugee housing project in ATHENS, GREECE
+          <br />
+          <a href="https://wearecityplaza.net/" target="_blank">VISIT SITE</a>
+        `,
+        images: [
+          'img/cp_1.jpg',
+          'img/cp_2.jpg',
+          'img/cp_3.jpg',
+        ],
+        getMesh: () => {
+          let mat = new THREE.MeshStandardMaterial({color:0xffffff});
+          let wacp = new THREE.Group();
+          let wacp_size = 0.8;
+          wacp.add(new THREE.Mesh(new THREE.BoxBufferGeometry(wacp_size, 0.2, wacp_size), mat.clone()));
+          wacp.add(new THREE.Mesh(new THREE.BoxBufferGeometry(wacp_size, 0.2, wacp_size), mat.clone()));
+          wacp.add(new THREE.Mesh(new THREE.BoxBufferGeometry(wacp_size, 0.2, wacp_size), mat.clone()));
+          wacp.add(new THREE.Mesh(new THREE.BoxBufferGeometry(wacp_size, 0.2, wacp_size), mat.clone()));
+          wacp.children.forEach((child, i) => { child.position.y = 0.1 + i * 0.35; });
+          wacp.visible = false;
+          return wacp;
+        }
+      }, {
         name: 'mcncs',
+        date: '2018',
         url: 'http://www.mcncs.io/',
         description: `<span>MCNCS</span> (2018) pre-launch branding and microsite for MECHANICS festival`,
         images: [
@@ -148,32 +169,9 @@ const Config = {
           return mcncs;
         }
       }, {
-        name: 'we_are_city_plaza',
-        url: 'https://wearecityplaza.net/',
-        description: `
-          <span>WE ARE CITY PLAZA</span> (exhibition website 2018)
-          is a photography exhibition centred around the CITY PLAZA refugee housing project in ATHENS, GREECE
-        `,
-        images: [
-          'img/cp_1.jpg',
-          'img/cp_2.jpg',
-          'img/cp_3.jpg',
-        ],
-        getMesh: () => {
-          let mat = new THREE.MeshStandardMaterial({color:0xffffff});
-          let wacp = new THREE.Group();
-          let wacp_size = 0.8;
-          wacp.add(new THREE.Mesh(new THREE.BoxBufferGeometry(wacp_size, 0.2, wacp_size), mat.clone()));
-          wacp.add(new THREE.Mesh(new THREE.BoxBufferGeometry(wacp_size, 0.2, wacp_size), mat.clone()));
-          wacp.add(new THREE.Mesh(new THREE.BoxBufferGeometry(wacp_size, 0.2, wacp_size), mat.clone()));
-          wacp.add(new THREE.Mesh(new THREE.BoxBufferGeometry(wacp_size, 0.2, wacp_size), mat.clone()));
-          wacp.children.forEach((child, i) => { child.position.y = 0.1 + i * 0.35; });
-          wacp.visible = false;
-          return wacp;
-        }
-      }, {
         name:'the_pixies',
         character: '?',
+        date: '2016',
         description: `
           <span>TENEMENT SONG</span> (music video 2016) for TENEMENT SONG by THE PIXIES
         `,
@@ -185,7 +183,8 @@ const Config = {
         ],
         videos: ['https://www.youtube.com/embed/-SLgXBLQA2M']
       }, {
-        name:'dongles',
+        name: 'dongles',
+        date: '2019',
         character: 'D',
         description: `
           <span>DONGLES</span> (animation 2019) a proof-of-concept video animation
@@ -201,6 +200,7 @@ const Config = {
         ]
       }, {
         name: 'pencil_mmo',
+        date: '2020',
         description: `
           <span>PENCIL MMO</span> (MMO art game / 2020)
           massively multiplayer drawing game

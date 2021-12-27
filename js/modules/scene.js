@@ -288,6 +288,26 @@ class Scene {
       let slotIndex2 = Math.floor(Math.random() * slots.length);
       let clickableIndex = 0;
 
+      // add to nav
+      let year = p.date || '2022';
+      let button = CreateElement({
+        class: 'button',
+        dataset: { page: p.name },
+        innerText: p.name,
+        addEventListener: {
+          click: () => { this.goToPage(p.name); },
+        },
+      });
+      let target = document.querySelector(`#text-container [data-target="work"] [data-year="${year}"]`);
+      if (!target) {
+        target = CreateElement({
+          dataset: { year: year },
+          innerHTML: `<span>${year}</span><br />`,
+        });
+        document.querySelector(`#text-container [data-target="work"]`).appendChild(target);
+      }
+      target.appendChild(button);
+
       // url
       if (p.url) {
         let url= new Interactive({
@@ -377,40 +397,25 @@ class Scene {
 
       // description
       if (p.description) {
-        /*
-        let desc = new Interactive({
-          root: this,
-          page: p.name,
-          text: '{INFO}',
-          index: clickableIndex++,
-          textSize: 0.5,
-          el: {
-            class: 'overlay__hotspot overlay__hotspot--description',
-            childNodes: [{
-              class: 'content',
-              childNodes: [{
-                class: 'description',
-                innerHTML: p.description,
-              }]
-            }],
-          },
+        let e = CreateElement({
+          dataset: { target: p.name },
+          innerHTML: p.description
         });
-        let slot = slots[(slotIndex2++) % slots.length];
-        let baseX = slot[0];
-        let baseZ = slot[1];
-        desc.meshes.forEach((mesh, i) => {
-          let x = baseX;
-          let z = baseZ - i * 0.5;
-          mesh.position.set(x, this.getHeight(x, z), z);
-        });
-        this.objects.push(desc);
-        */
+        document.querySelector('#text-container').appendChild(e);
       }
     });
   }
 
-  setDescription(html) {
-    document.querySelector('#text-container').innerHTML = html;
+  setDescription(page) {
+    let target = document.querySelector(`#text-container [data-target="${page}"]`);
+    if (target && !target.classList.contains('active')) {
+       document.querySelectorAll('#text-container .active').forEach(e => {
+         e.classList.remove('active');
+       });
+       setTimeout(() => {
+         target.classList.add('active');
+       }, 500);
+    }
   }
 
   createButton(params) {
@@ -598,24 +603,7 @@ class Scene {
     });
 
     // set description
-    let desc = '';// Config.Scene.indexHTML;
-    Config.Scene.projects.forEach((item, i) => {
-      if (item.name == page && item.description) {
-        desc = item.description;
-      }
-    });
-    if (desc == '') {
-      Config.Scene.staticDescriptions.forEach(item => {
-        if (item.page == page && item.description) {
-          desc = item.description;
-        }
-      });
-    }
-    if (desc == '') {
-      desc = Config.Scene.staticDescriptions[0].description;
-    }
-    this.setDescription('');
-    setTimeout(() => { this.setDescription(desc); }, 500);
+    this.setDescription(page);
 
     // animate map
     if (ripple) {

@@ -2,24 +2,31 @@
   position: fixed;
   top: 0;
   left: 0;
-  //background: linear-gradient(to top, transparent, $red);
   font-size: $fontSizeLarge;
-  // display: flex;
-  //align-items: flex-end;
   width: 20vw;
   height: 80vh;
   border-right: $frameBorder;
-  //background: linear-gradient(to top, transparent, black);
   @include padding(2, 2);
-  //pointer-events: none;
   user-select: none;
   z-index: $indexText;
+
+  [data-target] {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
 
   span {
     color: $green;
   }
 
-  a:hover {
+  .button {
+    cursor: pointer;
+  }
+
+  a:hover, .button:hover {
     color: $green;
     text-decoration: underline;
   }
@@ -44,6 +51,26 @@
     width: 100%;
     height: 30vh;
     text-align: center;
+
+    [data-target="work"].active {
+      display: inline-flex;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      [data-year] {
+        display: inline-flex;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        div {
+          @include padding(1, 0);
+
+          &:before {
+            content: '';
+          }
+        }
+      }
+    }
 
     &:after {
       display: none;

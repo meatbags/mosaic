@@ -45,7 +45,24 @@
     </div>
 
     <div id='text-container' class='text'>
-      <!-- description here -->
+      <div data-target='index' class='active'>
+        <span>Xavier Burrow</span> is a digital artist and designer based in Sydney, Australia.
+        Practicing across film, animation, and interactive mediums, his work aims to
+        bewilder, frustrate, yet ultimately delight.
+      </div>
+      <div data-target='work'>
+        <div data-year='2021'><span>2021</span><br /></div>
+        <div data-year='2020'><span>2020</span><br /></div>
+        <div data-year='2019'><span>2019</span><br /></div>
+        <div data-year='2018'><span>2018</span><br /></div>
+        <div data-year='2016'><span>2016</span><br /></div>
+      </div>
+      <div data-target='contact'>
+        <span>GET IN TOUCH:</span><br />
+        <a href='mailto:jxburrow@gmail.com'>jxburrow@gmail.com</a><br />
+        <a href='https://www.instagram.com/xavebabes/' target='_blank'>instagram</a>
+        <a href='https://github.com/meatbags' target='_blank'>github</a>
+      </div>
     </div>
   </body>
 </html>
