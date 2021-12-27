@@ -116,10 +116,10 @@ const Config = {
       }, {
         name: 'toxotes',
         character: 'X',
-        desciption: `
-          <span>TOXOTES</span> ANIMATOR
-          music video / 2019
-          music video for TOXOTES by ZHE NHIR
+        description: `
+          <span>TOXOTES</span> (music video / 2019)
+          is a music video for Sydney artist ZHE NHIR featuring
+          procedurally-generated graphics & loops
         `,
         videos: [
           'https://www.youtube.com/embed/7Rc7XGBK6sg',
