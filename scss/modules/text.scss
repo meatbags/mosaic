@@ -11,11 +11,17 @@
   border-right: $frameBorder;
   //background: linear-gradient(to top, transparent, black);
   @include padding(2, 2);
-  pointer-events: none;
+  //pointer-events: none;
+  user-select: none;
   z-index: $indexText;
 
   span {
     color: $green;
+  }
+
+  a:hover {
+    color: $green;
+    text-decoration: underline;
   }
 
   &:after {

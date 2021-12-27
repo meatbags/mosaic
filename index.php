@@ -34,8 +34,8 @@
       </div>
 
       <div class='nav'>
-        <div class='nav__item' data-page='index'>index</div> --
-        <div class='nav__item' data-page='work'>work</div> --
+        <div class='nav__item' data-page='index'>index</div> /
+        <div class='nav__item' data-page='work'>work</div> /
         <div class='nav__item' data-page='contact'>contact</div>
       </div>
 

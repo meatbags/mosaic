@@ -23,11 +23,22 @@ const Config = {
       }
       return res.sort(() => Math.random() - 0.5);
     })(),
-    indexHTML: `
-      <span>Xavier Burrow</span> is a digital artist and designer based in Sydney, Australia.
-      Practicing across film, animation, and interactive mediums, his work aims to
-      bewilder, frustrate, yet ultimately delight.
-    `,
+    staticDescriptions: [{
+      page: 'index',
+      description: `
+        <span>Xavier Burrow</span> is a digital artist and designer based in Sydney, Australia.
+        Practicing across film, animation, and interactive mediums, his work aims to
+        bewilder, frustrate, yet ultimately delight.
+      `,
+    }, {
+      page: 'contact',
+      description: `
+        <span>GET IN TOUCH:</span><br />
+        <a href='mailto:jxburrow@gmail.com'>jxburrow@gmail.com</a><br />
+        <a href='https://www.instagram.com/xavebabes/' target='_blank'>instagram</a>
+        <a href='https://github.com/meatbags' target='_blank'>github</a>
+      `,
+    }],
     projects: [{
         name: 'preppers',
         date: '2020',

@@ -62,7 +62,7 @@ class Interactive {
         });
         let close = CreateElement({
           class: 'overlay__hotspot-close',
-          innerHTML: 'x',
+          innerHTML: '<div></div><div></div>',
           addEventListener: {
             click: evt => {
               evt.preventDefault();
@@ -75,7 +75,7 @@ class Interactive {
           class: 'overlay__controls',
           childNodes: [{
             class: 'overlay__controls-previous',
-            innerHTML: '<',
+            innerHTML: '<div></div>',
             addEventListener: {
               click: evt => {
                 evt.preventDefault();
@@ -88,7 +88,7 @@ class Interactive {
             innerHTML: `${this.index}`,
           }, {
             class: 'overlay__controls-next',
-            innerHTML: '>',
+            innerHTML: '<div></div>',
             addEventListener: {
               click: evt => {
                 evt.preventDefault();

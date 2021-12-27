@@ -598,18 +598,24 @@ class Scene {
     });
 
     // set description
-    let desc = Config.Scene.indexHTML;
+    let desc = '';// Config.Scene.indexHTML;
     Config.Scene.projects.forEach((item, i) => {
       if (item.name == page && item.description) {
         desc = item.description;
       }
     });
-    if (desc != Config.Scene.indexHTML) {
-      this.setDescription('');
+    if (desc == '') {
+      Config.Scene.staticDescriptions.forEach(item => {
+        if (item.page == page && item.description) {
+          desc = item.description;
+        }
+      });
     }
-    setTimeout(() => {
-      this.setDescription(desc); }, i * cascade
-    );
+    if (desc == '') {
+      desc = Config.Scene.staticDescriptions[0].description;
+    }
+    this.setDescription('');
+    setTimeout(() => { this.setDescription(desc); }, 500);
 
     // animate map
     if (ripple) {
