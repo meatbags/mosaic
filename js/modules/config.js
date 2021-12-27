@@ -31,7 +31,7 @@ const Config = {
         description: `
           <span>PREPPERS</span> (web installation 2020) is an art installation
           by ART ON THE MOVE exploring the freshly relevant PREPPER culture
-          <br />
+          <br /><br />
           <a href="https://preppers.gallery/" target="_blank">VISIT SITE</a>
         `,
         images: [
@@ -49,7 +49,7 @@ const Config = {
           <span>EPOCH WARS</span> (web installation 2021)
           is an art project by PONY EXPRESS exploring the definition of EPOCHS
           through esoteric EPOCH commissions
-          <br />
+          <br /><br />
           <a href="https://epoch-wars.com/" target="_blank">VISIT SITE</a>
         `,
         images: [
@@ -65,7 +65,8 @@ const Config = {
         url: 'https://panic-buy-online.com/',
         description: `
           <span>PANIC BUY</span> (web installation/video game 2020) is an art installation
-          by TIYAN BAKER and GUY LOUDEN exploring the phenomenon of PANIC BUYING<br />
+          by TIYAN BAKER and GUY LOUDEN exploring the phenomenon of PANIC BUYING
+          <br /><br />
           <a href="https://panic-buy-online.com/" target="_blank">VISIT SITE</a>
         `,
         images: [
@@ -80,7 +81,7 @@ const Config = {
         description: `
           <span>Closed On Monday</span> (2019 - present) is a virtual gallery
           featuring audio, visual, and sculpture works by Sydney-based artists
-          <br />
+          <br /><br />
           <a href="https://closedonmondaygallery.com/" target="_blank">VISIT SITE</a>`,
         getMesh: () => {
           // create mesh -- com
@@ -124,7 +125,7 @@ const Config = {
         description: `
           <span>WE ARE CITY PLAZA</span> (exhibition website 2018)
           is a photography exhibition centred around the CITY PLAZA refugee housing project in ATHENS, GREECE
-          <br />
+          <br /><br />
           <a href="https://wearecityplaza.net/" target="_blank">VISIT SITE</a>
         `,
         images: [
