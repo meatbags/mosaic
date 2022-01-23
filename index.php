@@ -48,9 +48,10 @@
       <div data-target='index' class='active'>
         <span>Xavier Burrow</span> is a digital artist and designer based in Sydney, Australia.
         Practicing across film, animation, and interactive mediums, his work aims to
-        bewilder, frustrate, yet ultimately delight.
+        equally bewilder, frustrate, and delight.
       </div>
       <div data-target='work'>
+        <div data-year='2022'><span>2022</span><br /></div>
         <div data-year='2021'><span>2021</span><br /></div>
         <div data-year='2020'><span>2020</span><br /></div>
         <div data-year='2019'><span>2019</span><br /></div>
