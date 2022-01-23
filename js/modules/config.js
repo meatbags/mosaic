@@ -24,6 +24,23 @@ const Config = {
       return res.sort(() => Math.random() - 0.5);
     })(),
     projects: [{
+        name: 'laputa',
+        date: '2022',
+        character: 'L',
+        url: 'https://getpixel.itch.io/laputa/',
+        description: `
+          <span>LAPUTA</span> (video game 2022) is a puzzle game set amongst
+          the clouds. Explore a lonely castle and solve brain-bending logic
+          puzzles
+          <br /><br />
+          <a href="https://getpixel.itch.io/laputa/" target="_blank">PLAY GAME</a>
+        `,
+        images: [
+          'img/laputa_01.jpg',
+          'img/laputa_02.jpg',
+          'img/laputa_03.jpg',
+        ]
+      }, {
         name: 'preppers',
         date: '2020',
         character: 'P',
