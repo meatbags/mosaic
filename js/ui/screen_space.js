@@ -11,6 +11,7 @@ class ScreenSpace {
     this.worldVector = new THREE.Vector3();
     this.onScreen = false;
     this.threshold = {min: -0.25, max: 1.25};
+    this.MOBILE_BREAKPOINT = 760;
   }
 
   isOnScreen() {

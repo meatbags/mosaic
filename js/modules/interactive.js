@@ -12,6 +12,7 @@ class Interactive {
     this.root = params.root;
     this.page = params.page;
     this.index = params.index === undefined ? -1 : params.index;
+    this.siblings = params.siblings || null;
 
     this.state = {
       colour: {
@@ -85,7 +86,7 @@ class Interactive {
             }
           }, {
             class: 'overlay__controls-index',
-            innerHTML: `${this.index}`,
+            innerHTML: `${this.index+1}<span class="overlay__controls-index-of"></span>`,
           }, {
             class: 'overlay__controls-next',
             innerHTML: '<div></div>',
@@ -98,6 +99,9 @@ class Interactive {
             }
           }],
         });
+        if (this.siblings) {
+          controls.querySelector('.overlay__controls-index-of').innerText = '/' + this.siblings;
+        }
         content.appendChild(close);
         content.appendChild(controls);
       }
@@ -199,8 +203,16 @@ class Interactive {
       this.screenSpace.update();
       let s = this.screenSpace.getScreenPosition();
       let rect = document.querySelector('#canvas-target canvas').getBoundingClientRect();
-      this.el.style.left = `${s.x * window.innerWidth + rect.left}px`;
-      this.el.style.top = `${s.y * window.innerHeight - 10}px`;
+      if (window.innerWidth <= Config.MOBILE_BREAKPOINT) {
+        let ratio = window.innerHeight / window.innerWidth;
+        let yoffset = 10;
+        this.el.style.left = `${s.x * window.innerWidth}px`;
+        this.el.style.top = `${s.y * window.innerHeight - yoffset}px`;
+      } else {
+        this.el.style.left = `${s.x * window.innerWidth + rect.left}px`;
+        this.el.style.top = `${s.y * window.innerHeight - 10}px`;
+      }
+
     }
 
     // hover

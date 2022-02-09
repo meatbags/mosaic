@@ -3,6 +3,7 @@
 import * as THREE from 'three';
 
 const Config = {
+  MOBILE_BREAKPOINT: 760,
   Scene: {
     cascade: 70,
     slots: (() => {
@@ -197,7 +198,6 @@ const Config = {
           'img/pixies_1.jpg',
           'img/pixies_2.jpg',
           'img/pixies_3.jpg',
-          'img/pixies_4.jpg',
         ],
         videos: ['https://www.youtube.com/embed/-SLgXBLQA2M']
       }, {

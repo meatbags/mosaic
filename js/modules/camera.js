@@ -12,6 +12,7 @@ class Camera {
     this.camera.position.set(0, 0, 0);
     this.origin = new THREE.Vector3(0, 0, 0);
     this.rotation = Math.PI * 0.25;
+    this.break = false;
 
     if (!IsMobileDevice()) {
       window.addEventListener('mousedown', evt => { this.onMouseDown(evt); });
@@ -48,8 +49,7 @@ class Camera {
     let portrait = window.innerWidth < window.innerHeight;
     let dpr = Math.max(Config.Renderer.devicePixelRatioMin, window.devicePixelRatio);
     this.size = {x: window.innerWidth*dpr, y: window.innerHeight*dpr};
-    let scale = (portrait ? 10.5 : 15) / this.size.x;
-
+    let scale = (portrait ? 10.25 : 15) / this.size.x;
     this.camera.left = -this.size.x * scale;
     this.camera.right = this.size.x * scale;
     this.camera.top = this.size.y * scale;
@@ -58,15 +58,17 @@ class Camera {
   }
 
   onMouseDown(evt) {
+    this.break = window.innerWidth <= Config.MOBILE_BREAKPOINT;
     this.ref.event = {};
-    this.ref.event.clientX = evt.clientX;
+    this.ref.event.clientX = this.break ? evt.clientY : evt.clientX;
     this.ref.event.active = true;
     this.ref.event.rotation = this.rotation;
   }
 
   onMouseMove(evt) {
     if (this.ref.event && this.ref.event.active) {
-      let dx = evt.clientX - this.ref.event.clientX;
+      let x = this.break ? evt.clientY : evt.clientX;
+      let dx = this.break ? this.ref.event.clientX - x : x - this.ref.event.clientX;
       this.rotation = this.ref.event.rotation + dx / (window.innerWidth / 2) * Math.PI;
     }
   }

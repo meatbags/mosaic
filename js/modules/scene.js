@@ -308,6 +308,11 @@ class Scene {
       }
       target.appendChild(button);
 
+      // count elements
+      let n = 0;
+      if (p.images) { n += p.images.length; }
+      if (p.videos) { n += p.videos.length; }
+
       // url
       if (p.url) {
         let url= new Interactive({
@@ -342,6 +347,7 @@ class Scene {
             root: this,
             page: p.name,
             index: clickableIndex++,
+            siblings: n,
             mesh: this.getCrumpledPaperMesh(),
             el: {
               class: 'overlay__hotspot overlay__hotspot--image',
@@ -372,6 +378,7 @@ class Scene {
             text: '{VIDEO}',
             textSize: 0.5,
             index: clickableIndex++,
+            siblings: n,
             el: {
               class: 'overlay__hotspot overlay__hotspot--video',
               childNodes: [{

@@ -34,8 +34,8 @@
       </div>
 
       <div class='nav'>
-        <div class='nav__item' data-page='index'>index</div> /
-        <div class='nav__item' data-page='work'>work</div> /
+        <div class='nav__item' data-page='index'>index</div>
+        <div class='nav__item' data-page='work'>work</div>
         <div class='nav__item' data-page='contact'>contact</div>
       </div>
 
@@ -46,23 +46,22 @@
 
     <div id='text-container' class='text'>
       <div data-target='index' class='active'>
-        <span>Xavier Burrow</span> is a digital artist and designer based in Sydney, Australia.
-        Practicing across film, animation, and interactive mediums, his work aims to
-        equally bewilder, frustrate, and delight.
+        <span>Xavier Burrow</span> is an interactive developer based in Sydney, Australia. His work aims to bewilder and delight.
       </div>
       <div data-target='work'>
-        <div data-year='2022'><span>2022</span><br /></div>
-        <div data-year='2021'><span>2021</span><br /></div>
-        <div data-year='2020'><span>2020</span><br /></div>
-        <div data-year='2019'><span>2019</span><br /></div>
-        <div data-year='2018'><span>2018</span><br /></div>
-        <div data-year='2016'><span>2016</span><br /></div>
+        <div data-year='2022'><span>2022</span></div>
+        <div data-year='2021'><span>2021</span></div>
+        <div data-year='2020'><span>2020</span></div>
+        <div data-year='2019'><span>2019</span></div>
+        <div data-year='2018'><span>2018</span></div>
+        <div data-year='2016'><span>2016</span></div>
       </div>
       <div data-target='contact'>
         <span>GET IN TOUCH:</span><br />
         <a href='mailto:jxburrow@gmail.com'>jxburrow@gmail.com</a><br />
         <a href='https://www.instagram.com/xavebabes/' target='_blank'>instagram</a><br />
-        <a href='https://github.com/meatbags' target='_blank'>github</a>
+        <a href='https://github.com/meatbags' target='_blank'>github</a><br />
+        <a href='https://getpixel.itch.io/' target='_blank'>itch.io</a>
       </div>
     </div>
   </body>

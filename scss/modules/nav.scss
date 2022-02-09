@@ -2,7 +2,7 @@
   position: fixed;
   padding: $space * 2;
   bottom: 0;
-  right: 0;//$space * 2;
+  right: 0;
   width: 70vw;
   height: 10vh;
   color: $white;
@@ -12,12 +12,6 @@
   justify-content: flex-end;
   align-items: center;
   border-top: $frameBorder;
-  //background: linear-gradient(to right, transparent, blue);
-  /*
-  background: linear-gradient(0deg, $green, transparent 1px),
-    linear-gradient(90deg, $green, transparent 1px);
-  background-size: 7px 3px;
-  */
   font-size: $fontSizeLarge;
 
   .nav__item {

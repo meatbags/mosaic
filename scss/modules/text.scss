@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   font-size: $fontSizeLarge;
-  width: 20vw;
+  width: 22.5vw;
   height: 80vh;
   border-right: $frameBorder;
   @include padding(2, 2);
@@ -20,6 +20,18 @@
 
   span {
     color: $green;
+  }
+
+  [data-year] {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-top: $space*2;
+
+    span {
+      //font-size: 70%;
+    }
   }
 
   .button {
@@ -59,8 +71,10 @@
 
       [data-year] {
         display: inline-flex;
+        flex-direction: row;
         justify-content: center;
         flex-wrap: wrap;
+        padding-top: 0;// $space;
 
         div {
           @include padding(1, 0);
