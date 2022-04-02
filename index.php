@@ -46,7 +46,8 @@
 
     <div id='text-container' class='text'>
       <div data-target='index' class='active'>
-        <span>Xavier Burrow</span> is an interactive developer based in Sydney, Australia. His work aims to bewilder and delight.
+        <span>Xavier Burrow</span> is an interactive artist and developer<br /> living and working on Gadigal lands/Sydney, Australia.<br />
+        His work immerses the user in novel spaces and experiences,<br /> aiming to bewilder and delight.
       </div>
       <div data-target='work'>
         <div data-year='2022'><span>2022</span></div>

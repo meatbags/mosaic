@@ -1,16 +1,15 @@
-var path = require('path');
-var webpack = require('webpack');
-var MiniCssExtract = require("mini-css-extract-plugin");
-var UglifyJs = require("uglifyjs-webpack-plugin");
-var TerserJs = require("terser-webpack-plugin");
-var OptimizeCSSAssets = require("optimize-css-assets-webpack-plugin");
+const path = require('path');
+const webpack = require('webpack');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const TerserJs = require("terser-webpack-plugin");
 
 // path
-var appName = 'TPCSC';
-var pathJS = './js/app.js';
-var pathSCSS = './scss/main.js';
-var pathJSOutput = 'build';
-var pathCSSOutput = 'build';
+const appName = 'XB';
+const pathJS = './js/app.js';
+const pathSCSS = './scss/main.js';
+const pathJSOutput = 'build';
+const pathCSSOutput = 'build';
 
 module.exports = [{
     entry: {'app.min': pathJS},
@@ -48,36 +47,25 @@ module.exports = [{
       ],
     },
     stats: {colors: true, warnings: false}
-  },{
-    entry: {'style.webpack': pathSCSS},
+  }, {
+    entry: {'style.min': pathSCSS},
     output: {
       path: path.resolve(__dirname, pathCSSOutput),
       filename: '[name].js'
     },
     module: {
-      rules: [{
-        test: /\.scss$/,
-        use: [
-          MiniCssExtract.loader, {
-            loader: 'css-loader',
-            options: {importLoaders: 2, sourceMap: true}
-          }, {
-            loader: 'sass-loader',
-            options: {sourceMap: true}
-          }
-        ]
-      }]
+      rules: [
+        {
+          test: /.s?css$/,
+          use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+        },
+      ],
     },
     optimization: {
       minimizer: [
-        new UglifyJs({
-          cache: true,
-          parallel: true,
-          sourceMap: true
-        }),
-        new OptimizeCSSAssets({})
-      ]
+        new CssMinimizerPlugin(),
+      ],
+      minimize: true,
     },
-    plugins: [new MiniCssExtract({filename: './style.min.css', allChunks: true})]
-  }
-];
+    plugins: [new MiniCssExtractPlugin()],
+}];

@@ -29,6 +29,10 @@
     align-items: flex-start;
     padding-top: $space*2;
 
+    &:first-child {
+      padding-top: 0;
+    }
+
     span {
       //font-size: 70%;
     }
