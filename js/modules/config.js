@@ -5,7 +5,7 @@ import * as THREE from 'three';
 const Config = {
   MOBILE_BREAKPOINT: 760,
   Scene: {
-    cascade: 70,
+    cascade: 50,
     slots: (() => {
       let res = [];
       for (let x=-5; x<=5; x+=2.5) {
@@ -97,7 +97,7 @@ const Config = {
         date: '2020',
         url: 'https://closedonmondaygallery.com/',
         description: `
-          <span>Closed On Monday</span> (2019 - present) is a virtual gallery
+          <span>CLOSED ON MONDAY</span> (2019 - present) is a virtual gallery
           featuring audio, visual, and sculpture works by Sydney-based artists
           <br /><br />
           <a href="https://closedonmondaygallery.com/" target="_blank">VISIT SITE</a>`,
@@ -132,6 +132,8 @@ const Config = {
           <span>TOXOTES</span> (music video / 2019)
           is a music video for Sydney artist ZHE NHIR featuring
           procedurally-generated graphics & loops
+          <br><br>
+          <a href="https://www.youtube.com/watch?v=7Rc7XGBK6sg" target="_blank">WATCH VIDEO</a>
         `,
         videos: [
           'https://www.youtube.com/embed/7Rc7XGBK6sg',
@@ -192,7 +194,9 @@ const Config = {
         character: '?',
         date: '2016',
         description: `
-          <span>TENEMENT SONG</span> (music video 2016) for TENEMENT SONG by THE PIXIES
+          <span>TENEMENT SONG</span> (music video 2016) for TENEMENT SONG by THE PIXIES made in AFTER EFFECTS
+          <br><br>
+          <a href="https://www.youtube.com/watch?v=-SLgXBLQA2M" target="_blank">WATCH VIDEO</a>
         `,
         images: [
           'img/pixies_1.jpg',
@@ -207,6 +211,8 @@ const Config = {
         description: `
           <span>DONGLES</span> (animation 2019) a proof-of-concept video animation
           with looping components
+          <br><br>
+          <a href="https://www.youtube.com/watch?v=CQv_DFBlqEU" target="_blank">WATCH VIDEO</a>
         `,
         images: [
           'img/dongles_1.jpg',

@@ -4,7 +4,7 @@
   bottom: 0;
   right: 0;
   width: 70vw;
-  height: 10vh;
+  //height: 10vh;
   color: $white;
   z-index: $indexNav;
   user-select: none;
@@ -26,6 +26,7 @@
     }
 
     &.active {
+      text-decoration: underline;
       color: $green;
     }
   }

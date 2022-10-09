@@ -18,24 +18,31 @@
     }
   }
 
+  .back-button {
+    font-size: $fontSizeLarge;
+    cursor: pointer;
+    line-height: 1;
+    display: inline-block;
+    font-size: 70%;
+    //color: $green;
+
+    &:hover {
+      color: $green;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
+
   span {
+    font-weight: bold;
+    text-decoration: underline;
     color: $green;
   }
 
-  [data-year] {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding-top: $space*2;
-
-    &:first-child {
-      padding-top: 0;
-    }
-
-    span {
-      //font-size: 70%;
-    }
+  .heading {
+    font-size: 75%;
+    font-weight: bold;
+    text-decoration: underline;
   }
 
   .button {
@@ -60,6 +67,51 @@
     border-bottom-left-radius: 100px;
     border-top: none;
     border-right: none;
+  }
+
+  [data-target="work"] {
+    [data-year] {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding-top: $space * 2;
+
+      &:first-child {
+        padding-top: 0;
+      }
+
+      span {
+        font-size: 75%;
+        font-weight: bold;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  [data-target="contact"] {
+    .heading {
+      font-size: 75%;
+      font-weight: bold;
+      text-decoration: underline;
+      color: $green;
+      padding-top: $space * 2;
+      text-transform: lowercase;
+
+      &:first-child {
+        padding-top: 0;
+      }
+    }
+
+    a {
+      color: $white;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+        color: $green;
+      }
+    }
   }
 
   @media screen and (max-width: $mobile) {

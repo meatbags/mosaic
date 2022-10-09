@@ -406,7 +406,16 @@ class Scene {
       if (p.description) {
         let e = CreateElement({
           dataset: { target: p.name },
-          innerHTML: p.description
+          children: [{
+              class: 'back-button',
+              innerHTML: '&larr; back',
+              addEventListener: {
+                click: () => { this.goToPage('work'); },
+              }
+            }, {
+              innerHTML: '<br>' + p.description,
+            },
+          ]
         });
         document.querySelector('#text-container').appendChild(e);
       }
@@ -419,8 +428,9 @@ class Scene {
        document.querySelectorAll('#text-container .active').forEach(e => {
          e.classList.remove('active');
        });
-       setTimeout(() => {
+       this.setDescriptionTimeout = setTimeout(() => {
          target.classList.add('active');
+         this.setDescriptionTimeout = null;
        }, 500);
     }
   }
@@ -587,7 +597,11 @@ class Scene {
   }
 
   goToPage(page, ripple=true) {
-    if (this.pageTransitionLock) { return; }
+    // cancel current page transitions
+    if (this.pageTransitionLock) {
+      console.log('LOCKED');
+      return;
+    }
     this.pageTransitionLock = true;
 
     let i = 0;
@@ -596,7 +610,9 @@ class Scene {
     // close current page
     this.objects.forEach(obj => {
       if (obj.page !== page && obj.active) {
-        setTimeout(() => { obj.hide(); }, i * cascade);
+        obj.timeout = setTimeout(() => {
+          obj.hide();
+        }, i * cascade);
         i += obj.meshes.length;
       }
     });
@@ -604,7 +620,9 @@ class Scene {
     // open next page
     this.objects.forEach(obj => {
       if (obj.page == page) {
-        setTimeout(() => { obj.show(); }, i * cascade);
+        obj.timeout = setTimeout(() => {
+          obj.show();
+        }, i * cascade);
         i += obj.meshes.length;
       }
     });
@@ -648,8 +666,9 @@ class Scene {
     });
 
     // remove lock
-    setTimeout(() => {
+    this.pageTransitionLockTimeout = setTimeout(() => {
       this.pageTransitionLock = false;
+      this.pageTransitionLockTimeout = null;
     }, i * cascade);
   }
 

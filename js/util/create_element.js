@@ -7,7 +7,7 @@ function CreateElement(params) {
     const type = typeof(params[key]);
     if (type === 'object') {
       // append child nodes recursively
-      if (key === 'childNodes') {
+      if (key === 'childNodes' || key === 'children') {
         params[key].forEach(child => {
           const childNode = CreateElement(child);
           res.appendChild(childNode);

@@ -11,6 +11,14 @@ class Animation {
     };
   }
 
+  cancel() {
+    if (!this.active) {
+      return;
+    }
+    this.callback(1);
+    this.active = false;
+  }
+
   isComplete() {
     return this.active == false;
   }
