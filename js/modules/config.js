@@ -25,6 +25,37 @@ const Config = {
       return res.sort(() => Math.random() - 0.5);
     })(),
     projects: [{
+        name: 'headquarters',
+        date: '2023',
+        character: 'H',
+        url: 'https://headquartersartspace.com/',
+        description: `
+          <span>HEADQUARTERS</span> (ARI 2023) is a disability-led digital space.
+          It centere and celebrates the work of disabled creatives.
+          <br /><br />
+          <a href="https://headquartersartspace.com/" target="_blank">VISIT SITE</a>
+        `,
+        images: [
+          'img/hq-01.jpg',
+          'img/hq-02.jpg',
+        ]
+      }, {
+        name: 'ponyexpress',
+        date: '2023',
+        character: '&',
+        url: 'https://helloponyexpress.com/',
+        description: `
+          <span>PONYEXPRESS</span> (website 2023) is an experimental live art duo
+          working across media art, performance, and video.
+          <br /><br />
+          <a href="https://helloponyexpress.com/" target="_blank">VISIT SITE</a>
+        `,
+        images: [
+          'img/pony-01.jpg',
+          'img/pony-02.jpg',
+          'img/pony-03.jpg',
+        ]
+      }, {
         name: 'laputa',
         date: '2022',
         character: 'L',
@@ -93,7 +124,7 @@ const Config = {
           'img/panic_buy_03.png',
         ]
       }, {
-        name: 'closed_on_monday',
+        name: 'c_o_m',
         date: '2020',
         url: 'https://closedonmondaygallery.com/',
         description: `

@@ -1,0 +1,29 @@
+@mixin fade_opacity($a, $b) {
+  opacity: 1 - $a / $b + 0.02;
+}
+
+$n: 15;
+
+.fade {
+  display: inline;
+
+  .fade__item {
+    display: inline;
+
+    &:nth-child(1) { @include fade_opacity(1, $n); }
+    &:nth-child(2) { @include fade_opacity(2, $n); }
+    &:nth-child(3) { @include fade_opacity(3, $n); }
+    &:nth-child(4) { @include fade_opacity(4, $n); }
+    &:nth-child(5) { @include fade_opacity(5, $n); }
+    &:nth-child(6) { @include fade_opacity(6, $n); }
+    &:nth-child(7) { @include fade_opacity(7, $n); }
+    &:nth-child(8) { @include fade_opacity(8, $n); }
+    &:nth-child(9) { @include fade_opacity(9, $n); }
+    &:nth-child(10) { @include fade_opacity(10, $n); }
+    &:nth-child(11) { @include fade_opacity(11, $n); }
+    &:nth-child(12) { @include fade_opacity(12, $n); }
+    &:nth-child(13) { @include fade_opacity(13, $n); }
+    &:nth-child(14) { @include fade_opacity(14, $n); }
+    &:nth-child(15) { @include fade_opacity(15, $n); }
+  }
+}

@@ -26,3 +26,10 @@ a {
   color: inherit;
   text-decoration: underline;// none;
 }
+
+
+a, .nav__item, .overlay__hotspot {
+  //outline: 1px solid #666;
+  //border-radius: 10px;
+  //box-shadow: 4px 4px 26px $green;
+}

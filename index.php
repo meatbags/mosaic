@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Karla&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='build/style.min.css'>
   </head>
   <body data-initial-page='<?php echo $page; ?>'>
@@ -46,12 +47,29 @@
         <span>Xavier Burrow</span>
         <br>
         is an interactive developer living and working on Gadigal lands/Sydney, Australia.
-        His work immerses the user in novel spaces and experiences, aiming to bewilder, delight, and transport.
-
+        His work immerses the user in novel spaces and experiences, aiming to
+        <div class='fade'>
+          <div class='fade__item'>bewilder, </div>
+          <div class='fade__item'>delight, </div>
+          <div class='fade__item'>annoy, </div>
+          <div class='fade__item'>transport, </div>
+          <div class='fade__item'>arouse, </div>
+          <div class='fade__item'>uplift, </div>
+          <div class='fade__item'>downplay, </div>
+          <div class='fade__item'>enrage, </div>
+          <div class='fade__item'>attack, </div>
+          <div class='fade__item'>blaspheme, </div>
+          <div class='fade__item'>sexualise, </div>
+          <div class='fade__item'>pretend, </div>
+          <div class='fade__item'>bungle, </div>
+          <div class='fade__item'>encode, </div>
+          <div class='fade__item'>be barely visible </div>
+        </div>
       </div>
       <div data-target='work'>
         <span>Selected work</span>
         <br>
+        <div data-year='2023'><span>2023</span></div>
         <div data-year='2022'><span>2022</span></div>
         <div data-year='2021'><span>2021</span></div>
         <div data-year='2020'><span>2020</span></div>

@@ -4,11 +4,19 @@
   left: 0;
   font-size: $fontSizeLarge;
   width: 22.5vw;
-  height: 80vh;
+  height: 100vh;
   border-right: $frameBorder;
   @include padding(2, 2);
   user-select: none;
   z-index: $indexText;
+
+  // reverse scrollbar
+  overflow-x: visible;
+  overflow-y: scroll;
+  direction: rtl;
+  > span, > div {
+    direction:ltr;
+  }
 
   [data-target] {
     display: none;
@@ -36,6 +44,7 @@
   span {
     font-weight: bold;
     text-decoration: underline;
+    text-transform: uppercase;
     color: $green;
   }
 
@@ -76,6 +85,7 @@
       justify-content: flex-start;
       align-items: flex-start;
       padding-top: $space * 2;
+      // text-transform: uppercase;
 
       &:first-child {
         padding-top: 0;
@@ -97,6 +107,7 @@
       color: $green;
       padding-top: $space * 2;
       text-transform: lowercase;
+      margin-bottom: 10px;
 
       &:first-child {
         padding-top: 0;

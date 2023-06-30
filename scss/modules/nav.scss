@@ -17,11 +17,11 @@
   .nav__item {
     @include padding(1, 0.75);
     cursor: pointer;
-    //font-weight: bold;
     color: $white;
+    margin-right: 10px;
+    text-transform: uppercase;
 
     &:hover {
-      //text-shadow: 1px 1px $black, -1px -1px $black;
       text-decoration: underline;
     }
 
