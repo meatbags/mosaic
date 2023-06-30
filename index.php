@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Karla&display=swap" rel="stylesheet">
-    <link rel='stylesheet' href='build/style.min.css'>
+    <link rel='stylesheet' href='build/style.min.css?v=2023'>
   </head>
   <body data-initial-page='<?php echo $page; ?>'>
     <div id='loading-screen' class='loading-screen'>
