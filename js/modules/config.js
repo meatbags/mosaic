@@ -24,40 +24,46 @@ const Config = {
       }
       return res.sort(() => Math.random() - 0.5);
     })(),
-    projects: [{
-        name: 'headquarters',
-        date: '2023',
-        character: 'H',
-        url: 'https://headquartersartspace.com/',
+    projects: [
+      /** GAMES */
+      {
+        name: 'sine',
+        group: 'games',
+        url: 'https://getpixel.itch.io/sine/',
         description: `
-          <span>HEADQUARTERS</span> (ARI 2023) is a disability-led digital space.
-          It centere and celebrates the work of disabled creatives.
+          <span>sine</span> (video game 2024) is a short audio-visual puzzle game.
+          Traverse a vast subterranean soundscape, guided by an algorithm-generated
+          soundtrack
           <br /><br />
-          <a href="https://headquartersartspace.com/" target="_blank">VISIT SITE</a>
+          <a href="https://getpixel.itch.io/sine/" target="_blank">PLAY GAME</a>
         `,
         images: [
-          'img/hq-01.jpg',
-          'img/hq-02.jpg',
-        ]
-      }, {
-        name: 'ponyexpress',
-        date: '2023',
-        character: '&',
-        url: 'https://helloponyexpress.com/',
-        description: `
-          <span>PONYEXPRESS</span> (website 2023) is an experimental live art duo
-          working across media art, performance, and video.
-          <br /><br />
-          <a href="https://helloponyexpress.com/" target="_blank">VISIT SITE</a>
-        `,
-        images: [
-          'img/pony-01.jpg',
-          'img/pony-02.jpg',
-          'img/pony-03.jpg',
-        ]
+          'img/sine_01.jpg',
+          'img/sine_02.jpg',
+          'img/sine_03.jpg',
+          'img/sine_04.jpg',
+        ],
+        getMesh: () => {
+          let mat = new THREE.MeshStandardMaterial({color:0xffffff});
+          let sineWave = new THREE.Group();
+          let s = 0.125;
+          let lim = 10;
+          let range = lim * s * 1.25;
+          for (let i=0; i<=lim; i+=1) {
+            let ball = new THREE.Mesh(new THREE.SphereGeometry(s, 12, 12), mat.clone());
+            let x = -range/2 + s*0.5 + range * i/lim;
+            let y = Math.sin(i/lim * Math.PI * 2) * s * 2 + 0.5;
+            let z = 0;
+            ball.position.set(x, y, z);
+            sineWave.add(ball);
+          }
+          sineWave.rotation.y = Math.random() * Math.PI * 2;
+          sineWave.visible = false;
+          return sineWave;
+        }
       }, {
         name: 'laputa',
-        date: '2022',
+        group: 'games',
         character: 'L',
         url: 'https://getpixel.itch.io/laputa/',
         description: `
@@ -73,26 +79,36 @@ const Config = {
           'img/laputa_03.jpg',
         ]
       }, {
-        name: 'preppers',
-        date: '2020',
-        character: 'P',
-        url: 'https://preppers.gallery/',
+        name: 'pencil_mmo',
+        group: 'games',
         description: `
-          <span>PREPPERS</span> (web installation 2020) is an art installation
-          by ART ON THE MOVE exploring the freshly relevant PREPPER culture
-          <br /><br />
-          <a href="https://preppers.gallery/" target="_blank">VISIT SITE</a>
+          <span>PENCIL MMO</span> (MMO art game / 2020)
+          massively multiplayer drawing game
         `,
         images: [
-          'img/preppers_01.jpg',
-          'img/preppers_02.jpg',
-          'img/preppers_03.jpg',
-          'img/preppers_04.jpg',
-        ]
-      }, {
+          'img/mmo_1.jpg',
+          'img/mmo_2.jpg',
+          'img/mmo_3.jpg',
+          'img/mmo_4.jpg',
+        ],
+        getMesh: () => {
+          let mat = new THREE.MeshStandardMaterial({color:0xffffff});
+          let pencil = new THREE.Group();
+          let shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 1.5, 16), mat.clone());
+          let tip = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.02, 0.25, 16), mat.clone());
+          shaft.geometry.translate(0, 1, 0);
+          tip.geometry.translate(0, 0.125, 0);
+          pencil.add(shaft, tip);
+          pencil.rotation.set(-Math.PI * 0.1, 0, -Math.PI * 0.1);
+          pencil.visible = false;
+          return pencil;
+        }
+      },
+      /** WEB/VIRTUAL */
+      {
         name: 'epoch_wars',
         character: '!',
-        date: '2021',
+        group: 'web',
         url: 'https://epoch-wars.com/',
         description: `
           <span>EPOCH WARS</span> (web installation 2021)
@@ -108,24 +124,25 @@ const Config = {
           'img/ew_4.jpg',
         ]
       }, {
-        name: 'panic_buy',
-        character: '$',
-        date: '2020',
-        url: 'https://panic-buy-online.com/',
+        name: 'preppers',
+        group: 'web',
+        character: 'P',
+        url: 'https://preppers.gallery/',
         description: `
-          <span>PANIC BUY</span> (web installation/video game 2020) is an art installation
-          by TIYAN BAKER and GUY LOUDEN exploring the phenomenon of PANIC BUYING
+          <span>PREPPERS</span> (web installation 2020) is an art installation
+          by ART ON THE MOVE exploring the freshly relevant PREPPER culture
           <br /><br />
-          <a href="https://panic-buy-online.com/" target="_blank">VISIT SITE</a>
+          <a href="https://preppers.gallery/" target="_blank">VISIT SITE</a>
         `,
         images: [
-          'img/panic_buy_01.jpg',
-          'img/panic_buy_02.png',
-          'img/panic_buy_03.png',
+          'img/preppers_01.jpg',
+          'img/preppers_02.jpg',
+          'img/preppers_03.jpg',
+          'img/preppers_04.jpg',
         ]
       }, {
         name: 'c_o_m',
-        date: '2020',
+        group: 'web',
         url: 'https://closedonmondaygallery.com/',
         description: `
           <span>CLOSED ON MONDAY</span> (2019 - present) is a virtual gallery
@@ -156,22 +173,39 @@ const Config = {
           'img/com_03.jpg',
         ]
       }, {
-        name: 'toxotes',
-        character: 'X',
-        date: '2019',
+        name: 'panic_buy',
+        character: '$',
+        group: 'web',
+        url: 'https://panic-buy-online.com/',
         description: `
-          <span>TOXOTES</span> (music video / 2019)
-          is a music video for Sydney artist ZHE NHIR featuring
-          procedurally-generated graphics & loops
-          <br><br>
-          <a href="https://www.youtube.com/watch?v=7Rc7XGBK6sg" target="_blank">WATCH VIDEO</a>
+          <span>PANIC BUY</span> (web installation/video game 2020) is an art installation
+          by TIYAN BAKER and GUY LOUDEN exploring the phenomenon of PANIC BUYING
+          <br /><br />
+          <a href="https://panic-buy-online.com/" target="_blank">VISIT SITE</a>
         `,
-        videos: [
-          'https://www.youtube.com/embed/7Rc7XGBK6sg',
+        images: [
+          'img/panic_buy_01.jpg',
+          'img/panic_buy_02.png',
+          'img/panic_buy_03.png',
+        ]
+      }, {
+        name: 'headquarters',
+        group: 'web',
+        character: 'H',
+        url: 'https://headquartersartspace.com/',
+        description: `
+          <span>HEADQUARTERS</span> (ARI 2023) is a disability-led digital space.
+          It centere and celebrates the work of disabled creatives.
+          <br /><br />
+          <a href="https://headquartersartspace.com/" target="_blank">VISIT SITE</a>
+        `,
+        images: [
+          'img/hq-01.jpg',
+          'img/hq-02.jpg',
         ]
       }, {
         name: 'we_are_city_plaza',
-        date: '2018',
+        group: 'web',
         url: 'https://wearecityplaza.net/',
         description: `
           <span>WE ARE CITY PLAZA</span> (exhibition website 2018)
@@ -198,7 +232,7 @@ const Config = {
         }
       }, {
         name: 'mcncs',
-        date: '2018',
+        group: 'web',
         url: 'http://www.mcncs.io/',
         description: `<span>MCNCS</span> (2018) pre-launch branding and microsite for MECHANICS festival`,
         images: [
@@ -220,24 +254,25 @@ const Config = {
           mcncs.visible = false;
           return mcncs;
         }
-      }, {
-        name:'the_pixies',
-        character: '?',
-        date: '2016',
+      },
+      /** VIDEO */
+      {
+        name: 'toxotes',
+        character: 'X',
+        group: 'video',
         description: `
-          <span>TENEMENT SONG</span> (music video 2016) for TENEMENT SONG by THE PIXIES made in AFTER EFFECTS
+          <span>TOXOTES</span> (music video / 2019)
+          is a music video for Sydney artist ZHE NHIR featuring
+          procedurally-generated graphics & loops
           <br><br>
-          <a href="https://www.youtube.com/watch?v=-SLgXBLQA2M" target="_blank">WATCH VIDEO</a>
+          <a href="https://www.youtube.com/watch?v=7Rc7XGBK6sg" target="_blank">WATCH VIDEO</a>
         `,
-        images: [
-          'img/pixies_1.jpg',
-          'img/pixies_2.jpg',
-          'img/pixies_3.jpg',
-        ],
-        videos: ['https://www.youtube.com/embed/-SLgXBLQA2M']
+        videos: [
+          'https://www.youtube.com/embed/7Rc7XGBK6sg',
+        ]
       }, {
         name: 'dongles',
-        date: '2019',
+        group: 'video',
         character: 'D',
         description: `
           <span>DONGLES</span> (animation 2019) a proof-of-concept video animation
@@ -254,30 +289,20 @@ const Config = {
           'https://www.youtube.com/embed/CQv_DFBlqEU'
         ]
       }, {
-        name: 'pencil_mmo',
-        date: '2020',
+        name: 'the_pixies',
+        character: '?',
+        group: 'video',
         description: `
-          <span>PENCIL MMO</span> (MMO art game / 2020)
-          massively multiplayer drawing game
+          <span>TENEMENT SONG</span> (music video 2016) for TENEMENT SONG by THE PIXIES made in AFTER EFFECTS
+          <br><br>
+          <a href="https://www.youtube.com/watch?v=-SLgXBLQA2M" target="_blank">WATCH VIDEO</a>
         `,
         images: [
-          'img/mmo_1.jpg',
-          'img/mmo_2.jpg',
-          'img/mmo_3.jpg',
-          'img/mmo_4.jpg',
+          'img/pixies_1.jpg',
+          'img/pixies_2.jpg',
+          'img/pixies_3.jpg',
         ],
-        getMesh: () => {
-          let mat = new THREE.MeshStandardMaterial({color:0xffffff});
-          let pencil = new THREE.Group();
-          let shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 1.5, 16), mat.clone());
-          let tip = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.02, 0.25, 16), mat.clone());
-          shaft.geometry.translate(0, 1, 0);
-          tip.geometry.translate(0, 0.125, 0);
-          pencil.add(shaft, tip);
-          pencil.rotation.set(-Math.PI * 0.1, 0, -Math.PI * 0.1);
-          pencil.visible = false;
-          return pencil;
-        }
+        videos: ['https://www.youtube.com/embed/-SLgXBLQA2M']
       },
       //{ name:'delaval_film', icon:'DLV', date: '2020', url: 'https://www.delavalfilm.com/' },
       //{ name:'pixelsort', icon:'SRT', date: '2020', },

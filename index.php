@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Karla&display=swap" rel="stylesheet">
-    <link rel='stylesheet' href='build/style.min.css?v=2023'>
+    <link rel='stylesheet' href='build/style.min.css?v=1.20241125.1'>
   </head>
   <body data-initial-page='<?php echo $page; ?>'>
     <div id='loading-screen' class='loading-screen'>
@@ -69,20 +69,16 @@
       <div data-target='work'>
         <span>Selected work</span>
         <br>
-        <div data-year='2023'><span>2023</span></div>
-        <div data-year='2022'><span>2022</span></div>
-        <div data-year='2021'><span>2021</span></div>
-        <div data-year='2020'><span>2020</span></div>
-        <div data-year='2019'><span>2019</span></div>
-        <div data-year='2018'><span>2018</span></div>
-        <div data-year='2016'><span>2016</span></div>
+        <div data-group='games'><span>games</span></div>
+        <div data-group='web'><span>web/virtual</span></div>
+        <div data-group='video'><span>video</span></div>
       </div>
       <div data-target='contact'>
         <span>Contact</span>
         <br>
         <div class='heading'>email</div>
         <a href='mailto:jxburrow@gmail.com'>jxburrow@gmail.com</a><br />
-        <div class='heading'>dev</div>
+        <div class='heading'>dev links</div>
         <a href='https://github.com/meatbags' target='_blank'>github</a><br />
         <a href='https://getpixel.itch.io/' target='_blank'>itch.io</a><br />
         <div class='heading'>social</div>

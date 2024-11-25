@@ -289,7 +289,7 @@ class Scene {
       let clickableIndex = 0;
 
       // add to nav
-      let year = p.date || '2022';
+      let group = p.group || 'web';
       let button = CreateElement({
         class: 'button',
         dataset: { page: p.name },
@@ -298,11 +298,11 @@ class Scene {
           click: () => { this.goToPage(p.name); },
         },
       });
-      let target = document.querySelector(`#text-container [data-target="work"] [data-year="${year}"]`);
+      let target = document.querySelector(`#text-container [data-target="work"] [data-group="${group}"]`);
       if (!target) {
         target = CreateElement({
-          dataset: { year: year },
-          innerHTML: `<span>${year}</span><br />`,
+          dataset: { group: group },
+          innerHTML: `<span>${group}</span><br />`,
         });
         document.querySelector(`#text-container [data-target="work"]`).appendChild(target);
       }

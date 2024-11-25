@@ -14,6 +14,11 @@
   overflow-x: visible;
   overflow-y: scroll;
   direction: rtl;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   > span, > div {
     direction:ltr;
   }
@@ -49,7 +54,6 @@
   }
 
   .heading {
-    font-size: 75%;
     font-weight: bold;
     text-decoration: underline;
   }
@@ -79,12 +83,12 @@
   }
 
   [data-target="work"] {
-    [data-year] {
+    [data-group] {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
-      padding-top: $space * 2;
+      margin-top: 16px;
       // text-transform: uppercase;
 
       &:first-child {
@@ -92,22 +96,21 @@
       }
 
       span {
-        font-size: 75%;
+        // font-size: 75%;
         font-weight: bold;
         text-decoration: underline;
+        text-transform: lowercase;
       }
     }
   }
 
   [data-target="contact"] {
     .heading {
-      font-size: 75%;
       font-weight: bold;
       text-decoration: underline;
       color: $green;
       padding-top: $space * 2;
       text-transform: lowercase;
-      margin-bottom: 10px;
 
       &:first-child {
         padding-top: 0;
@@ -136,7 +139,7 @@
       justify-content: center;
       flex-wrap: wrap;
 
-      [data-year] {
+      [data-group] {
         display: inline-flex;
         flex-direction: row;
         justify-content: center;
