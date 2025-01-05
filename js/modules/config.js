@@ -373,6 +373,33 @@ const Config = {
         images: [
           'img/ew_1.jpg',
         ]
+      }, {
+        name: 'ammiemm_casting',
+        character: '#',
+        group: 'website',
+        url: 'https://anniemmcasting.com/',
+        description: `
+          Lorem ipsum dolor sit amet.
+        `,
+        images: []
+      }, {
+        name: 'pony_express',
+        character: '?',
+        group: 'website',
+        url: 'https://helloponyexpress.com/',
+        description: `
+          Lorem ipsum.
+        `,
+        images: [],
+      }, {
+        name: 'casting_guild',
+        character: '#',
+        group: 'website',
+        url: 'https://castingguild.com.au/',
+        description: `
+          Lorem ipsum dolor sit amet.
+        `,
+        images: []
       },
     ],
   },
