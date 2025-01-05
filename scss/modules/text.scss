@@ -82,7 +82,7 @@
     border-right: none;
   }
 
-  [data-target="work"] {
+  [data-target="work"], [data-target="corpo"] {
     [data-group] {
       display: flex;
       flex-direction: column;
@@ -134,7 +134,8 @@
     height: 30vh;
     text-align: center;
 
-    [data-target="work"].active {
+    [data-target="work"].active,
+    [data-target="corpo"].active {
       display: inline-flex;
       justify-content: center;
       flex-wrap: wrap;

@@ -101,11 +101,14 @@ class Scene {
   initPages() {
     this.initPageIndex();
     this.initPageContact();
-    this.initPageWork();
+    this.initPageWork('work');
+    this.initPageWork('corpo');
+
     let p = 'index';
     if (document.querySelector('body').dataset.initialPage) {
       p = document.querySelector('body').dataset.initialPage;
     }
+
     setTimeout(() => {
       this.goToPage(p, false);
     }, 1000);
@@ -211,10 +214,10 @@ class Scene {
     });
   }
 
-  initPageWork() {
+  initPageWork(pageName='work') {
     // to index button
     this.createButton({
-      page: 'work',
+      page: pageName,
       text: 'index',
       textSize: 0.5,
       description: Config.Scene.indexHTML,
@@ -228,11 +231,13 @@ class Scene {
 
     // project menu items & pages
     let slotIndex = Math.floor(Math.random() * Config.Scene.slots.length);
-    Config.Scene.projects.forEach((p, i) => {
+    let conf = pageName === 'work'
+      ? Config.Scene.projects : Config.Scene.corpo;
+    conf.forEach((p, i) => {
       // page -- work
       let menuItem = new Interactive({
         root: this,
-        page: 'work',
+        page: pageName,
         mesh: p.getMesh ? p.getMesh() : null,
         text: p.character || null,
         el: {
@@ -248,10 +253,13 @@ class Scene {
       });
 
       // avoid a few collisions
-      let slot = Config.Scene.slots[(slotIndex + i) % Config.Scene.slots.length];
+      let slot = Config.Scene.slots[
+        (slotIndex + i) % Config.Scene.slots.length];
       let x = slot[0];
       let z = slot[1];
-      menuItem.meshes.forEach((mesh, i) => { mesh.position.set(x, this.getHeight(x, z), z); });
+      menuItem.meshes.forEach((mesh, i) => {
+        mesh.position.set(x, this.getHeight(x, z), z);
+      });
 
       // add to tree
       this.objects.push(menuItem);
@@ -261,7 +269,7 @@ class Scene {
         page: p.name,
         text: 'back',
         textSize: 0.5,
-        onClick: () => { this.goToPage('work'); },
+        onClick: () => { this.goToPage( pageName ); },
         placementCallback: (mesh, i) => {
           let x = -7;
           let z = 7 - i * 0.5;
@@ -298,13 +306,15 @@ class Scene {
           click: () => { this.goToPage(p.name); },
         },
       });
-      let target = document.querySelector(`#text-container [data-target="work"] [data-group="${group}"]`);
+      let target = document.querySelector(
+        `#text-container [data-target="${pageName}"] [data-group="${group}"]`);
       if (!target) {
         target = CreateElement({
           dataset: { group: group },
           innerHTML: `<span>${group}</span><br />`,
         });
-        document.querySelector(`#text-container [data-target="work"]`).appendChild(target);
+        document.querySelector(`#text-container [data-target="${pageName}"]`)
+          .appendChild(target);
       }
       target.appendChild(button);
 
@@ -410,7 +420,7 @@ class Scene {
               class: 'back-button',
               innerHTML: '&larr; back',
               addEventListener: {
-                click: () => { this.goToPage('work'); },
+                click: () => { this.goToPage(pageName); },
               }
             }, {
               innerHTML: '<br>' + p.description,

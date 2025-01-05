@@ -304,9 +304,77 @@ const Config = {
         ],
         videos: ['https://www.youtube.com/embed/-SLgXBLQA2M']
       },
-      //{ name:'delaval_film', icon:'DLV', date: '2020', url: 'https://www.delavalfilm.com/' },
-      //{ name:'pixelsort', icon:'SRT', date: '2020', },
-    ]
+    ],
+    corpo: [
+      // saas
+      {
+        name: 'status',
+        character: 'S',
+        group: 'saas',
+        url: '',
+        description: `
+          Primary dev on internal management solution.
+          Realtime multiuser document editing, ext API integration, bespoke
+          CMS/backend to suit the company needs.
+        `,
+        images: []
+      }, {
+        name: 'Portal',
+        character: 'S',
+        group: 'saas',
+        url: '',
+        description: `
+          Lead dev on internal eDetailer creator and manager,
+          targeting and integrated with Veeva CRM. Modular with other tools
+          for company use.
+        `,
+        images: []
+      },
+      // website
+      {
+        name: 'microchannel',
+        character: 'M',
+        group: 'website',
+        url: 'https://microchannel.com.au/',
+        description: `
+          <span>Corporate Website</span> for FUJIFILM MicroChannel. Primary dev
+          on bespoke Wordpress theme + custom plugins.
+          <br /><br />
+          <a href="https://microchannel.com.au/" target="_blank">VISIT SITE</a>
+        `,
+        images: [
+          'img/ew_1.jpg',
+        ]
+      }, {
+        name: 'delaval',
+        character: 'V',
+        group: 'website',
+        url: 'https://delavalfilm.com/',
+        description: `
+          Design and development of <span>Website</span> for
+          award-winning UK film production company.
+          <br /><br />
+          <a href="https://delavalfilm.com/" target="_blank">VISIT SITE</a>
+        `,
+        images: [
+          'img/ew_1.jpg',
+        ]
+      }, {
+        name: 'perth actors centre',
+        character: 'V',
+        group: 'website',
+        url: 'https://perthactorscentre.com.au/',
+        description: `
+          Design/development of <span>Ecommerce Website</span> for
+          renowned Perth theatre/actor training company.
+          <br /><br />
+          <a href="https://perthactorscentre.com.au/" target="_blank">VISIT SITE</a>
+        `,
+        images: [
+          'img/ew_1.jpg',
+        ]
+      },
+    ],
   },
   Renderer: {
     lowQuality: false,

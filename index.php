@@ -33,7 +33,8 @@
 
       <div class='nav'>
         <div class='nav__item' data-page='index'>index</div>
-        <div class='nav__item' data-page='work'>portfolio</div>
+        <div class='nav__item' data-page='work'>creative</div>
+        <div class='nav__item' data-page='corpo'>corpo</div>
         <div class='nav__item' data-page='contact'>contact</div>
       </div>
 
@@ -67,11 +68,17 @@
         </div>
       </div>
       <div data-target='work'>
-        <span>Selected work</span>
+        <span>Select creative</span>
         <br>
         <div data-group='games'><span>games</span></div>
         <div data-group='web'><span>web/virtual</span></div>
         <div data-group='video'><span>video</span></div>
+      </div>
+      <div data-target='corpo'>
+        <span>Select corporate</span>
+        <br>
+        <div data-group='saas'><span>saas</span></div>
+        <div data-group='website'><span>website</span></div>
       </div>
       <div data-target='contact'>
         <span>Contact</span>
