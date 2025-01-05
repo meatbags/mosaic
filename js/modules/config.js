@@ -319,7 +319,7 @@ const Config = {
         `,
         images: []
       }, {
-        name: 'Portal',
+        name: 'portal',
         character: 'S',
         group: 'saas',
         url: '',
@@ -327,6 +327,15 @@ const Config = {
           Lead dev on internal eDetailer creator and manager,
           targeting and integrated with Veeva CRM. Modular with other tools
           for company use.
+        `,
+        images: []
+      }, {
+        name: 'amgen_mr',
+        character: 'S',
+        group: 'saas',
+        url: '',
+        description: `
+          Primary dev on secure medication request portal <span>website</span>.
         `,
         images: []
       },
